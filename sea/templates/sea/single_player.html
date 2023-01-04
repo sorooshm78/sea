@@ -1,0 +1,11 @@
+{% load mathfilters %}
+
+{% for t in table %}
+    
+    <button id="{{ forloop.counter0 }}">-</button>
+    
+    {% if forloop.counter|mod:column == 0 %}
+        <br>
+    {% endif %}
+
+{% endfor %}
