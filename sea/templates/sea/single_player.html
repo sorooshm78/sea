@@ -4,7 +4,7 @@
 {% block content %}
     {% for t in table %}
         
-        <button id="{{ forloop.counter0 }}">-</button>
+        <button id="{{ forloop.counter0 }}" onclick="select({{ forloop.counter0 }})">-</button>
         
         {% if forloop.counter|mod:column == 0 %}
             <br>

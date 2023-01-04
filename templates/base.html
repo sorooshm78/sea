@@ -1,7 +1,10 @@
+{% load static %}
+
 <!doctype html>
 <html>
 <head>
-<title>Sea Battle</title>
+    <title>Sea Battle</title>
+    <script src="{% static 'game.js' %}"></script>
 </head>
     <body>
         {% block content %}{% endblock content %}

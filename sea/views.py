@@ -1,17 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+# TODO: add this const to settings.py
+ROW = 10
+COLUMN = 10
 
-ROW = 6
-COLUMN = 4
+class SeaBattle:
+    def __init__(self, row=5, column=5):
+        self.row = row
+        self.column = column
 
-def make_table_game(row, column):
-    table = [0] * row * column
-    return table
+    def get_table_game(self):
+        table = [0] * self.row * self.column
+        return table
 
 
 def single_player_view(request):
-    table = make_table_game(ROW, COLUMN)
+    sea_battle = SeaBattle(ROW, COLUMN)
+    table = sea_battle.get_table_game()
     
     context = {
         'table' : table,
