@@ -2,11 +2,12 @@
 {% load mathfilters %}
 
 {% block content %}
-    {% for t in table %}
+    {% for cell in table %}
         
-        <button id="{{ forloop.counter0 }}" onclick="select({{ forloop.counter0 }})">-</button>
+        <button class="cell" id="{{ forloop.counter0 }}" onclick="select({{ forloop.counter0 }})">-</button>
+        {% comment %} <button class="cell" id="{{ forloop.counter0 }}" onclick="select({{ forloop.counter0 }})" disabled='true'>-</button> {% endcomment %}
         
-        {% if forloop.counter|mod:column == 0 %}
+        {% if forloop.counter|mod:sea_battle.column == 0 %}
             <br>
         {% endif %}
 
