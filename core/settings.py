@@ -136,3 +136,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Login redirect
 LOGIN_REDIRECT_URL = "single_player"
+
+# Cache
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}

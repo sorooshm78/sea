@@ -7,7 +7,7 @@ from .logic import SeaBattle
 
 @login_required
 def single_player_view(request):
-    sea_battle = SeaBattle()
+    sea_battle = SeaBattle(request.user.id)
     table = sea_battle.get_table_game()
 
     context = {
@@ -21,4 +21,6 @@ def single_player_view(request):
 
 @login_required
 def select(request, cell):
-    return HttpResponse("*")
+    sea_battle = SeaBattle(request.user.id)
+
+    return HttpResponse(sea_battle.select_cell(cell))
