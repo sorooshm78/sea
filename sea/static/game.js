@@ -11,7 +11,9 @@ function select(cell) {
     $.get(`/select/${cell}`, function (data, status) {
         console.log(status);
         if (status === 'success') {
-            $(`#${cell}`).text(data);
+            cell = $(`#${cell}`);
+            cell.text(data);
+            cell.removeClass('cell').addClass('select');
             enableButtons();
         }
     });
