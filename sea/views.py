@@ -18,4 +18,4 @@ def single_player_view(request):
 
 
 def select(request, cell):
-    return HttpResponse("ok recive selected")
+    return HttpResponse("*")
