@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
 from .logic import SeaBattle
 
 
@@ -9,7 +10,8 @@ def single_player_view(request):
 
     context = {
         "table": table,
-        "sea_battle": sea_battle,
+        "row": sea_battle.row,
+        "column": sea_battle.column,
     }
 
     return render(request, "sea/single_player.html", context=context)

@@ -6,7 +6,7 @@
         
         <button class="cell" id="{{ forloop.counter0 }}" onclick="select({{ forloop.counter0 }})">-</button>
 
-        {% if forloop.counter|mod:sea_battle.column == 0 %}
+        {% if forloop.counter|mod:column == 0 %}
             <br>
         {% endif %}
 
