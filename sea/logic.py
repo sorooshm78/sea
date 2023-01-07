@@ -3,6 +3,12 @@ import random
 from django.core.cache import cache
 
 
+class GameDate:
+    def __init__(self, table, ship_points):
+        self.table = table
+        self.ship_points = ship_points
+
+
 class SeaBattle:
     row = 6
     column = 6
@@ -11,44 +17,32 @@ class SeaBattle:
     def __init__(self, user_id):
         self.user_id = user_id
         if cache.get(user_id) is not None:
-            game = cache.get(user_id)
+            self.game_data = cache.get(user_id)
 
         else:
-            game = self._make_game()
-            cache.set(user_id, game)
+            self.start_new_game()
 
-        self.table = game["table"]
-        self.ship_points = game["ship_points"]
+    def start_new_game(self):
+        self.make_game()
+        self.save_game_data()
+
+    def make_game(self):
+        table = ["-"] * self.row * self.column
+        ship_points = random.sample(range(len(table)), self.count_prize)
+        self.game_data = GameDate(table, ship_points)
+
+    def save_game_data(self):
+        cache.set(self.user_id, self.game_data)
 
     def get_table_game(self):
-        return self.table
+        return self.game_data.table
 
     def select_cell(self, cell):
-        if cell in self.ship_points:
+        if cell in self.game_data.ship_points:
             result = "*"
         else:
             result = "x"
 
-        self.table[cell] = result
-        self.save_game()
+        self.game_data.table[cell] = result
+        self.save_game_data()
         return result
-
-    def _make_game(self):
-        table = [0] * self.row * self.column
-        ship_points = random.sample(range(len(table)), self.count_prize)
-
-        return {
-            "table": table,
-            "ship_points": ship_points,
-        }
-
-    def save_game(self):
-        game = {
-            "table": self.table,
-            "ship_points": self.ship_points,
-        }
-        cache.set(self.user_id, game)
-
-    def load_game(self, game):
-        self.table = game["table"]
-        self.ship_points = game["ship_points"]
