@@ -11,7 +11,7 @@ class GameDate:
 
 
 class Cell(Enum):
-    empty = "-"
+    empty = "o"
     select = "x"
     target = "*"
 
@@ -19,7 +19,7 @@ class Cell(Enum):
 class SeaBattle:
     row = 6
     column = 6
-    count_target = 5
+    count_target = 10
 
     def __init__(self, user_id):
         self.user_id = user_id
