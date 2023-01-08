@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
@@ -6,7 +7,7 @@ from .logic import SeaBattle
 
 
 @login_required
-def single_player_view(request):
+def single_player(request):
     sea_battle = SeaBattle(request.user.id)
 
     context = {
@@ -23,3 +24,10 @@ def select(request, cell):
     sea_battle = SeaBattle(request.user.id)
 
     return HttpResponse(sea_battle.select_cell(cell))
+
+
+@login_required
+def new_game(request):
+    sea_battle = SeaBattle(request.user.id)
+    sea_battle.start_new_game()
+    return redirect("single_player")
