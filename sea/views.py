@@ -8,10 +8,9 @@ from .logic import SeaBattle
 @login_required
 def single_player_view(request):
     sea_battle = SeaBattle(request.user.id)
-    table = sea_battle.get_table_game()
 
     context = {
-        "table": table,
+        "table": sea_battle.get_table_game(),
         "row": sea_battle.row,
         "column": sea_battle.column,
     }
