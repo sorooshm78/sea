@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
-from .logic import SeaBattle
+from .logic import SeaBattle, Cell
 
 
 @login_required
@@ -14,6 +14,9 @@ def single_player(request):
         "table": sea_battle.get_table_game(),
         "row": sea_battle.row,
         "column": sea_battle.column,
+        "empty": Cell.empty.value,
+        "taget": Cell.target.value,
+        "select": Cell.select.value,
     }
 
     return render(request, "sea/single_player.html", context=context)

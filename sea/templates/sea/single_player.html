@@ -3,8 +3,14 @@
 
 {% block content %}
     {% for cell in table %}
-        
-        <button class="cell" id="{{ forloop.counter0 }}" onclick="select({{ forloop.counter0 }})">{{ cell }}</button>
+         
+        <button class="
+            {% if cell == empty %}
+                empty
+            {% else %}
+                select
+            {% endif %}
+            " id="{{ forloop.counter0 }}" onclick="select({{ forloop.counter0 }})">{{ cell }}</button>
 
         {% if forloop.counter|mod:column == 0 %}
             <br>

@@ -1,21 +1,28 @@
-function disableButtons() {
-    $('.cell').prop('disabled', true);
+function disableAllButtons() {
+    $('.empty').prop('disabled', true);
 }
 
-function enableButtons() {
-    $('.cell').prop('disabled', false);
+function disableSelectButtons() {
+    $('.select').prop('disabled', true);
+}
+
+function enableEmptyButtons() {
+    $('.empty').prop('disabled', false);
 }
 
 function select(cell) {
-    disableButtons();
+    disableAllButtons();
     $.get(`/select/${cell}`, function (data, status) {
         console.log(status);
         if (status === 'success') {
             cell = $(`#${cell}`);
             cell.text(data);
-            cell.removeClass('cell').addClass('select');
-            enableButtons();
+            cell.removeClass('empty').addClass('select');
+            enableEmptyButtons();
         }
     });
 }
 
+$(document).ready(function () {
+    disableSelectButtons();
+});
