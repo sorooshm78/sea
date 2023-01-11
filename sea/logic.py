@@ -27,17 +27,19 @@ class SeaBattle:
     col = 10
 
     def __init__(self, user_id):
-        self.user_id = user_id
-        if cache.get(user_id) is not None:
-            self.table = cache.get(user_id)
+        # self.user_id = user_id
+        # if cache.get(user_id) is not None:
+        #     self.table = cache.get(user_id)
 
-        else:
-            self.start_new_game()
+        # else:
+        #     self.start_new_game()
+
+        self.start_new_game()
 
     def start_new_game(self):
         self.make_table()
         self.make_ships()
-        self.save_game_data()
+        # self.save_game_data()
 
     def make_table(self):
         self.table = np.full((self.row, self.col), Cell.empty.value)
@@ -56,18 +58,10 @@ class SeaBattle:
             directs = np.array(["up", "down", "right", "left"])
             random.shuffle(directs)
             for direct in directs:
-                condidate_point = self.slice_condidate_ship(
-                    random_point, length, direct
-                )
-                if len(self.table[condidate_point.x, condidate_point.y]) == length:
-                    if (
-                        Cell.ship.value
-                        not in self.table[condidate_point.x, condidate_point.y]
-                    ):
-                        self.table[
-                            condidate_point.x, condidate_point.y
-                        ] = Cell.ship.value
-                        return
+                ship_points = self.get_ship_points(random_point, length, direct)
+                if ship_points is not None:
+                    self.table[ship_points.x, ship_points.y] = Cell.ship.value
+                    return
 
     def random_point(self):
         while True:
@@ -76,21 +70,29 @@ class SeaBattle:
             if self.table[x, y] == Cell.empty.value:
                 return Point(x, y)
 
-    def slice_condidate_ship(self, point, length, direct):
+    def get_ship_points(self, point, length, direct):
         if direct == "up":
-            return Point(slice(point.x - length + 1, point.x + 1), point.y)
+            ship_points = Point(slice(point.x - length + 1, point.x + 1), point.y)
 
         if direct == "down":
-            return Point(slice(point.x, point.x + length), point.y)
+            ship_points = Point(slice(point.x, point.x + length), point.y)
 
         if direct == "right":
-            return Point(point.x, slice(point.y, point.y + length))
+            ship_points = Point(point.x, slice(point.y, point.y + length))
 
         if direct == "left":
-            return Point(point.x, slice(point.y - length + 1, point.y + 1))
+            ship_points = Point(point.x, slice(point.y - length + 1, point.y + 1))
 
-    def save_game_data(self):
-        cache.set(self.user_id, self.table)
+        if len(self.table[ship_points.x, ship_points.y]) != length:
+            return None
+
+        if Cell.ship.value in self.table[ship_points.x, ship_points.y]:
+            return None
+
+        return ship_points
+
+    # def save_game_data(self):
+    #     cache.set(self.user_id, self.table)
 
     def get_table_game(self):
         return self.table
@@ -103,5 +105,5 @@ class SeaBattle:
             cell = Cell.select.value
 
         self.table[x, y] = cell
-        self.save_game_data()
+        # self.save_game_data()
         return cell
