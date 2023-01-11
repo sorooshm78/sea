@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
@@ -12,10 +11,8 @@ def single_player(request):
 
     context = {
         "table": sea_battle.get_table_game(),
-        "row": sea_battle.row,
-        "column": sea_battle.column,
         "empty": Cell.empty.value,
-        "taget": Cell.target.value,
+        "target": Cell.target.value,
         "select": Cell.select.value,
     }
 
@@ -23,10 +20,12 @@ def single_player(request):
 
 
 @login_required
-def select(request, cell):
+def select(request):
+    x = int(request.GET.get("x"))
+    y = int(request.GET.get("y"))
     sea_battle = SeaBattle(request.user.id)
 
-    return HttpResponse(sea_battle.select_cell(cell))
+    return HttpResponse(sea_battle.select_cell(x, y))
 
 
 @login_required

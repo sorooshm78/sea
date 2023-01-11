@@ -2,19 +2,27 @@
 {% load mathfilters %}
 
 {% block content %}
-    {% for cell in table %}
-         
-        <button class="
+    {% for row in table %}
+        {% with x=forloop.counter0 %}
+        
+        {% for cell in row %}
+            {% with y=forloop.counter0 %}
+            <button class="
             {% if cell == empty %}
                 empty
-            {% else %}
+            {% elif cell == target %}
+                target select
+            {% elif cell == select %}
                 select
-            {% endif %}
-            " id="{{ forloop.counter0 }}" onclick="select({{ forloop.counter0 }})">{{ cell }}</button>
+            {% endif %}"
 
-        {% if forloop.counter|mod:column == 0 %}
-            <br>
-        {% endif %}
+            id="{{x}}{{y}}"
 
+            onclick="select({{ x }}, {{ y }})">{{ cell }}</button>
+            {% endwith %}
+        {% endfor %}
+        
+        {% endwith %}
+        <br>
     {% endfor %}
 {% endblock content %}

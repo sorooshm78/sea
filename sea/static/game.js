@@ -10,12 +10,12 @@ function enableEmptyButtons() {
     $('.empty').prop('disabled', false);
 }
 
-function select(cell) {
+function select(x, y) {
     disableAllButtons();
-    $.get(`/select/${cell}`, function (data, status) {
+    $.get(`/select/?x=${x}&y=${y}`, function (data, status) {
         console.log(status);
         if (status === 'success') {
-            cell = $(`#${cell}`);
+            cell = $(`#${x}${y}`);
             cell.text(data);
             cell.removeClass('empty').addClass('select');
             enableEmptyButtons();
