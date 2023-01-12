@@ -1,6 +1,6 @@
 .select {
-    color: blueviolet;
-    background-color: blueviolet;
+    color: #1fe4eb;
+    background-color: #1fe4eb;
 }
 
 .target {
@@ -11,4 +11,9 @@
 .empty {
     color: white;
     background-color: white;
+}
+
+.btn {
+    font-size: 30px;
+    padding: 15px 32px;
 }
