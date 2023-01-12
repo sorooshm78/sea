@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load mathfilters %}
 
 {% block content %}
     {% for row in table %}
@@ -7,14 +6,14 @@
         
         {% for cell in row %}
             {% with y=forloop.counter0 %}
-            <button class="
+            <button class="btn 
             {% if cell == select %}
                 select
             {% elif cell == target %}
                 target
             {% else %}
                 empty
-            {% endif %}  btn"
+            {% endif %}"
 
             id="{{x}}{{y}}"
 
