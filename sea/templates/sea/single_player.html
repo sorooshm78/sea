@@ -8,17 +8,17 @@
         {% for cell in row %}
             {% with y=forloop.counter0 %}
             <button class="
-            {% if cell == empty %}
-                empty
-            {% elif cell == target %}
-                target select
-            {% elif cell == select %}
+            {% if cell == select %}
                 select
+            {% elif cell == target %}
+                target
+            {% else %}
+                empty
             {% endif %}"
 
             id="{{x}}{{y}}"
 
-            onclick="select({{ x }}, {{ y }})">{{ cell }}</button>
+            onclick="select({{ x }}, {{ y }})">{{ shape }}</button>
             {% endwith %}
         {% endfor %}
         

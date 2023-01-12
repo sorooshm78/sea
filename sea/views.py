@@ -14,6 +14,7 @@ def single_player(request):
         "empty": Cell.empty.value,
         "target": Cell.target.value,
         "select": Cell.select.value,
+        "shape": "o",
     }
 
     return render(request, "sea/single_player.html", context=context)
@@ -24,8 +25,14 @@ def select(request):
     x = int(request.GET.get("x"))
     y = int(request.GET.get("y"))
     sea_battle = SeaBattle(request.user.id)
+    cell = sea_battle.select_cell(x, y)
 
-    return HttpResponse(sea_battle.select_cell(x, y))
+    if cell == Cell.select.value:
+        result = "select"
+    elif cell == Cell.target.value:
+        result = "target"
+
+    return HttpResponse(result)
 
 
 @login_required

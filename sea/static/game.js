@@ -3,7 +3,7 @@ function disableAllButtons() {
 }
 
 function disableSelectButtons() {
-    $('.select').prop('disabled', true);
+    $('.select,.target').prop('disabled', true);
 }
 
 function enableEmptyButtons() {
@@ -16,8 +16,8 @@ function select(x, y) {
         console.log(status);
         if (status === 'success') {
             cell = $(`#${x}${y}`);
-            cell.text(data);
-            cell.removeClass('empty').addClass('select');
+            // cell.text(data);
+            cell.removeClass('empty').addClass(data);
             enableEmptyButtons();
         }
     });
