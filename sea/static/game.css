@@ -1,9 +1,14 @@
 .select {
-    color: yellow;
-    background-color: yellow;
+    color: blueviolet;
+    background-color: blueviolet;
 }
 
 .target {
     color: #0cc512;
     background-color: #0cc512;
+}
+
+.empty {
+    color: white;
+    background-color: white;
 }
