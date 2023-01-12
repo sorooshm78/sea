@@ -24,7 +24,11 @@
         {% endwith %}
         <br>
     {% endfor %}
-
+    
     <p id='msg'></p>
+    
+    <br>
+
+    <a href='{% url 'new_game' %}'><button class='new-game'>New Game</button></a>
     
 {% endblock content %}

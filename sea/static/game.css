@@ -18,6 +18,11 @@
     padding: 15px 32px;
 }
 
+.new-game {
+    font-size: 20px;
+    padding: 15px 32px;
+}
+
 .end-game {
     background-color: #ff1800;
     padding: 30px;
