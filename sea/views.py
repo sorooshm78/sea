@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from .logic import SeaBattle, Cell
@@ -24,6 +24,7 @@ def single_player(request):
 def select(request):
     x = int(request.GET.get("x"))
     y = int(request.GET.get("y"))
+
     sea_battle = SeaBattle(request.user.id)
     cell = sea_battle.select_cell(x, y)
 
@@ -32,7 +33,16 @@ def select(request):
     elif cell == Cell.target.value:
         result = "target"
 
-    return HttpResponse(result)
+    message = ""
+    if sea_battle.is_end_game():
+        message = "End Game"
+
+    data = {
+        "result": result,
+        "message": message,
+    }
+
+    return JsonResponse(data)
 
 
 @login_required

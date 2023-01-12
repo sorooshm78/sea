@@ -17,3 +17,10 @@
     font-size: 30px;
     padding: 15px 32px;
 }
+
+.end-game {
+    background-color: #ff1800;
+    padding: 30px;
+    text-align: center;
+    font-size: 25px;
+}

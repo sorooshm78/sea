@@ -118,3 +118,8 @@ class SeaBattle:
         self.table[x, y] = cell
         self.save_game_data()
         return cell
+
+    def is_end_game(self):
+        if Cell.ship.value not in self.table:
+            return True
+        return False
