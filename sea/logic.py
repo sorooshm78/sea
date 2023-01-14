@@ -22,10 +22,133 @@ class Cell(Enum):
     target = "*"
 
 
-class SeaBattle:
+class Ship:
+    def __init__(self, point, length, direct):
+        self.points = self.get_points_by_direct(point, length, direct)
+        self.area = self.get_area_points()
+        self.health = length
+        self.is_alive = True
+
+    def get_points_by_direct(self, point, length, direct):
+        if direct == "up":
+            return Point(
+                slice(point.x - length + 1, point.x + 1), slice(point.y, point.y + 1)
+            )
+
+        elif direct == "down":
+            return Point(slice(point.x, point.x + length), slice(point.y, point.y + 1))
+
+        elif direct == "right":
+            return Point(slice(point.x, point.x + 1), slice(point.y, point.y + length))
+
+        elif direct == "left":
+            return Point(
+                slice(point.x, point.x + 1), slice(point.y - length + 1, point.y + 1)
+            )
+
+    def get_area_points(self):
+        return Point(
+            slice(max(0, self.points.x.start - 1), max(0, self.points.x.stop + 1)),
+            slice(max(0, self.points.y.start - 1), max(0, self.points.y.stop + 1)),
+        )
+
+    def check_inside_of_points(self, x, y):
+        if x in range(self.points.x.start, self.points.x.stop) and y in range(
+            self.points.y.start, self.points.y.stop
+        ):
+            return True
+        return False
+
+    def damage(self):
+        if self.is_alive:
+            self.health -= 1
+        if self.health == 0:
+            self.is_alive = False
+
+
+class Table:
     row = 10
     col = 10
 
+    def __init__(self):
+        self.coordinates = np.full((self.row, self.col), Cell.empty.value)
+        self.make_ships()
+
+    def make_ships(self):
+        list_lenght_ships = [4, 3, 3, 2, 2, 1, 1]
+        self.ships = []
+        for length in list_lenght_ships:
+            self.ships.append(self.make_ship(length))
+
+    def make_ship(self, length):
+        while True:
+            point = self.get_random_empty_point()
+            directs = np.array(["up", "down", "right", "left"])
+            random.shuffle(directs)
+            for direct in directs:
+                ship = self.get_random_ship(point, length, direct)
+                if ship is not None:
+                    self.coordinates[ship.points.x, ship.points.y] = Cell.ship.value
+                    return ship
+
+    def get_random_empty_point(self):
+        while True:
+            x = random.randrange(self.row)
+            y = random.randrange(self.col)
+            if self.coordinates[x, y] == Cell.empty.value:
+                return Point(x, y)
+
+    def check_points_valid(self, points):
+        if points.x.start < 0 or points.y.start < 0:
+            return False
+
+        if points.x.stop > self.row - 1 or points.y.stop > self.col - 1:
+            return False
+
+        return True
+
+    def check_area_ship_valid(self, area):
+        if Cell.ship.value in self.coordinates[area.x, area.y]:
+            return False
+        return True
+
+    def get_random_ship(self, point, length, direct):
+        ship = Ship(point, length, direct)
+
+        if self.check_points_valid(ship.points) and self.check_area_ship_valid(
+            ship.area
+        ):
+            return ship
+        return None
+
+    def select_ship(self, point):
+        for ship in self.ships:
+            if ship.check_inside_of_points(point.x, point.y):
+                ship.damage()
+                if not ship.is_alive:
+                    self.coordinates[ship.area.x, ship.area.y] = Cell.select.value
+                    self.coordinates[ship.points.x, ship.points.y] = Cell.target.value
+                    return ship.area
+                else:
+                    self.coordinates[point.x, point.y] = Cell.target.value
+                    return Point(
+                        slice(point.x, point.x + 1), slice(point.y, point.y + 1)
+                    )
+
+    def select_cell(self, point):
+        selecte_cell = self.coordinates[point.x, point.y]
+
+        if selecte_cell == Cell.ship.value:
+            point = self.select_ship(point)
+            return point
+
+        elif selecte_cell == Cell.empty.value:
+            self.coordinates[point.x, point.y] = Cell.select.value
+            return Point(slice(point.x, point.x + 1), slice(point.y, point.y + 1))
+
+
+# Manage Game
+class SeaBattle:
     def __init__(self, user_id):
         self.user_id = user_id
         if cache.get(user_id) is not None:
@@ -35,91 +158,32 @@ class SeaBattle:
             self.start_new_game()
 
     def start_new_game(self):
-        self.make_table()
-        self.make_ships()
+        self.table = Table()
         self.save_game_data()
 
-    def make_table(self):
-        self.table = np.full((self.row, self.col), Cell.empty.value)
+    def get_table_game(self):
+        return self.table.coordinates
 
-    def make_ships(self):
-        self.make_ship(4)
-        self.make_ship(3)
-        self.make_ship(2)
-        self.make_ship(2)
-        self.make_ship(1)
-        self.make_ship(1)
+    def select_cell(self, x, y):
+        points = self.table.select_cell(Point(x, y))
+        self.save_game_data()
 
-    def make_ship(self, length):
-        while True:
-            random_point = self.random_point()
-            directs = np.array(["up", "down", "right", "left"])
-            random.shuffle(directs)
-            for direct in directs:
-                ship_points = self.get_ship_points(random_point, length, direct)
-                if ship_points is not None:
-                    self.table[ship_points.x, ship_points.y] = Cell.ship.value
-                    return
-
-    def random_point(self):
-        while True:
-            x = random.randrange(self.row)
-            y = random.randrange(self.col)
-            if self.table[x, y] == Cell.empty.value:
-                return Point(x, y)
-
-    def get_ship_points(self, point, length, direct):
-        if direct == "up":
-            ship_points = Point(
-                slice(point.x - length + 1, point.x + 1), slice(point.y, point.y + 1)
-            )
-
-        if direct == "down":
-            ship_points = Point(
-                slice(point.x, point.x + length), slice(point.y, point.y + 1)
-            )
-
-        if direct == "right":
-            ship_points = Point(
-                slice(point.x, point.x + 1), slice(point.y, point.y + length)
-            )
-
-        if direct == "left":
-            ship_points = Point(
-                slice(point.x, point.x + 1), slice(point.y - length + 1, point.y + 1)
-            )
-
-        if self.table[ship_points.x, ship_points.y].size != length:
-            return None
-
-        range_ship_points = Point(
-            slice(max(0, ship_points.x.start - 1), max(0, ship_points.x.stop + 1)),
-            slice(max(0, ship_points.y.start - 1), max(0, ship_points.y.stop + 1)),
-        )
-
-        if Cell.ship.value in self.table[range_ship_points.x, range_ship_points.y]:
-            return None
-
-        return ship_points
+        data = []
+        for x in range(points.x.start, points.x.stop):
+            for y in range(points.y.start, points.y.stop):
+                data.append(
+                    {
+                        "x": x,
+                        "y": y,
+                        "result": self.table.coordinates[x, y],
+                    }
+                )
+        return data
 
     def save_game_data(self):
         cache.set(self.user_id, self.table)
 
-    def get_table_game(self):
-        return self.table
-
-    def select_cell(self, x, y):
-        selecte_cell = self.table[x, y]
-        if selecte_cell == Cell.ship.value or selecte_cell == Cell.target.value:
-            cell = Cell.target.value
-        else:
-            cell = Cell.select.value
-
-        self.table[x, y] = cell
-        self.save_game_data()
-        return cell
-
     def is_end_game(self):
-        if Cell.ship.value not in self.table:
+        if Cell.ship.value not in self.table.coordinates:
             return True
         return False

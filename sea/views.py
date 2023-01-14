@@ -26,19 +26,20 @@ def select(request):
     y = int(request.GET.get("y"))
 
     sea_battle = SeaBattle(request.user.id)
-    cell = sea_battle.select_cell(x, y)
+    cells = sea_battle.select_cell(x, y)
 
-    if cell == Cell.select.value:
-        result = "select"
-    elif cell == Cell.target.value:
-        result = "target"
+    for cell in cells:
+        if cell["result"] == Cell.select.value:
+            cell["class"] = "select"
+        elif cell["result"] == Cell.target.value:
+            cell["class"] = "target"
 
     message = ""
     if sea_battle.is_end_game():
         message = "End Game"
 
     data = {
-        "result": result,
+        "cells": cells,
         "message": message,
     }
 

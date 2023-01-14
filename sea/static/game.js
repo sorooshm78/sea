@@ -20,8 +20,11 @@ function select(x, y) {
     $.get(`/select/?x=${x}&y=${y}`, function (data, status) {
         console.log(status);
         if (status === 'success') {
-            cell = $(`#${x}${y}`);
-            cell.removeClass('empty').addClass(data.result);
+            console.log(data);
+            for (index in data.cells) {
+                cell = data.cells[index]
+                $(`#${cell.x}${cell.y}`).removeClass('empty').addClass(cell.class);
+            }
 
             if (data.message) {
                 endGame(data.message);
