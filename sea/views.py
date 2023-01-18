@@ -11,6 +11,7 @@ def single_player(request):
 
     context = {
         "table": sea_battle.get_table_game(),
+        "report": sea_battle.get_report_game(),
         "empty": Cell.empty.value,
         "target": Cell.target.value,
         "select": Cell.select.value,
@@ -26,21 +27,28 @@ def select(request):
     y = int(request.GET.get("y"))
 
     sea_battle = SeaBattle(request.user.id)
-    cells = sea_battle.select_cell(x, y)
 
+    # Wrap cell data for front
+    cells = sea_battle.select_cell(x, y)
     for cell in cells:
         if cell["result"] == Cell.select.value:
             cell["class"] = "select"
         elif cell["result"] == Cell.target.value:
             cell["class"] = "target"
 
+    # Message for End Game
     message = ""
     if sea_battle.is_end_game():
         message = "End Game"
 
+    # Report count alive ships
+    report = sea_battle.get_report_game()
+
+    # Data to send to client
     data = {
         "cells": cells,
         "message": message,
+        "report": report,
     }
 
     return JsonResponse(data)

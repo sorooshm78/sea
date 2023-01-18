@@ -20,7 +20,6 @@ function select(x, y) {
     $.get(`/select/?x=${x}&y=${y}`, function (data, status) {
         console.log(status);
         if (status === 'success') {
-            console.log(data);
             for (index in data.cells) {
                 cell = data.cells[index]
                 $(`#${cell.x}${cell.y}`).removeClass('empty').addClass(cell.class);

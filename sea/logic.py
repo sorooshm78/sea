@@ -27,6 +27,7 @@ class Ship:
         self.points = self.get_points_by_direct(point, length, direct)
         self.area = self.get_area_points()
         self.health = length
+        self.length = length
         # FIXME is_alive could be a method based in health being zero or not
         self.is_alive = True
 
@@ -154,6 +155,14 @@ class Table:
             self.coordinates[point.x, point.y] = Cell.select.value
             return Point(slice(point.x, point.x + 1), slice(point.y, point.y + 1))
 
+    def get_count_ships_by_length(self, length):
+        count = 0
+        for ship in self.ships:
+            if ship.is_alive and ship.length == length:
+                count += 1
+
+        return count
+
 
 # Manage Game
 class SeaBattle:
@@ -172,7 +181,7 @@ class SeaBattle:
     def get_table_game(self):
         return self.table.coordinates
 
-    # FIXME Rename
+    # FIXME Rename to get changes
     def select_cell(self, x, y):
         points = self.table.select_cell(Point(x, y))
         self.save_game_data()
@@ -196,3 +205,11 @@ class SeaBattle:
         if Cell.ship.value not in self.table.coordinates:
             return True
         return False
+
+    def get_report_game(self):
+        return {
+            "4_ships": self.table.get_count_ships_by_length(4),
+            "3_ships": self.table.get_count_ships_by_length(3),
+            "2_ships": self.table.get_count_ships_by_length(2),
+            "1_ships": self.table.get_count_ships_by_length(1),
+        }
