@@ -38,6 +38,9 @@ function select(x, y) {
             $('#3-ships').text(data.report['3_ships']);
             $('#2-ships').text(data.report['2_ships']);
             $('#1-ships').text(data.report['1_ships']);
+
+            // Score Game
+            $('#score').text(data.score);
         }
     });
 }

@@ -214,3 +214,6 @@ class SeaBattle:
             "2_ships": self.table.get_count_ships_by_length(2),
             "1_ships": self.table.get_count_ships_by_length(1),
         }
+
+    def get_score_game(self):
+        return np.count_nonzero(self.table.coordinates == Cell.empty.value)
