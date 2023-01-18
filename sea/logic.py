@@ -28,7 +28,6 @@ class Ship:
         self.area = self.get_area_points()
         self.health = length
         self.length = length
-        # FIXME is_alive could be a method based in health being zero or not
 
     def is_alive(self):
         if self.health == 0:
