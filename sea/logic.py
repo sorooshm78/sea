@@ -5,7 +5,7 @@ import numpy as np
 
 from django.core.cache import cache
 
-
+# FIXME: replace with builtin class
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -27,6 +27,7 @@ class Ship:
         self.points = self.get_points_by_direct(point, length, direct)
         self.area = self.get_area_points()
         self.health = length
+        # FIXME is_alive could be a method based in health being zero or not
         self.is_alive = True
 
     def get_points_by_direct(self, point, length, direct):
@@ -35,6 +36,7 @@ class Ship:
                 slice(point.x - length + 1, point.x + 1), slice(point.y, point.y + 1)
             )
 
+        # FIXME: direct should be a Enum not string
         elif direct == "down":
             return Point(slice(point.x, point.x + length), slice(point.y, point.y + 1))
 
@@ -52,6 +54,7 @@ class Ship:
             slice(max(0, self.points.y.start - 1), max(0, self.points.y.stop + 1)),
         )
 
+    # FIXME is_inside
     def check_inside_of_points(self, x, y):
         if x in range(self.points.x.start, self.points.x.stop) and y in range(
             self.points.y.start, self.points.y.stop
@@ -70,6 +73,7 @@ class Table:
     row = 10
     col = 10
 
+    # FIXME Table sizes and ships become input of ctor
     def __init__(self):
         self.coordinates = np.full((self.row, self.col), Cell.empty.value)
         self.make_ships()
@@ -81,6 +85,7 @@ class Table:
             self.ships.append(self.make_ship(length))
 
     def make_ship(self, length):
+        # FIXME infinite loop danger
         while True:
             point = self.get_random_empty_point()
             directs = np.array(["up", "down", "right", "left"])
@@ -98,6 +103,7 @@ class Table:
             if self.coordinates[x, y] == Cell.empty.value:
                 return Point(x, y)
 
+    # FIXME rename to meaningful names with "is"
     def check_points_valid(self, points):
         if points.x.start < 0 or points.y.start < 0:
             return False
@@ -121,6 +127,7 @@ class Table:
             return ship
         return None
 
+    # FIXME rename
     def select_ship(self, point):
         for ship in self.ships:
             if ship.check_inside_of_points(point.x, point.y):
@@ -142,6 +149,7 @@ class Table:
             point = self.select_ship(point)
             return point
 
+        # FIXME rename
         elif selecte_cell == Cell.empty.value:
             self.coordinates[point.x, point.y] = Cell.select.value
             return Point(slice(point.x, point.x + 1), slice(point.y, point.y + 1))
@@ -164,6 +172,7 @@ class SeaBattle:
     def get_table_game(self):
         return self.table.coordinates
 
+    # FIXME Rename
     def select_cell(self, x, y):
         points = self.table.select_cell(Point(x, y))
         self.save_game_data()
