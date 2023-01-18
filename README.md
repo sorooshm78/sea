@@ -1,6 +1,7 @@
 # sea
 sea battle game by django
 
+![0](.github/images/0.png)
 ![1](.github/images/1.png)
 ![2](.github/images/2.png)
 ![3](.github/images/3.png)
