@@ -12,6 +12,7 @@ def single_player(request):
     context = {
         "table": sea_battle.get_table_game(),
         "report": sea_battle.get_report_game(),
+        "score": sea_battle.get_score_game(),
         "empty": Cell.empty.value,
         "target": Cell.target.value,
         "select": Cell.select.value,
