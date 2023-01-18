@@ -29,7 +29,11 @@ class Ship:
         self.health = length
         self.length = length
         # FIXME is_alive could be a method based in health being zero or not
-        self.is_alive = True
+
+    def is_alive(self):
+        if self.health == 0:
+            return False
+        return True
 
     def get_points_by_direct(self, point, length, direct):
         if direct == "up":
@@ -64,10 +68,8 @@ class Ship:
         return False
 
     def damage(self):
-        if self.is_alive:
+        if self.is_alive():
             self.health -= 1
-        if self.health == 0:
-            self.is_alive = False
 
 
 class Table:
@@ -133,7 +135,7 @@ class Table:
         for ship in self.ships:
             if ship.check_inside_of_points(point.x, point.y):
                 ship.damage()
-                if not ship.is_alive:
+                if not ship.is_alive():
                     self.coordinates[ship.area.x, ship.area.y] = Cell.select.value
                     self.coordinates[ship.points.x, ship.points.y] = Cell.target.value
                     return ship.area
@@ -158,7 +160,7 @@ class Table:
     def get_count_ships_by_length(self, length):
         count = 0
         for ship in self.ships:
-            if ship.is_alive and ship.length == length:
+            if ship.is_alive() and ship.length == length:
                 count += 1
 
         return count
