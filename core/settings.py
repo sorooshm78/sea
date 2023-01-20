@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # My app
     "sea",
     "accounts",
+    "game",
 ]
 
 MIDDLEWARE = [
