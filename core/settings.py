@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third party
-    "mathfilters",
     # My app
     "sea",
     "accounts",

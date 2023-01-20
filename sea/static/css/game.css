@@ -13,19 +13,11 @@
     background-color: white;
 }
 
-.btn {
+.cell {
     font-size: 30px;
     padding: 15px 32px;
 }
 
-.new-game {
-    font-size: 20px;
-    padding: 15px 32px;
-}
-
-.end-game {
-    background-color: #ff1800;
-    padding: 30px;
-    text-align: center;
+.message {
     font-size: 25px;
 }

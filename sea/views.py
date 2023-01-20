@@ -39,22 +39,18 @@ def select(request):
 
     # Message for End Game
     message = ""
-    score = 0
     if sea_battle.is_end_game():
-        message = "End Game"
+        score = sea_battle.get_score_game()
+        message = f"End Game Your Score Is {score}"
 
     # Report count alive ships
     report = sea_battle.get_report_game()
-
-    # Score Game
-    score = sea_battle.get_score_game()
 
     # Data to send to client
     data = {
         "cells": cells,
         "message": message,
         "report": report,
-        "score": score,
     }
 
     return JsonResponse(data)
