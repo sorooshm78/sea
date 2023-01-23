@@ -12,8 +12,8 @@ class SeaBattleGame:
     # row = 4
     # col = 20
 
-    row = 7
-    col = 20
+    row = 10
+    col = 10
     # FIXME Rename lenght to length
     list_lenght_ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 

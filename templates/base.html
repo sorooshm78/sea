@@ -12,6 +12,15 @@
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'sea/js/game.js' %}"></script>
     <script src="https://kit.fontawesome.com/23f7675658.js" crossorigin="anonymous"></script>   
+    <style>
+        body {
+            
+            background-image: url('{% static 'images/home.jpg' %}');
+            background-repeat: no-repeat;
+            background-attachment: fixed; 
+            background-size: cover; 
+        }
+    </style>
 </head>
     <body>
         {% block content %}{% endblock content %}
