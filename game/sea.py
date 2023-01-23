@@ -34,6 +34,7 @@ class Sea:
                     self.coordinates[ship.points.x, ship.points.y] = Cell.ship.value
                     return ship
 
+    # FIXME get random point from a possible points list and remove bad point from list
     def get_random_empty_point(self):
         for _ in range(MAX_RANGE_LOOP):
             x = random.randrange(self.row)
@@ -63,6 +64,7 @@ class Sea:
         return None
 
     def target_ship(self, point):
+        # FIXME try to remove for by adding ship to cells
         for ship in self.ships:
             if ship.is_inside(point.x, point.y):
                 ship.damage()
@@ -80,8 +82,7 @@ class Sea:
         selected_cell = self.coordinates[point.x, point.y]
 
         if selected_cell == Cell.ship.value:
-            point = self.target_ship(point)
-            return point
+            return self.target_ship(point)
 
         elif selected_cell == Cell.empty.value:
             self.coordinates[point.x, point.y] = Cell.select.value

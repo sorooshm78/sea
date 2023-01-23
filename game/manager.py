@@ -6,10 +6,15 @@ from .enums import Cell
 from .point import Point
 from .sea import Sea
 
-
+# Rename filename to SeaBattleGame
 class SeaBattleGame:
-    row = 10
-    col = 10
+    # FIXME 'NoneType' object has no attribute 'is_alive'
+    # row = 4
+    # col = 20
+
+    row = 7
+    col = 20
+    # FIXME Rename lenght to length
     list_lenght_ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 
     def __init__(self, user_id):

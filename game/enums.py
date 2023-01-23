@@ -1,6 +1,9 @@
 from enum import Enum
 
 
+# FIXME Relocate to other files
+
+
 class Cell(Enum):
     empty = "o"
     ship = "#"
