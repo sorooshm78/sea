@@ -7,9 +7,6 @@ from .point import Point
 from .ship import Ship
 
 
-MAX_RANGE_LOOP = 20000
-
-
 class Sea:
     def __init__(self, row, col, list_lenght_ships):
         self.row = row
@@ -23,9 +20,18 @@ class Sea:
         for length in self.list_lenght_ships:
             self.ships.append(self.make_ship(length))
 
+    def get_posible_points(self):
+        posible_points = []
+        for y, x in np.ndindex(self.coordinates.shape):
+            if self.coordinates[x, y] != Cell.ship.value:
+                posible_points.append(Point(x, y))
+
+        return posible_points
+
     def make_ship(self, length):
-        for _ in range(MAX_RANGE_LOOP):
-            point = self.get_random_empty_point()
+        posible_points = self.get_posible_points()
+        random.shuffle(posible_points)
+        for point in posible_points:
             directs = np.array([direct.value for direct in Direct])
             random.shuffle(directs)
             for direct in directs:
@@ -34,13 +40,7 @@ class Sea:
                     self.coordinates[ship.points.x, ship.points.y] = Cell.ship.value
                     return ship
 
-    # FIXME get random point from a possible points list and remove bad point from list
-    def get_random_empty_point(self):
-        for _ in range(MAX_RANGE_LOOP):
-            x = random.randrange(self.row)
-            y = random.randrange(self.col)
-            if self.coordinates[x, y] == Cell.empty.value:
-                return Point(x, y)
+        raise Exception(f"Not Make Ship by length {length}")
 
     def is_points_valid(self, points):
         if points.x.start < 0 or points.y.start < 0:
