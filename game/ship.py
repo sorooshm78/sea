@@ -1,4 +1,4 @@
-from .enums import Direct
+from .direct import Direct
 from .point import Point
 
 

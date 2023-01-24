@@ -1,22 +1,36 @@
+import numpy as np
+
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from game.manager import SeaBattleGame
-from game.enums import Cell
+from game.cell import Cell
 
 
 @login_required
 def single_player(request):
     game = SeaBattleGame(request.user.id)
+    game_table = game.get_table_game()
+
+    list_cell = []
+    for cell in game_table.flatten():
+        if cell.is_ship():
+            if cell.is_selected:
+                list_cell.append("target")
+            else:
+                list_cell.append("target")
+        else:
+            if cell.is_selected:
+                list_cell.append("select")
+            else:
+                list_cell.append("empty")
+
+    view_table = np.array(list_cell).reshape((game.row, game.col))
 
     context = {
-        "table": game.get_table_game(),
+        "table": view_table,
         "report": game.get_report_game(),
-        "score": game.get_score_game(),
-        "empty": Cell.empty.value,
-        "target": Cell.target.value,
-        "select": Cell.select.value,
         "shape": "o",
     }
 

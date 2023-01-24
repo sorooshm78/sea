@@ -2,7 +2,7 @@ import numpy as np
 
 from django.core.cache import cache
 
-from .enums import Cell
+from .cell import Cell
 from .point import Point
 from .sea import Sea
 

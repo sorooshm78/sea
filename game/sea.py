@@ -2,7 +2,8 @@ import random
 
 import numpy as np
 
-from .enums import Cell, Direct
+from .cell import Cell
+from .direct import Direct
 from .point import Point
 from .ship import Ship
 
@@ -12,8 +13,13 @@ class Sea:
         self.row = row
         self.col = col
         self.list_lenght_ships = list_lenght_ships
-        self.coordinates = np.full((self.row, self.col), Cell.empty.value)
+        self.make_coordinates()
         self.make_ships()
+
+    def make_coordinates(self):
+        self.coordinates = np.empty((self.row, self.col), dtype=object)
+        for y, x in np.ndindex(self.coordinates.shape):
+            self.coordinates[x, y] = Cell()
 
     def make_ships(self):
         self.ships = []
@@ -23,10 +29,18 @@ class Sea:
     def get_posible_points(self):
         posible_points = []
         for y, x in np.ndindex(self.coordinates.shape):
-            if self.coordinates[x, y] != Cell.ship.value:
+            if not self.coordinates[x, y].is_ship():
                 posible_points.append(Point(x, y))
 
         return posible_points
+
+    def mark_cell_as_ship(self, points, ship):
+        for cell in self.coordinates[points.x, points.y].flatten():
+            cell.ship = ship
+
+    def mark_cell_as_selected(self, points):
+        for cell in self.coordinates[points.x, points.y].flatten():
+            cell.is_selected = True
 
     def make_ship(self, length):
         posible_points = self.get_posible_points()
@@ -37,7 +51,7 @@ class Sea:
             for direct in directs:
                 ship = self.get_random_ship(point, length, direct)
                 if ship is not None:
-                    self.coordinates[ship.points.x, ship.points.y] = Cell.ship.value
+                    self.mark_cell_as_ship(ship.points, ship)
                     return ship
 
         raise Exception(f"Not Make Ship by length {length}")
@@ -52,8 +66,9 @@ class Sea:
         return True
 
     def is_area_ship_valid(self, area):
-        if Cell.ship.value in self.coordinates[area.x, area.y]:
-            return False
+        for cell in self.coordinates[area.x, area.y].flatten():
+            if cell.is_ship():
+                return False
         return True
 
     def get_random_ship(self, point, length, direct):
@@ -64,28 +79,25 @@ class Sea:
         return None
 
     def target_ship(self, point):
-        # FIXME try to remove for by adding ship to cells
-        for ship in self.ships:
-            if ship.is_inside(point.x, point.y):
-                ship.damage()
-                if not ship.is_alive():
-                    self.coordinates[ship.area.x, ship.area.y] = Cell.select.value
-                    self.coordinates[ship.points.x, ship.points.y] = Cell.target.value
-                    return ship.area
-                else:
-                    self.coordinates[point.x, point.y] = Cell.target.value
-                    return Point(
-                        slice(point.x, point.x + 1), slice(point.y, point.y + 1)
-                    )
+        cell = self.coordinates[point.x, point.y]
+        ship = cell.ship
 
-    def get_changes(self, point):
+        ship.damage()
+        if not ship.is_alive():
+            self.mark_cell_as_selected(ship.area)
+            return ship.area
+        else:
+            cell.is_selected = True
+            return Point(slice(point.x, point.x + 1), slice(point.y, point.y + 1))
+
+    def get_changes_by_bomb_attack(self, point):
         selected_cell = self.coordinates[point.x, point.y]
 
-        if selected_cell == Cell.ship.value:
+        if selected_cell.is_ship():
             return self.target_ship(point)
 
-        elif selected_cell == Cell.empty.value:
-            self.coordinates[point.x, point.y] = Cell.select.value
+        else:
+            selected_cell.is_selected = True
             return Point(slice(point.x, point.x + 1), slice(point.y, point.y + 1))
 
     def get_count_ships_by_length(self, length):
