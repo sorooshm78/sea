@@ -5,7 +5,6 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from game.manager import SeaBattleGame
-from game.cell import Cell
 
 
 @login_required
@@ -19,7 +18,7 @@ def single_player(request):
             if cell.is_selected:
                 list_cell.append("target")
             else:
-                list_cell.append("target")
+                list_cell.append("empty")
         else:
             if cell.is_selected:
                 list_cell.append("select")
@@ -47,10 +46,13 @@ def select(request):
     # Wrap cell data for front
     cells = game.get_changes(x, y)
     for cell in cells:
-        if cell["result"] == Cell.select.value:
-            cell["class"] = "select"
-        elif cell["result"] == Cell.target.value:
-            cell["class"] = "target"
+        if cell["cell"].is_ship():
+            if cell["cell"].is_selected:
+                cell["class"] = "target"
+        else:
+            if cell["cell"].is_selected:
+                cell["class"] = "select"
+        cell.pop("cell")
 
     # Message for End Game
     message = ""

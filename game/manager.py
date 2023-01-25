@@ -14,8 +14,7 @@ class SeaBattleGame:
 
     row = 10
     col = 10
-    # FIXME Rename lenght to length
-    list_lenght_ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+    list_length_ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 
     def __init__(self, user_id):
         self.user_id = user_id
@@ -26,14 +25,14 @@ class SeaBattleGame:
             self.start_new_game()
 
     def start_new_game(self):
-        self.sea = Sea(self.row, self.col, self.list_lenght_ships)
+        self.sea = Sea(self.row, self.col, self.list_length_ships)
         self.save_game_data()
 
     def get_table_game(self):
         return self.sea.coordinates
 
     def get_changes(self, x, y):
-        points = self.sea.get_changes(Point(x, y))
+        points = self.sea.get_changes_by_bomb_attack(Point(x, y))
         self.save_game_data()
 
         data = []
@@ -43,7 +42,7 @@ class SeaBattleGame:
                     {
                         "x": x,
                         "y": y,
-                        "result": self.sea.coordinates[x, y],
+                        "cell": self.sea.coordinates[x, y],
                     }
                 )
         return data
@@ -52,9 +51,11 @@ class SeaBattleGame:
         cache.set(self.user_id, self.sea)
 
     def is_end_game(self):
-        if Cell.ship.value not in self.sea.coordinates:
-            return True
-        return False
+        for cell in self.sea.coordinates.flatten():
+            if cell.is_ship():
+                if not cell.is_selected:
+                    return False
+        return True
 
     def get_report_game(self):
         return {
@@ -65,4 +66,11 @@ class SeaBattleGame:
         }
 
     def get_score_game(self):
-        return np.count_nonzero(self.sea.coordinates == Cell.empty.value)
+        score = 0
+
+        for cell in self.sea.coordinates.flatten():
+            if not cell.is_ship():
+                if not cell.is_selected:
+                    score += 1
+
+        return score
