@@ -35,17 +35,17 @@ class SeaBattleGame:
         points = self.sea.get_changes_by_bomb_attack(Point(x, y))
         self.save_game_data()
 
-        data = []
-        for x in range(points.x.start, points.x.stop):
-            for y in range(points.y.start, points.y.stop):
-                data.append(
-                    {
-                        "x": x,
-                        "y": y,
-                        "cell": self.sea.coordinates[x, y],
-                    }
-                )
-        return data
+        change_points = []
+        for point in points:
+            change_points.append(
+                {
+                    "x": point.x,
+                    "y": point.y,
+                    "cell": self.sea.coordinates[point.x, point.y],
+                }
+            )
+
+        return change_points
 
     def save_game_data(self):
         cache.set(self.user_id, self.sea)

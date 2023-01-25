@@ -78,6 +78,14 @@ class Sea:
             return ship
         return None
 
+    def get_list_of_point(self, points):
+        list_point = []
+        for x in range(points.x.start, points.x.stop):
+            for y in range(points.y.start, points.y.stop):
+                list_point.append(Point(x, y))
+
+        return list_point
+
     def target_ship(self, point):
         cell = self.coordinates[point.x, point.y]
         ship = cell.ship
@@ -85,10 +93,10 @@ class Sea:
         ship.damage()
         if not ship.is_alive():
             self.mark_cell_as_selected(ship.area)
-            return ship.area
+            return self.get_list_of_point(ship.area)
         else:
             cell.is_selected = True
-            return Point(slice(point.x, point.x + 1), slice(point.y, point.y + 1))
+            return [point]
 
     def get_changes_by_bomb_attack(self, point):
         selected_cell = self.coordinates[point.x, point.y]
@@ -98,7 +106,7 @@ class Sea:
 
         else:
             selected_cell.is_selected = True
-            return Point(slice(point.x, point.x + 1), slice(point.y, point.y + 1))
+            return [point]
 
     def get_count_ships_by_length(self, length):
         count = 0
