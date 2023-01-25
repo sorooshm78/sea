@@ -1,13 +1,13 @@
 # sea
 sea battle game by django
 
-![0](.github/images/0.png)
-![1](.github/images/1.png)
-![2](.github/images/2.png)
-![3](.github/images/3.png)
-![4](.github/images/4.png)
-![5](.github/images/5.png)
-![6](.github/images/6.png)
+![poster](.github/images/poster.png)
+![home](.github/images/home.png)
+![bomb](.github/images/bomb.png)
+![liner](.github/images/liner.png)
+![explosion](.github/images/explosion.png)
+![radar](.github/images/radar.png)
+![end-game](.github/images/end_game.png)
 
 ### Usage
 I am using python "3.10.6" version 
