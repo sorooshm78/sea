@@ -108,6 +108,55 @@ class Sea:
             selected_cell.is_selected = True
             return [point]
 
+    def get_changes_by_explosion_attack(self, point):
+        explosion_area = Point(
+            slice(max(0, point.x - 1), min(self.col, point.x + 2)),
+            slice(max(0, point.y - 1), min(self.row, point.y + 2)),
+        )
+        points = self.get_list_of_point(explosion_area)
+        change_cell = []
+
+        for point in points:
+            if not self.coordinates[point.x, point.y].is_selected:
+                change_cell.extend(self.get_changes_by_bomb_attack(point))
+
+        return change_cell
+
+    def get_changes_by_liner_attack(self, point):
+        liner_area = Point(
+            slice(point.x, point.x + 1),
+            slice(0, self.row),
+        )
+        points = self.get_list_of_point(liner_area)
+        change_cell = []
+
+        for point in points:
+            cell = self.coordinates[point.x, point.y]
+            if not cell.is_selected:
+                if cell.is_ship():
+                    change_cell.extend(self.target_ship(point))
+                    break
+
+                else:
+                    cell.is_selected = True
+                    change_cell.append(point)
+
+        return change_cell
+
+    def get_changes_by_radar_attack(self, point):
+        radar_area = Point(
+            slice(max(0, point.x - 1), min(self.col, point.x + 2)),
+            slice(max(0, point.y - 1), min(self.row, point.y + 2)),
+        )
+        points = self.get_list_of_point(radar_area)
+        change_cell = []
+
+        for point in points:
+            if not self.coordinates[point.x, point.y].is_selected:
+                change_cell.append(point)
+
+        return change_cell
+
     def get_count_ships_by_length(self, length):
         count = 0
         for ship in self.ships:

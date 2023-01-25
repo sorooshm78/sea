@@ -3,9 +3,19 @@
     background-color: #1fe4eb;
 }
 
+.radar-select {
+    color: #1fe4ebbd;
+    background-color: #1fe4ebbd;
+}
+
 .target {
     color: #0cc512;
     background-color: #0cc512;
+}
+
+.radar-target {
+    color: #0cc512be;
+    background-color: #0cc512be;
 }
 
 .empty {

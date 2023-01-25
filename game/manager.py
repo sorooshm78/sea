@@ -31,8 +31,16 @@ class SeaBattleGame:
     def get_table_game(self):
         return self.sea.coordinates
 
-    def get_changes(self, x, y):
-        points = self.sea.get_changes_by_bomb_attack(Point(x, y))
+    def get_changes(self, x, y, type_attack):
+        if type_attack == "bomb":
+            points = self.sea.get_changes_by_bomb_attack(Point(x, y))
+        elif type_attack == "explosion":
+            points = self.sea.get_changes_by_explosion_attack(Point(x, y))
+        elif type_attack == "liner":
+            points = self.sea.get_changes_by_liner_attack(Point(x, y))
+        elif type_attack == "radar":
+            points = self.sea.get_changes_by_radar_attack(Point(x, y))
+
         self.save_game_data()
 
         change_points = []

@@ -40,11 +40,12 @@ def single_player(request):
 def select(request):
     x = int(request.GET.get("x"))
     y = int(request.GET.get("y"))
+    type_attack = request.GET.get("type")
 
     game = SeaBattleGame(request.user.id)
 
     # Wrap cell data for front
-    cells = game.get_changes(x, y)
+    cells = game.get_changes(x, y, type_attack)
     for cell in cells:
         if cell["cell"].is_ship():
             if cell["cell"].is_selected:
@@ -68,6 +69,31 @@ def select(request):
         "cells": cells,
         "message": message,
         "report": report,
+    }
+
+    return JsonResponse(data)
+
+
+@login_required
+def search(request):
+    x = int(request.GET.get("x"))
+    y = int(request.GET.get("y"))
+
+    game = SeaBattleGame(request.user.id)
+
+    # Wrap cell data for front
+    cells = game.get_changes(x, y, "radar")
+    for cell in cells:
+        if cell["cell"].is_ship():
+            cell["class"] = "radar-target"
+        else:
+            cell["class"] = "radar-select"
+
+        cell.pop("cell")
+
+    # Data to send to client
+    data = {
+        "cells": cells,
     }
 
     return JsonResponse(data)
