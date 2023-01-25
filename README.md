@@ -5,6 +5,9 @@ sea battle game by django
 ![1](.github/images/1.png)
 ![2](.github/images/2.png)
 ![3](.github/images/3.png)
+![4](.github/images/4.png)
+![5](.github/images/5.png)
+![6](.github/images/6.png)
 
 ### Usage
 I am using python "3.10.6" version 
