@@ -15,6 +15,10 @@ function alertMessage(message) {
     $('#message').html(alert);
 }
 
+function goToScoreBoardPage() {
+    $('#score_board')[0].click();
+}
+
 function select(x, y) {
     var typeAttack = $("input[name='attack']:checked").val();
 
@@ -39,10 +43,9 @@ function select(x, y) {
                         .addClass(cell.class);
                 }
 
-                // Alert message
-                if (data.message) {
-                    alertMessage(data.message);
-                    disableAllButtons();
+                // End Game
+                if (data.is_end_game == 'true') {
+                    goToScoreBoardPage();
                 }
 
                 // Report Game
@@ -52,9 +55,7 @@ function select(x, y) {
                 $('#1-ships').text(data.report['1_ships']);
             }
         });
-
     }
-
 }
 
 $(document).ready(function () {
