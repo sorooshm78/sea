@@ -32,6 +32,9 @@ class SeaBattleGame:
         return self.sea.coordinates
 
     def get_changes(self, x, y, type_attack):
+        if self.sea.is_point_selected(Point(x, y)):
+            return
+
         if type_attack == "bomb":
             points = self.sea.get_changes_by_bomb_attack(Point(x, y))
         elif type_attack == "explosion":
