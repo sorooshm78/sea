@@ -66,7 +66,7 @@ class SeaBattleGame:
         return True
 
     def get_report_game(self):
-        report_ships = self.sea.get_count_ships_by_length()
+        report_ships = self.sea.get_report_count_ships()
         return {
             "4_ships": report_ships[4],
             "3_ships": report_ships[3],

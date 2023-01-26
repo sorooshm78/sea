@@ -102,7 +102,8 @@ class Sea:
         selected_cell = self.coordinates[point.x, point.y]
 
         if selected_cell.is_ship():
-            return self.target_ship(point)
+            if not selected_cell.is_selected:
+                return self.target_ship(point)
 
         else:
             selected_cell.is_selected = True
