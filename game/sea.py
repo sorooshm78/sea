@@ -157,10 +157,16 @@ class Sea:
 
         return change_cell
 
-    def get_count_ships_by_length(self, length):
-        count = 0
+    def get_report_count_ships(self):
+        # Map length ship to count alive ship
+        report_ships = {
+            4: 0,
+            3: 0,
+            2: 0,
+            1: 0,
+        }
         for ship in self.ships:
-            if ship.is_alive() and ship.length == length:
-                count += 1
+            if ship.is_alive():
+                report_ships[ship.length] += 1
 
-        return count
+        return report_ships

@@ -66,11 +66,12 @@ class SeaBattleGame:
         return True
 
     def get_report_game(self):
+        report_ships = self.sea.get_count_ships_by_length()
         return {
-            "4_ships": self.sea.get_count_ships_by_length(4),
-            "3_ships": self.sea.get_count_ships_by_length(3),
-            "2_ships": self.sea.get_count_ships_by_length(2),
-            "1_ships": self.sea.get_count_ships_by_length(1),
+            "4_ships": report_ships[4],
+            "3_ships": report_ships[3],
+            "2_ships": report_ships[2],
+            "1_ships": report_ships[1],
         }
 
     def get_score_game(self):
