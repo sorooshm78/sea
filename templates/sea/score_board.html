@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-3 p-5 bg-light text-center">
+<div class="container mt-3 p-5 bg-light text-center rounded">
     <h2>Score Board</h2>
     
     <table class="table table-striped">
-        <thead class="table-success">
+        <thead class="table-dark">
             <tr>
                 <th>Rank</th>
                 <th>Username</th>
@@ -17,7 +17,7 @@
             {% for score in scores %}
                 <tr 
                 {% if score == last_score %}
-                    style="font-weight:bold" class="bg-warning"    
+                    style="font-weight:bold" class="bg-primary"    
                 {% endif %}
                 >
                     <td>{{ score.rank }}</td>
@@ -35,7 +35,7 @@
         </tbody>
     </table>
 
-    <div class="alert alert-warning message">
+    <div class="alert alert-primary message">
         {% if last_score %}
             <strong>{{ last_score.user }}</strong>
             Your Score  <strong>{{ last_score.score }}</strong>
