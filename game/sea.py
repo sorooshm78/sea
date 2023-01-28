@@ -18,7 +18,7 @@ class Sea:
 
     def make_coordinates(self):
         self.coordinates = np.empty((self.row, self.col), dtype=object)
-        for y, x in np.ndindex(self.coordinates.shape):
+        for x, y in np.ndindex(self.coordinates.shape):
             self.coordinates[x, y] = Cell()
 
     def make_ships(self):
@@ -28,7 +28,7 @@ class Sea:
 
     def get_posible_points(self):
         posible_points = []
-        for y, x in np.ndindex(self.coordinates.shape):
+        for x, y in np.ndindex(self.coordinates.shape):
             if not self.coordinates[x, y].is_ship():
                 posible_points.append(Point(x, y))
 
@@ -110,8 +110,8 @@ class Sea:
 
     def get_changes_by_explosion_attack(self, point):
         explosion_area = Point(
-            slice(max(0, point.x - 1), min(self.col, point.x + 2)),
-            slice(max(0, point.y - 1), min(self.row, point.y + 2)),
+            slice(max(0, point.x - 1), min(self.row, point.x + 2)),
+            slice(max(0, point.y - 1), min(self.col, point.y + 2)),
         )
         points = self.get_list_of_point(explosion_area)
         change_cell = []
@@ -125,7 +125,7 @@ class Sea:
     def get_changes_by_liner_attack(self, point):
         liner_area = Point(
             slice(point.x, point.x + 1),
-            slice(0, self.row),
+            slice(0, self.col),
         )
         points = self.get_list_of_point(liner_area)
         change_cell = []
@@ -145,8 +145,8 @@ class Sea:
 
     def get_changes_by_radar_attack(self, point):
         radar_area = Point(
-            slice(max(0, point.x - 1), min(self.col, point.x + 2)),
-            slice(max(0, point.y - 1), min(self.row, point.y + 2)),
+            slice(max(0, point.x - 1), min(self.row, point.x + 2)),
+            slice(max(0, point.y - 1), min(self.col, point.y + 2)),
         )
         points = self.get_list_of_point(radar_area)
         change_cell = []
@@ -159,6 +159,7 @@ class Sea:
 
     def get_report_count_ships(self):
         # Map length ship to count alive ship
+        # Count alive ship by length
         report_ships = {
             4: 0,
             3: 0,

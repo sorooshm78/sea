@@ -8,10 +8,6 @@ from .sea import Sea
 
 
 class SeaBattleGame:
-    # FIXME 'NoneType' object has no attribute 'is_alive'
-    # row = 4
-    # col = 20
-
     row = 10
     col = 10
     list_length_ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
