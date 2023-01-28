@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F, Window
 from django.db.models.functions import Rank
 
-from game.manager import SeaBattleGame
+from game.sea_battle_game import SeaBattleGame
 from .models import ScoreBoardModel
 
 

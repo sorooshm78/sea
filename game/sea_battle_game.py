@@ -6,7 +6,7 @@ from .cell import Cell
 from .point import Point
 from .sea import Sea
 
-# Rename filename to SeaBattleGame
+
 class SeaBattleGame:
     # FIXME 'NoneType' object has no attribute 'is_alive'
     # row = 4
