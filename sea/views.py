@@ -31,7 +31,7 @@ def single_player(request):
             else:
                 list_cell.append("empty")
 
-    view_table = np.array(list_cell).reshape((game.row, game.col))
+    view_table = np.array(list_cell).reshape((game.config["row"], game.config["col"]))
 
     context = {
         "table": view_table,

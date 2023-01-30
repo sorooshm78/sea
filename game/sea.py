@@ -7,13 +7,14 @@ from .direct import Direct
 from .point import Point
 from .ship import Ship
 
-# FIXME length not lenght
+
 # FIXME possible not posible
 class Sea:
-    def __init__(self, row, col, list_lenght_ships):
-        self.row = row
-        self.col = col
-        self.list_lenght_ships = list_lenght_ships
+    def __init__(self, config):
+        self.row = config["row"]
+        self.col = config["col"]
+        self.list_length_ships = config["list_length_ships"]
+        self.attack_count = config["attack_count"]
         self.make_coordinates()
         self.make_ships()
 
@@ -24,7 +25,7 @@ class Sea:
 
     def make_ships(self):
         self.ships = []
-        for length in self.list_lenght_ships:
+        for length in self.list_length_ships:
             self.ships.append(self.make_ship(length))
 
     def get_posible_points(self):
@@ -102,6 +103,24 @@ class Sea:
             cell.is_selected = True
             return [point]
 
+    def is_allow_to_attack(self, point, type_attack):
+        if self.is_point_selected(point) or self.attack_count.get(type_attack) == 0:
+            return False
+        return True
+
+    def get_changes_by_type_attack(self, point, type_attack):
+        if not self.is_allow_to_attack(point, type_attack):
+            return
+
+        if type_attack == "bomb":
+            return self.get_changes_by_bomb_attack(point)
+        elif type_attack == "explosion":
+            return self.get_changes_by_explosion_attack(point)
+        elif type_attack == "liner":
+            return self.get_changes_by_liner_attack(point)
+        elif type_attack == "radar":
+            return self.get_changes_by_radar_attack(point)
+
     def get_changes_by_bomb_attack(self, point):
         selected_cell = self.coordinates[point.x, point.y]
 
@@ -125,6 +144,7 @@ class Sea:
             if not self.coordinates[point.x, point.y].is_selected:
                 change_cell.extend(self.get_changes_by_bomb_attack(point))
 
+        self.attack_count["explosion"] -= 1
         return change_cell
 
     def get_changes_by_liner_attack(self, point):
@@ -146,6 +166,7 @@ class Sea:
                     cell.is_selected = True
                     change_cell.append(point)
 
+        self.attack_count["liner"] -= 1
         return change_cell
 
     def get_changes_by_radar_attack(self, point):
@@ -160,6 +181,7 @@ class Sea:
             if not self.coordinates[point.x, point.y].is_selected:
                 change_cell.append(point)
 
+        self.attack_count["radar"] -= 1
         return change_cell
 
     def get_report_count_ships(self):

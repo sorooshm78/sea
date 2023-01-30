@@ -8,9 +8,16 @@ from .sea import Sea
 
 
 class SeaBattleGame:
-    row = 10
-    col = 10
-    list_length_ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+    config = {
+        "row": 10,
+        "col": 10,
+        "list_length_ships": [4, 3, 3, 2, 2, 2, 1, 1, 1, 1],
+        "attack_count": {
+            "radar": 2,
+            "explosion": 2,
+            "liner": 2,
+        },
+    }
 
     def __init__(self, user_id):
         self.user_id = user_id
@@ -21,24 +28,16 @@ class SeaBattleGame:
             self.start_new_game()
 
     def start_new_game(self):
-        self.sea = Sea(self.row, self.col, self.list_length_ships)
+        self.sea = Sea(SeaBattleGame.config)
         self.save_game_data()
 
     def get_table_game(self):
         return self.sea.coordinates
 
     def get_changes(self, x, y, type_attack):
-        if self.sea.is_point_selected(Point(x, y)):
+        points = self.sea.get_changes_by_type_attack(Point(x, y), type_attack)
+        if points is None:
             return
-
-        if type_attack == "bomb":
-            points = self.sea.get_changes_by_bomb_attack(Point(x, y))
-        elif type_attack == "explosion":
-            points = self.sea.get_changes_by_explosion_attack(Point(x, y))
-        elif type_attack == "liner":
-            points = self.sea.get_changes_by_liner_attack(Point(x, y))
-        elif type_attack == "radar":
-            points = self.sea.get_changes_by_radar_attack(Point(x, y))
 
         self.save_game_data()
 
