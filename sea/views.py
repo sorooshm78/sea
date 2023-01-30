@@ -16,6 +16,7 @@ from .models import ScoreBoardModel
 def single_player(request):
     game = SeaBattleGame(request.user.id)
     game_table = game.get_table_game()
+    config = game.config
 
     cell_list = []
     for cell in game_table.flatten():
@@ -30,11 +31,12 @@ def single_player(request):
             else:
                 cell_list.append("empty")
 
-    view_table = np.array(cell_list).reshape((game.config["row"], game.config["col"]))
+    view_table = np.array(cell_list).reshape((config["row"], config["col"]))
 
     context = {
         "table": view_table,
         "report": game.get_report_game(),
+        "attack_count": game.get_attack_count(),
     }
 
     return render(request, "sea/single_player.html", context=context)

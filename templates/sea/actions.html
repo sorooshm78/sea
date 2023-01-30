@@ -5,17 +5,32 @@
     <ul class="list-group list-group-flush">    
       <li class="list-group-item">
         <div class="btn-group-vertical" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="attack" value="bomb" id="btnradio1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="btnradio1"> <i class="fa-solid fa-bomb"></i> Bomb</label>
+            <input type="radio" class="btn-check" name="attack" value="bomb" id="bomb_btn" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="bomb_btn">
+              <i class="fa-solid fa-bomb"></i>
+               Bomb
+            </label>
           
-            <input type="radio" class="btn-check" name="attack" value="liner" id="btnradio2" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio2"><i class="fa-solid fa-xmarks-lines"></i> Liner</label>
+            <input type="radio" class="btn-check" name="attack" value="liner" id="liner_btn" autocomplete="off">
+            <label class="btn btn-outline-primary" for="liner_btn">
+              <i class="fa-solid fa-xmarks-lines"></i>
+                Liner
+              <span class="badge bg-dark rounded-pill" id='liner_count'>{{ attack_count.liner }}</span>
+            </label>
           
-            <input type="radio" class="btn-check" name="attack" value="explosion" id="btnradio3" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio3"><i class="fa-solid fa-explosion"></i> Explosion</label>
+            <input type="radio" class="btn-check" name="attack" value="explosion" id="explosion_btn" autocomplete="off">
+            <label class="btn btn-outline-primary" for="explosion_btn">
+              <i class="fa-solid fa-explosion"></i>
+               Explosion 
+              <span class="badge bg-dark rounded-pill" id='explosion_count'>{{ attack_count.explosion }}</span>
+            </label>
             
-            <input type="radio" class="btn-check" name="attack" value="radar" id="btnradio4" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio4"><i class="fa-solid fa-satellite-dish"></i> Radar</label>
+            <input type="radio" class="btn-check" name="attack" value="radar" id="radar_btn" autocomplete="off">
+            <label class="btn btn-outline-primary" for="radar_btn">
+              <i class="fa-solid fa-satellite-dish"></i>
+               Radar
+              <span class="badge bg-dark rounded-pill" id='radar_count'>{{ attack_count.radar }}</span>
+            </label>
         </div>
       </li>
     </ul>

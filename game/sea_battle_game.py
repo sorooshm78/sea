@@ -81,3 +81,6 @@ class SeaBattleGame:
                     score += 1
 
         return score
+
+    def get_attack_count(self):
+        return self.sea.attack_count
