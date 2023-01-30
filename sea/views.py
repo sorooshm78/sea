@@ -52,6 +52,8 @@ def attack(request):
 
     # Wrap cell data for front
     cells = game.get_changes(x, y, type_attack)
+    if cells is None:
+        return JsonResponse({})
     for cell in cells:
         if cell["cell"].is_ship():
             if cell["cell"].is_selected:
@@ -91,6 +93,8 @@ def search(request):
 
     # Wrap cell data for front
     cells = game.get_changes(x, y, "radar")
+    if cells is None:
+        return JsonResponse({})
     for cell in cells:
         if cell["cell"].is_ship():
             cell["class"] = "radar-target"
