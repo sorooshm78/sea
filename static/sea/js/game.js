@@ -1,13 +1,9 @@
 function disableAllButtons() {
-    $('.empty,.radar-select,.radar-target').prop('disabled', true);
+    $('.cell').prop('disabled', true);
 }
 
 function disableSelectButtons() {
     $('.select,.target').prop('disabled', true);
-}
-
-function enableEmptyButtons() {
-    $('.empty,.radar-select,.radar-target').prop('disabled', false);
 }
 
 function alertMessage(message) {
@@ -42,6 +38,7 @@ function select(x, y) {
                         .removeClass('radar-target')
                         .addClass(cell.class);
                 }
+                disableSelectButtons();
 
                 // End Game
                 if (data.is_end_game == 'true') {
