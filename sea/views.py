@@ -17,21 +17,20 @@ def single_player(request):
     game = SeaBattleGame(request.user.id)
     game_table = game.get_table_game()
 
-    # TODO cell_list
-    list_cell = []
+    cell_list = []
     for cell in game_table.flatten():
         if cell.is_ship():
             if cell.is_selected:
-                list_cell.append("target")
+                cell_list.append("target")
             else:
-                list_cell.append("empty")
+                cell_list.append("empty")
         else:
             if cell.is_selected:
-                list_cell.append("select")
+                cell_list.append("select")
             else:
-                list_cell.append("empty")
+                cell_list.append("empty")
 
-    view_table = np.array(list_cell).reshape((game.config["row"], game.config["col"]))
+    view_table = np.array(cell_list).reshape((game.config["row"], game.config["col"]))
 
     context = {
         "table": view_table,
@@ -43,9 +42,8 @@ def single_player(request):
     return render(request, "sea/single_player.html", context=context)
 
 
-# TODO rename to attack
 @login_required
-def select(request):
+def attack(request):
     x = int(request.GET.get("x"))
     y = int(request.GET.get("y"))
     type_attack = request.GET.get("type")

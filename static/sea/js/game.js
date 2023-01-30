@@ -23,7 +23,7 @@ function select(x, y) {
     var typeAttack = $("input[name='attack']:checked").val();
 
     if (typeAttack == 'radar') {
-        $.get(`/search-by-radar/?x=${x}&y=${y}`, function (data, status) {
+        $.get(`/search/?x=${x}&y=${y}`, function (data, status) {
             if (status === 'success') {
                 for (index in data.cells) {
                     cell = data.cells[index]
@@ -32,7 +32,7 @@ function select(x, y) {
             }
         });
     } else {
-        $.get(`/select/?x=${x}&y=${y}&type=${typeAttack}`, function (data, status) {
+        $.get(`/attack/?x=${x}&y=${y}&type=${typeAttack}`, function (data, status) {
             if (status === 'success') {
                 // Cells select
                 for (index in data.cells) {

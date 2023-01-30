@@ -8,7 +8,6 @@ from .point import Point
 from .ship import Ship
 
 
-# FIXME possible not posible
 class Sea:
     def __init__(self, config):
         self.row = config["row"]
@@ -28,7 +27,7 @@ class Sea:
         for length in self.list_length_ships:
             self.ships.append(self.make_ship(length))
 
-    def get_posible_points(self):
+    def get_possible_points(self):
         posible_points = []
         for x, y in np.ndindex(self.coordinates.shape):
             if not self.coordinates[x, y].is_ship():
@@ -45,7 +44,7 @@ class Sea:
             cell.is_selected = True
 
     def make_ship(self, length):
-        posible_points = self.get_posible_points()
+        posible_points = self.get_possible_points()
         random.shuffle(posible_points)
         for point in posible_points:
             directs = np.array([direct.value for direct in Direct])
@@ -56,8 +55,7 @@ class Sea:
                     self.mark_cell_as_ship(ship.points, ship)
                     return ship
 
-        # FIXME bad error message: Could not make a ship with length folan
-        raise Exception(f"Not Make Ship by length {length}")
+        raise Exception(f"Could not make a ship with length {length}")
 
     def is_points_valid(self, points):
         if points.x.start < 0 or points.y.start < 0:
@@ -137,15 +135,14 @@ class Sea:
             slice(max(0, point.y - 1), min(self.col, point.y + 2)),
         )
         points = self.get_list_of_point(explosion_area)
-        # TODO changed_cell
-        change_cell = []
+        changed_cell = []
 
         for point in points:
             if not self.coordinates[point.x, point.y].is_selected:
-                change_cell.extend(self.get_changes_by_bomb_attack(point))
+                changed_cell.extend(self.get_changes_by_bomb_attack(point))
 
         self.attack_count["explosion"] -= 1
-        return change_cell
+        return changed_cell
 
     def get_changes_by_liner_attack(self, point):
         liner_area = Point(
@@ -153,21 +150,21 @@ class Sea:
             slice(0, self.col),
         )
         points = self.get_list_of_point(liner_area)
-        change_cell = []
+        changed_cell = []
 
         for point in points:
             cell = self.coordinates[point.x, point.y]
             if not cell.is_selected:
                 if cell.is_ship():
-                    change_cell.extend(self.target_ship(point))
+                    changed_cell.extend(self.target_ship(point))
                     break
 
                 else:
                     cell.is_selected = True
-                    change_cell.append(point)
+                    changed_cell.append(point)
 
         self.attack_count["liner"] -= 1
-        return change_cell
+        return changed_cell
 
     def get_changes_by_radar_attack(self, point):
         radar_area = Point(
@@ -175,14 +172,14 @@ class Sea:
             slice(max(0, point.y - 1), min(self.col, point.y + 2)),
         )
         points = self.get_list_of_point(radar_area)
-        change_cell = []
+        changed_cell = []
 
         for point in points:
             if not self.coordinates[point.x, point.y].is_selected:
-                change_cell.append(point)
+                changed_cell.append(point)
 
         self.attack_count["radar"] -= 1
-        return change_cell
+        return changed_cell
 
     def get_report_count_ships(self):
         # Map length ship to count alive ship
