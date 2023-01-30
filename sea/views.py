@@ -55,14 +55,12 @@ def attack(request):
     if cells is None:
         return JsonResponse({})
     for cell in cells:
-        if cell["cell"].is_ship():
-            if cell["cell"].is_selected:
+        if cell.is_ship():
+            if cell.is_selected:
                 cell["class"] = "target"
         else:
-            if cell["cell"].is_selected:
+            if cell.is_selected:
                 cell["class"] = "select"
-        # TODO why pop
-        cell.pop("cell")
 
     # End Game
     is_end_game = "false"
@@ -96,12 +94,10 @@ def search(request):
     if cells is None:
         return JsonResponse({})
     for cell in cells:
-        if cell["cell"].is_ship():
+        if cell.is_ship():
             cell["class"] = "radar-target"
         else:
             cell["class"] = "radar-select"
-
-        cell.pop("cell")
 
     # Data to send to client
     data = {

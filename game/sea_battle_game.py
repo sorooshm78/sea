@@ -47,7 +47,7 @@ class SeaBattleGame:
                 {
                     "x": point.x,
                     "y": point.y,
-                    "cell": self.sea.coordinates[point.x, point.y],
+                    "class": self.sea.coordinates[point.x, point.y],
                 }
             )
 
