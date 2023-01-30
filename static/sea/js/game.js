@@ -18,10 +18,12 @@ function goToScoreBoardPage() {
 function reduceAttackCount(attackType) {
     var attackCountBadge = $(`#${attackType}_count`);
     count = attackCountBadge.text();
-    count--;
-    attackCountBadge.text(count);
-    if (count == 0) {
-        $(`#${attackType}_btn`).attr('disabled', true);
+    if (count != 0) {
+        count--;
+        attackCountBadge.text(count);
+        if (count == 0) {
+            $(`#${attackType}_btn`).attr('disabled', true);
+        }
     }
 }
 
