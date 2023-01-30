@@ -7,7 +7,8 @@ from .direct import Direct
 from .point import Point
 from .ship import Ship
 
-
+# FIXME length not lenght
+# FIXME possible not posible
 class Sea:
     def __init__(self, row, col, list_lenght_ships):
         self.row = row
@@ -54,6 +55,7 @@ class Sea:
                     self.mark_cell_as_ship(ship.points, ship)
                     return ship
 
+        # FIXME bad error message: Could not make a ship with length folan
         raise Exception(f"Not Make Ship by length {length}")
 
     def is_points_valid(self, points):
@@ -78,6 +80,8 @@ class Sea:
             return ship
         return None
 
+    # FIXME get list of points, list_point -> point_list
+    # TODO Search numpy for better solution
     def get_list_of_point(self, points):
         list_point = []
         for x in range(points.x.start, points.x.stop):
@@ -114,6 +118,7 @@ class Sea:
             slice(max(0, point.y - 1), min(self.col, point.y + 2)),
         )
         points = self.get_list_of_point(explosion_area)
+        # TODO changed_cell
         change_cell = []
 
         for point in points:

@@ -17,6 +17,7 @@ def single_player(request):
     game = SeaBattleGame(request.user.id)
     game_table = game.get_table_game()
 
+    # TODO cell_list
     list_cell = []
     for cell in game_table.flatten():
         if cell.is_ship():
@@ -35,12 +36,14 @@ def single_player(request):
     context = {
         "table": view_table,
         "report": game.get_report_game(),
+        # TODO Remove
         "shape": "o",
     }
 
     return render(request, "sea/single_player.html", context=context)
 
 
+# TODO rename to attack
 @login_required
 def select(request):
     x = int(request.GET.get("x"))
@@ -58,6 +61,7 @@ def select(request):
         else:
             if cell["cell"].is_selected:
                 cell["class"] = "select"
+        # TODO why pop
         cell.pop("cell")
 
     # End Game
