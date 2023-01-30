@@ -35,8 +35,6 @@ def single_player(request):
     context = {
         "table": view_table,
         "report": game.get_report_game(),
-        # TODO Remove
-        "shape": "o",
     }
 
     return render(request, "sea/single_player.html", context=context)
