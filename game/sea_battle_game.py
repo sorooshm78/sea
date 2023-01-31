@@ -73,14 +73,8 @@ class SeaBattleGame:
         }
 
     def get_score_game(self):
-        score = 0
-
-        for cell in self.sea.coordinates.flatten():
-            if not cell.is_ship():
-                if not cell.is_selected:
-                    score += 1
-
-        return score
+        max_const_score = 120
+        return max_const_score - self.sea.move
 
     def get_attack_count(self):
         return self.sea.attack_count

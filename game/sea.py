@@ -10,6 +10,7 @@ from .ship import Ship
 
 class Sea:
     def __init__(self, config):
+        self.move = 0
         self.row = config["row"]
         self.col = config["col"]
         self.list_length_ships = config["list_length_ships"]
@@ -110,6 +111,7 @@ class Sea:
         if not self.is_allow_to_attack(point, type_attack):
             return
 
+        self.move += 1
         if type_attack == "bomb":
             return self.get_changes_by_bomb_attack(point)
         elif type_attack == "explosion":
