@@ -42,8 +42,9 @@ INSTALLED_APPS = [
     "jalali_date",
     # My app
     "sea",
-    "accounts",
     "game",
+    "score",
+    "accounts",
 ]
 
 MIDDLEWARE = [
