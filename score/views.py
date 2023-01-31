@@ -8,7 +8,7 @@ from .models import ScoreBoardModel
 
 class ScoreBoardListView(LoginRequiredMixin, ListView):
     model = ScoreBoardModel
-    template_name = "sea/score_board.html"
+    template_name = "score/score_board.html"
     context_object_name = "scores"
     MAX_SHOW_USER = 10
 

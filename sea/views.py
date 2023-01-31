@@ -9,7 +9,7 @@ from score.models import ScoreBoardModel
 
 
 @login_required
-def single_player(request):
+def index(request):
     game = SeaBattleGame(request.user.id)
     game_table = game.get_table_game()
     config = game.config
@@ -35,7 +35,7 @@ def single_player(request):
         "attack_count": game.get_attack_count(),
     }
 
-    return render(request, "sea/single_player.html", context=context)
+    return render(request, "sea/index.html", context=context)
 
 
 @login_required
