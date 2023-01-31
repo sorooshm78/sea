@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load jalali_tags %}
 
 {% block content %}
 <div class="container mt-3 p-5 bg-light text-center rounded">
@@ -23,7 +24,7 @@
                     <td>{{ score.rank }}</td>
                     <td>{{ score.user }}</td>
                     <td>{{ score.score }}</td>
-                    <td>{{ score.time }}</td>
+                    <td>{{ score.time|to_jalali }}</td>
                 </tr>
                 {%empty%}
                     <td>_</td>
@@ -40,7 +41,7 @@
             <strong>{{ last_score.user }}</strong>
             Your Score  <strong>{{ last_score.score }}</strong>
             & Your Rank <strong>{{ last_score.rank }}</strong> 
-            At Time <strong>{{ last_score.time }}</strong> 
+            In Time <strong>{{ last_score.time|to_jalali }}</strong> 
         {% else %}
             Not Exist Score Yet
         {% endif %}
