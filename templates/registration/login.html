@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<div class="container py-5 d-flex justify-content-center">
+	<div class="card border-primary mb-3">
+		<div class="card-header text-center">Login</div>
+		<div class="card-body text-primary">
+			<form method="POST">
+				{% csrf_token %}
+				{% for field in form %}
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto">
+							{{ field.label_tag }}
+						</div>
+						<div>
+							{{ field }}
+						</div>
+					</li>
+				{% endfor %}
+				<button class="btn btn-primary btn-block" type="submit">Login</button>
+				<a href="{% url 'register' %}" class="btn btn-link">register</a>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock content %}

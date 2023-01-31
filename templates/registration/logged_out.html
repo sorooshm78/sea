@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Logout{% endblock title %}
+
+{% block content %}
+<div class="container py-5 d-flex justify-content-center">
+	<div class="card border-primary mb-3">
+		<div class="card-header text-center">Logged out</div>
+		<div class="card-body text-dark p-5">
+			Thanks for spending some quality time with the web site today.
+			<br>
+			<a href="{% url 'login' %}">login</a>
+		</div>
+	</div>
+</div>
+{% endblock content %}

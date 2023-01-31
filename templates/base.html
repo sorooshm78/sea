@@ -3,7 +3,9 @@
 <!doctype html>
 <html>
 <head>
-    <title>Sea Battle</title>
+    <title>
+        {% block title %}Sea Battle{% endblock title %}
+    </title>
 
     <link rel="stylesheet" href="{% static 'sea/css/game.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
