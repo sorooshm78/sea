@@ -2,26 +2,29 @@
 
 {% block title %}Login{% endblock title %}
 
-{% block content %}
-<div class="container py-5 d-flex justify-content-center">
-	<div class="card border-primary mb-3">
-		<div class="card-header text-center">Login</div>
-		<div class="card-body text-primary">
-			<form method="POST">
-				{% csrf_token %}
-				{% for field in form %}
-					<li class="list-group-item d-flex justify-content-between align-items-start">
-						<div class="ms-2 me-auto">
-							{{ field.label_tag }}
+{% block content %}  
+<div class="container py-5 h-100">
+	<div class="row d-flex justify-content-center align-items-center h-100">
+		<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+			<div class="card shadow-2-strong" style="border-radius: 1rem;">
+				<div class="card-body p-5 text-center">
+					<h3 class="mb-5">Log in</h3>
+					<form method="POST">
+						{% csrf_token %}
+						<div class="form-outline mb-4">
+							<input type="username" id="id_username" name="username" class="form-control form-control-lg" placeholder="username"/>
 						</div>
-						<div>
-							{{ field }}
+
+						<div class="form-outline mb-4">
+							<input type="password" id="id_password" name="password" class="form-control form-control-lg" placeholder="password"/>
 						</div>
-					</li>
-				{% endfor %}
-				<button class="btn btn-primary btn-block" type="submit">Login</button>
-				<a href="{% url 'register' %}" class="btn btn-link">register</a>
-			</form>
+						<button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+					</form>
+				</div>
+				<div class="text-center">
+					<p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
