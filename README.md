@@ -4,16 +4,15 @@
 ![poster](.github/images/poster.png)
 
 ## Attack Type
-### Bomb 
-select cell and just click 
+1. ### Bomb 
 ![bomb](.github/images/bomb.png) 
-### Liner
+2. ### Liner
 ![liner](.github/images/liner.png)
-### Explosion
+3. ### Explosion
 ![explosion](.github/images/explosion.png)
-### Radar
+4. ### Radar
 ![radar](.github/images/radar.png)
-### Score Board
+## Score Board
 ![end-game](.github/images/score.png)
 
 ### Usage
