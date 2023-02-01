@@ -60,7 +60,9 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates/",],
+        "DIRS": [
+            BASE_DIR / "templates/",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -94,9 +96,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 
@@ -131,18 +139,24 @@ LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL = "login"
 LOGIN_URL = "login"
 
-# Cache
+# Cache setting
+CACHE_TTL = 15 * 60  # 15 minutes
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/",
-        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient",},
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
     }
 }
 
 # Default settings jalali date
 JALALI_DATE_DEFAULTS = {
-    "Strftime": {"date": "%y/%m/%d", "datetime": "%Y/%m/%d %H:%M:%S",},
+    "Strftime": {
+        "date": "%y/%m/%d",
+        "datetime": "%Y/%m/%d %H:%M:%S",
+    },
     "Static": {
         "js": [
             # loading datepicker
@@ -155,7 +169,9 @@ JALALI_DATE_DEFAULTS = {
             # 'admin/js/main.js',
         ],
         "css": {
-            "all": ["admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css",]
+            "all": [
+                "admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css",
+            ]
         },
     },
 }

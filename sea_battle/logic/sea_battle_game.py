@@ -1,7 +1,11 @@
 from django.core.cache import cache
+from django.conf import settings
 
 from .point import Point
 from .sea import Sea
+
+
+CACHE_TTL = settings.CACHE_TTL
 
 
 class SeaBattleGame:
@@ -51,7 +55,7 @@ class SeaBattleGame:
         return change_points
 
     def save_game_data(self):
-        cache.set(self.user_id, self.sea)
+        cache.set(self.user_id, self.sea, timeout=CACHE_TTL)
 
     def is_end_game(self):
         for cell in self.sea.coordinates.flatten():

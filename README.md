@@ -35,6 +35,7 @@ redis-server
 and you can change redis configurations in core/settings.py
 ```
 # Cash setting
+CACHE_TTL = 15 * 60 # 15 minutes
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -44,6 +45,10 @@ CACHES = {
         },
     }
 }
+```
+by default cached for 15 minutes and you change timeout cache
+```
+CACHE_TTL = 15 * 60
 ```
 
 ### Running the code 
