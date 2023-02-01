@@ -40,10 +40,9 @@ INSTALLED_APPS = [
     # Third party
     "jalali_date",
     # My app
-    "sea",
-    "game",
-    "score",
+    "sea_battle",
     "account",
+    "score",
 ]
 
 MIDDLEWARE = [
