@@ -1,13 +1,20 @@
 # sea
-sea battle game by django
+**Sea Battle** game by django
 
 ![poster](.github/images/poster.png)
-![home](.github/images/home.png)
-![bomb](.github/images/bomb.png)
+
+## Attack Type
+### Bomb 
+select cell and just click 
+![bomb](.github/images/bomb.png) 
+### Liner
 ![liner](.github/images/liner.png)
+### Explosion
 ![explosion](.github/images/explosion.png)
+### Radar
 ![radar](.github/images/radar.png)
-![end-game](.github/images/end_game.png)
+### Score Board
+![end-game](.github/images/score.png)
 
 ### Usage
 I am using python "3.10.6" version 
