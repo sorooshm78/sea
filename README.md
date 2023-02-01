@@ -4,14 +4,19 @@
 ![poster](.github/images/poster.png)
 
 ## Attack Type
+
 1. ### Bomb 
-![bomb](.github/images/bomb.png) 
+![bomb](.github/images/bomb1.png) 
+
 2. ### Liner
-![liner](.github/images/liner.png)
+![liner](.github/images/liner1.png)
+
 3. ### Explosion
-![explosion](.github/images/explosion.png)
+![explosion](.github/images/explosion1.png)
+
 4. ### Radar
-![radar](.github/images/radar.png)
+![radar](.github/images/radar1.png)
+
 ## Score Board
 ![end-game](.github/images/score.png)
 
