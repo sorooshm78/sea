@@ -65,6 +65,7 @@ def attack(request):
     if game.is_end_game():
         score = game.get_score_game()
         ScoreBoardModel.objects.create(user=request.user, score=score)
+        game.start_new_game()
         is_end_game = "true"
 
     # Report count alive ships
