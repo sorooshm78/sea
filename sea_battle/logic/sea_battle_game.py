@@ -1,8 +1,5 @@
-import numpy as np
-
 from django.core.cache import cache
 
-from .cell import Cell
 from .point import Point
 from .sea import Sea
 
@@ -12,7 +9,11 @@ class SeaBattleGame:
         "row": 10,
         "col": 10,
         "list_length_ships": [4, 3, 3, 2, 2, 2, 1, 1, 1, 1],
-        "attack_count": {"radar": 2, "explosion": 2, "liner": 2,},
+        "attack_count": {
+            "radar": 2,
+            "explosion": 2,
+            "liner": 2,
+        },
     }
 
     def __init__(self, user_id):

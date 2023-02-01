@@ -4,6 +4,6 @@ class Cell:
         self.is_selected = False
 
     def is_ship(self):
-        if self.ship == None:
+        if self.ship is None:
             return False
         return True
