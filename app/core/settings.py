@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-2u(nearxz1=&#6p$_%^n$gn9j5wl+-e%r2cg^d5)e2g&m5)*p+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0"]
 
 
 # Application definition
@@ -141,15 +141,26 @@ LOGIN_URL = "login"
 
 # Cache setting
 CACHE_TTL = 15 * 60  # 15 minutes
+# Cache setting by docker-compose 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/",
+        "LOCATION": "redis://redis:6379/",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
 }
+# Cache setting manually and without docker-compose
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         },
+#     }
+# }
 
 # Default settings jalali date
 JALALI_DATE_DEFAULTS = {
