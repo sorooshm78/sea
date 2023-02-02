@@ -10,6 +10,3 @@ COPY requirements.txt /app
 RUN apk add g++ 
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
-
-CMD python3 manage.py makemigrations && \ 
-    python3 manage.py migrate 
