@@ -20,7 +20,22 @@
 ## Score Board
 ![end-game](.github/images/score.png)
 
-### Usage
+## Usage
+
+### With docker
+first step clone my project
+```
+git clone https://github.com/sorooshm78/sea/
+```
+and then run docker-compose
+```
+docker-compose up --build
+```
+"sea battle game" app will start on 0.0.0.0:8000
+
+enjoy it!
+
+### Manually and without docker
 I am using python "3.10.6" version 
 
 first step clone my project
@@ -28,7 +43,7 @@ first step clone my project
 git clone https://github.com/sorooshm78/sea/
 ```
 
-and then install requirements  
+and go to app directory and then install requirements  
 ```
 pip install -r requirements.txt
 ```
