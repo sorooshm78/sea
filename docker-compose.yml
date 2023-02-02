@@ -3,7 +3,7 @@ version: "3.9"
 services:
   redis:
     container_name: redis
-    image: redis
+    image: redis:alpine
     restart: always
     expose:
       - "6379"
