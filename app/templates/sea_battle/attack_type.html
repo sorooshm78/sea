@@ -1,6 +1,6 @@
 <div class="card bg-info text-center">
     <div class="card-header">
-        <div class="fw-bold">Attack Type</div>
+        <div class="fw-bold"><i class="fa-solid fa-shield-halved"></i> Attack Type</div>
     </div>
     <ul class="list-group list-group-flush">    
       <li class="list-group-item d-grid gap-2">
@@ -11,6 +11,7 @@
                 <div>
                   <i class="fa-solid fa-bomb"></i> Bomb
                 </div>
+                <span class="badge bg-dark rounded-pill"><i class="fa-solid fa-infinity"></i></span>
               </div>
             </label>
           
@@ -18,7 +19,8 @@
             <label class="btn btn-outline-primary" for="liner_btn">
               <div class="d-flex justify-content-between align-items-start">
                 <div>
-                  <i class="fa-solid fa-xmarks-lines"></i> Liner
+                  {% comment %} <i class="fa-solid fa-xmarks-lines"></i> Liner {% endcomment %}
+                  <i class="fa-solid fa-grip-lines"></i> Liner
                 </div>
                 <span class="badge bg-dark rounded-pill" id='liner_count'>{{ attack_count.liner }}</span>
               </div>
