@@ -25,7 +25,10 @@ SECRET_KEY = "django-insecure-2u(nearxz1=&#6p$_%^n$gn9j5wl+-e%r2cg^d5)e2g&m5)*p+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = [
+    "0.0.0.0",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third party
     "jalali_date",
+    "fontawesomefree",
     # My app
     "sea_battle",
     "account",
@@ -141,7 +145,7 @@ LOGIN_URL = "login"
 
 # Cache setting
 CACHE_TTL = 15 * 60  # 15 minutes
-# Cache setting by docker-compose 
+# Cache setting by docker-compose
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",

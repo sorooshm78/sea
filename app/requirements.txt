@@ -8,6 +8,7 @@ Django==4.1.5
 django-jalali-date==1.0.1
 django-redis==5.2.0
 flake8==6.0.0
+fontawesomefree==6.2.1
 idna==3.4
 jdatetime==4.1.0
 mccabe==0.7.0
