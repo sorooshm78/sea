@@ -1,24 +1,24 @@
 # sea
 **Sea Battle** game by django
 
-![poster](.github/images/poster.png)
+![poster](https://drive.google.com/uc?export=view&id=1mYVRIFnfkxq_JAYrexWr2bR9Cz6m8hFU)
 
 ## Attack Type
 
-### 1.Bomb : by selecting a cell as a bomb, only that cell is selected
-![bomb](.github/images/bomb1.png) 
+### 1.Bomb -> by selecting a cell as a bomb, only that cell is selected
+![bomb](https://drive.google.com/uc?export=view&id=18Q0n9eBxcpj-evRqkcPscIEwc9nCaQWd) 
 
-### 2.Liner : by selecting a cell as a liner, it moves from the left to the right of the selected row until it hits the ship
-![liner](.github/images/liner1.png)
+### 2.Liner -> by selecting a cell as a liner, it moves from the left to the right of the selected row until it hits the ship
+![liner](https://drive.google.com/uc?export=view&id=1CRw08ymSxv3FQNhoksanvXbb9cywMs1d)
 
-### 3.Explosion : by selecting a cell  as explosion, the 3x3 area of that cell is selected
-![explosion](.github/images/explosion1.png)
+### 3.Explosion -> by selecting a cell  as explosion, the 3x3 area of that cell is selected
+![explosion](https://drive.google.com/uc?export=view&id=1Lv4Rv9ydUIUW87XYICzvSdiyv_aLXT0y)
 
-### 4.Radar : by selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
-![radar](.github/images/radar1.png)
+### 4.Radar -> by selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
+![radar](https://drive.google.com/uc?export=view&id=1W80QWSzNipvIGb_7hOmNnsFNO2-tH-zt)
 
 ## Score Board
-![end-game](.github/images/score.png)
+![score_board](https://drive.google.com/uc?export=view&id=19nwceFB9uGtASCkhQrdPWHRpGypwz8WJ)
 
 ## Usage
 
