@@ -52,6 +52,11 @@ and go to app directory and then install requirements
 pip install -r requirements.txt
 ```
 
+this will create all the migrations file (database migrations) now, to apply this migrations run the following command
+```
+python manage.py makemigrations
+python manage.py migrate
+```
 ### Setup Redis Cache 
 Install Redis on Linux 
 ```
