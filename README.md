@@ -1,6 +1,8 @@
 # sea
 **Sea Battle** game by django
 
+![play_game](https://drive.google.com/uc?export=view&id=1uIW2FgZzXLZuC48_G_-N37dPxwjOgbHd)
+
 ![poster](https://drive.google.com/uc?export=view&id=1mYVRIFnfkxq_JAYrexWr2bR9Cz6m8hFU)
 
 ## Attack Type
