@@ -5,16 +5,20 @@
 
 ## Attack Type
 
-### 1.Bomb -> by selecting a cell as a bomb, only that cell is selected
+### 1.Bomb 
+by selecting a cell as a bomb, only that cell is selected
 ![bomb](https://drive.google.com/uc?export=view&id=18Q0n9eBxcpj-evRqkcPscIEwc9nCaQWd) 
 
-### 2.Liner -> by selecting a cell as a liner, it moves from the left to the right of the selected row until it hits the ship
+### 2.Liner
+by selecting a cell as a liner, it moves from the left to the right of the selected row until it hits the ship
 ![liner](https://drive.google.com/uc?export=view&id=1CRw08ymSxv3FQNhoksanvXbb9cywMs1d)
 
-### 3.Explosion -> by selecting a cell  as explosion, the 3x3 area of that cell is selected
+### 3.Explosion
+by selecting a cell  as explosion, the 3x3 area of that cell is selected
 ![explosion](https://drive.google.com/uc?export=view&id=1Lv4Rv9ydUIUW87XYICzvSdiyv_aLXT0y)
 
-### 4.Radar -> by selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
+### 4.Radar
+by selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
 ![radar](https://drive.google.com/uc?export=view&id=1W80QWSzNipvIGb_7hOmNnsFNO2-tH-zt)
 
 ## Score Board
@@ -58,10 +62,10 @@ Run the Redis server from a new terminal window.
 ```
 redis-server
 ```
-and you can change redis configurations in core/settings.py
+and you change redis configurations in core/settings.py to:
 ```
-# Cash setting
-CACHE_TTL = 15 * 60 # 15 minutes
+# Cache setting
+CACHE_TTL = 15 * 60  # 15 minutes
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -71,10 +75,6 @@ CACHES = {
         },
     }
 }
-```
-by default cached for 15 minutes and you change timeout cache
-```
-CACHE_TTL = 15 * 60
 ```
 
 ### Running the code 

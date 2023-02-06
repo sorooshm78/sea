@@ -145,26 +145,16 @@ LOGIN_URL = "login"
 
 # Cache setting
 CACHE_TTL = 15 * 60  # 15 minutes
-# Cache setting by docker-compose
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/",
+        # "LOCATION": "redis://127.0.0.1:6379/", # for manually
+        "LOCATION": "redis://redis:6379/",  # for docker
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
 }
-# Cache setting manually and without docker-compose
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         },
-#     }
-# }
 
 # Default settings jalali date
 JALALI_DATE_DEFAULTS = {
