@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "jalali_date",
     "fontawesomefree",
     # My app
+    "single_player",
+    "double_player",
     "sea_battle",
     "account",
     "score",

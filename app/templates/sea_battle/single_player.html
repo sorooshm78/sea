@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'sea_battle/js/single_player.js' %}"></script>
+{% endblock script %}
 
 {% block content %}
     <div class="container-fluid mt-4">

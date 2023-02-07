@@ -1,10 +1,10 @@
-{% url 'index' as home_url %}
+{% url 'single_player' as home_url %}
 {% url 'score_board' as score_board_url %}
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'index' %}"><i class="fa-solid fa-anchor"></i> Sea Battle</a>
+      <a class="navbar-brand" href="{{ home_url }}"><i class="fa-solid fa-anchor"></i> Sea Battle</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

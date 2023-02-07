@@ -5,12 +5,11 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from score.models import ScoreBoardModel
-
-from .logic.sea_battle_game import SeaBattleGame
+from sea_battle.sea_battle_game import SeaBattleGame
 
 
 @login_required
-def index(request):
+def single_player(request):
     game = SeaBattleGame(request.user.id)
     game_table = game.get_table_game()
     config = game.config
@@ -36,7 +35,7 @@ def index(request):
         "attack_count": game.get_attack_count(),
     }
 
-    return render(request, "sea_battle/index.html", context=context)
+    return render(request, "sea_battle/single_player.html", context=context)
 
 
 @login_required
@@ -111,4 +110,4 @@ def search(request):
 def new_game(request):
     game = SeaBattleGame(request.user.id)
     game.start_new_game()
-    return redirect("index")
+    return redirect("single_player")

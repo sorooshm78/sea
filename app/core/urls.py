@@ -22,7 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("account/", include("account.urls")),
     path("score-board/", include("score.urls")),
-    path("", include("sea_battle.urls")),
+    path("single-player/", include("single_player.urls")),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
