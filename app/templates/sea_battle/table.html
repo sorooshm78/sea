@@ -1,6 +1,5 @@
 {% for row in table %}
     {% with x=forloop.counter0 %}
-    
     {% for cell in row %}
         {% with y=forloop.counter0 %}
         <button class="cell 
@@ -17,9 +16,6 @@
         onclick="select({{ x }}, {{ y }})"></button>
         {% endwith %}
     {% endfor %}
-    
     <br>
-    
     {% endwith %}
-
 {% endfor %}

@@ -1,0 +1,23 @@
+{% for row in table %}
+    {% with x=forloop.counter0 %}
+    {% for cell in row %}
+        {% with y=forloop.counter0 %}
+            <button class="cell 
+            {% if cell == "select" %}
+                select
+            {% elif cell == "target" %}
+                target
+            {% elif cell == "ship" %}
+                ship
+            {% else %}
+                empty
+            {% endif %}"
+
+            id="my_{{x}}{{y}}"
+
+            onclick="select({{ x }}, {{ y }})" disabled="true"></button>
+        {% endwith %}
+    {% endfor %}
+    <br>
+    {% endwith %}
+{% endfor %}
