@@ -2,21 +2,38 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from django.core.cache import cache
 
 
 class GameConsumer(WebsocketConsumer):
     def connect(self):
         self.accept()
-        self.user_id = "1"
+    
+        self.user = self.scope['user']
+        self.user_id = self.user.id
+
+        online_users = cache.get_or_set('online_users', set())
+        online_users.add(self.user_id)
+        cache.set('online_users', online_users)
+        
+        print('add', self.user_id)
+        print('online', online_users)
+
         async_to_sync(self.channel_layer.group_add)(
-            self.user_id,
+            str(self.user_id),
             self.channel_name,
         )
 
     def disconnect(self, close_code):
-        self.user_id = "1"
+        online_users = cache.get('online_users')
+        online_users.discard(self.user_id)
+        cache.set('online_users', online_users)
+
+        print('del', self.user_id)
+        print('online', online_users)
+
         async_to_sync(self.channel_layer.group_discard)(
-            self.user_id,
+            str(self.user_id),
             self.channel_name,
         )
 
