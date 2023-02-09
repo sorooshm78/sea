@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # Third party
     "jalali_date",
     "fontawesomefree",
+    "channels",
     # My app
     "single_player",
     "double_player",
@@ -82,7 +83,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-
+ASGI_APPLICATION = "core.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -150,12 +151,21 @@ CACHE_TTL = 15 * 60  # 15 minutes
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        # "LOCATION": "redis://127.0.0.1:6379/", # for manually
-        "LOCATION": "redis://redis:6379/",  # for docker
+        "LOCATION": "redis://127.0.0.1:6379/", # for manually
+        # "LOCATION": "redis://redis:6379/",  # for docker
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }
 
 # Default settings jalali date
