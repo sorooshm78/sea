@@ -3,8 +3,6 @@
 
 ![play_game](https://drive.google.com/uc?export=view&id=1uyG-A2oiW5G8rZmQt8lfG2c9_PHnAY6r)
 
-![poster](https://drive.google.com/uc?export=view&id=1mYVRIFnfkxq_JAYrexWr2bR9Cz6m8hFU)
-
 ## Attack Type
 
 ### 1.Bomb 
