@@ -1,17 +1,17 @@
 .select {
-    background-color: #1fe4eb;
+    background-color: #0154cf;
 }
 
 .radar-select {
-    background-color: #1fe4ebbd;
+    background-color: #99b0d4;
 }
 
 .target {
-    background-color: #0cc512;
+    background-color: #ff0000;
 }
 
 .radar-target {
-    background-color: #0cc512be;
+    background-color: #f16161;
 }
 
 .empty {
