@@ -13,15 +13,15 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-import double_player.routing
+import two_player.routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 
-application = ProtocolTypeRouter({
-  'http': get_asgi_application(),
-  'websocket': AuthMiddlewareStack(
-    URLRouter(
-      double_player.routing.websocket_urlpatterns
-    ),
-  ),
-})
+application = ProtocolTypeRouter(
+    {
+        "http": get_asgi_application(),
+        "websocket": AuthMiddlewareStack(
+            URLRouter(two_player.routing.websocket_urlpatterns),
+        ),
+    }
+)

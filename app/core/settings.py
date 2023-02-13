@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "channels",
     # My app
     "single_player",
-    "double_player",
+    "two_player",
     "sea_battle",
     "account",
     "score",
@@ -151,7 +151,7 @@ CACHE_TTL = 15 * 60  # 15 minutes
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/", # for manually
+        "LOCATION": "redis://127.0.0.1:6379/",  # for manually
         # "LOCATION": "redis://redis:6379/",  # for docker
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
@@ -160,10 +160,10 @@ CACHES = {
 }
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }

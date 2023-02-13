@@ -27,7 +27,7 @@ def double_player(request):
 
     my_table = np.array(cell_list).reshape((config["row"], config["col"]))
     table = np.full((config["row"], config["col"]), "empty")
-    
+
     context = {
         "my_table": my_table,
         "table": table,
@@ -35,4 +35,4 @@ def double_player(request):
         "attack_count": game.get_attack_count(),
     }
 
-    return render(request, "sea_battle/double_player.html", context=context)
+    return render(request, "sea_battle/two_player.html", context=context)
