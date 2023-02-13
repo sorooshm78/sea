@@ -19,21 +19,19 @@ class GameConsumer(WebsocketConsumer):
 
         self.room: GameRoomModel = GameRoomModel.rooms.create_room(self.user)
         if not self.room.has_capacity():
-            username1 = self.room.user1.username
-            username2 = self.room.user2.username
-
+            # Send user info
             async_to_sync(self.channel_layer.group_send)(
                 self.room.user1.username,
                 {
                     "type": "send_game_data",
-                    "user_info": username2,
+                    "user_info": self.room.user2.username,
                 },
             )
             async_to_sync(self.channel_layer.group_send)(
                 self.room.user2.username,
                 {
                     "type": "send_game_data",
-                    "user_info": username1,
+                    "user_info": self.room.user1.username,
                 },
             )
 
@@ -46,7 +44,8 @@ class GameConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None):
         text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
+        select = text_data_json["select"]
+        print(select)
 
     def send_game_data(self, data):
         self.send(text_data=json.dumps(data))

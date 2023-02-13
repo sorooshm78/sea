@@ -8,6 +8,18 @@ function receiveData(data) {
     }
 }
 
+function select(x, y) {
+    var attackType = $("input[name='attack']:checked").val();
+    gameSocket.send(JSON.stringify({
+        "select": {
+            'x': x,
+            'y': y,
+            'attack_type': attackType,
+        },
+    }))
+}
+
+
 $(document).ready(function () {
     gameSocket = new WebSocket("ws://" + window.location.host + "/ws/");
 
