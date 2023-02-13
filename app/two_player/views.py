@@ -3,12 +3,12 @@ import numpy as np
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from sea_battle.sea_battle_game import SeaBattleGame
+from sea_battle.single_player import SinglePlayer
 
 
 @login_required
 def double_player(request):
-    game = SeaBattleGame(request.user.id)
+    game = SinglePlayer(request.user.id)
     game_table = game.get_table_game()
     config = game.config
 

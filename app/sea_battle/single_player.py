@@ -8,7 +8,7 @@ from .sea import Sea
 CACHE_TTL = settings.CACHE_TTL
 
 
-class SeaBattleGame:
+class SinglePlayer:
     config = {
         "row": 10,
         "col": 10,
@@ -29,7 +29,7 @@ class SeaBattleGame:
             self.start_new_game()
 
     def start_new_game(self):
-        self.sea = Sea(SeaBattleGame.config)
+        self.sea = Sea(SinglePlayer.config)
         self.save_game_data()
 
     def get_table_game(self):
