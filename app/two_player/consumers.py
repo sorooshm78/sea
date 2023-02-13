@@ -3,6 +3,8 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
+from .models import GameRoomModel
+
 
 class GameConsumer(WebsocketConsumer):
     def connect(self):
@@ -15,25 +17,36 @@ class GameConsumer(WebsocketConsumer):
             self.channel_name,
         )
 
-    def disconnect(self, close_code):
+        self.room: GameRoomModel = GameRoomModel.rooms.create_room(self.user)
+        if not self.room.has_capacity():
+            username1 = self.room.user1.username
+            username2 = self.room.user2.username
 
+            async_to_sync(self.channel_layer.group_send)(
+                self.room.user1.username,
+                {
+                    "type": "send_game_data",
+                    "user_info": username2,
+                },
+            )
+            async_to_sync(self.channel_layer.group_send)(
+                self.room.user2.username,
+                {
+                    "type": "send_game_data",
+                    "user_info": username1,
+                },
+            )
+
+    def disconnect(self, close_code):
+        self.room.deactivate_game_room()
         async_to_sync(self.channel_layer.group_discard)(
             self.user.username,
             self.channel_name,
         )
 
-    def receive(self, text_data=None, bytes_data=None):
+    def receive(self, text_data=None):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
 
-        # send chat message event to the room
-        async_to_sync(self.channel_layer.group_send)(
-            self.user.username,
-            {
-                "type": "chat_message",
-                "message": message,
-            },
-        )
-
-    def chat_message(self, event):
-        self.send(text_data=json.dumps(event))
+    def send_game_data(self, data):
+        self.send(text_data=json.dumps(data))

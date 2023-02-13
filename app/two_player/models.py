@@ -60,3 +60,7 @@ class GameRoomModel(models.Model):
         elif self.turn == self.user2.username:
             self.turn = self.user1.username
         self.save()
+
+    def deactivate_game_room(self):
+        self.is_active = False
+        self.save()
