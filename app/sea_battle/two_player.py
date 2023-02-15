@@ -8,57 +8,51 @@ from .sea import Sea
 CACHE_TTL = settings.CACHE_TTL
 
 
+class Player:
+    def __init__(self, username, config):
+        self.username = username
+        self.sea = Sea(config)
+
+    def get_username(self):
+        return self.username
+
+    def get_sea(self):
+        return self.sea
+
+    def __str__(self):
+        return self.username
+
+
 class GameRoom:
-    def __init__(self, username, sea):
-        self.player1 = {
-            "username": username,
-            "sea": sea,
-        }
+    def __init__(self, player):
+        self.player1 = player
+        self.player2 = None
 
-        self.player2 = dict()
+        self.turn = self.player1
 
-        self.turn = self.get_username_player1()
-        self.is_active = True
-
-    def set_another_player(self, username, sea):
-        self.player2 = {
-            "username": username,
-            "sea": sea,
-        }
+    def set_another_player(self, player):
+        self.player2 = player
 
     def has_capacity(self):
-        if self.get_username_player1() is None or self.get_sea_player2() is None:
+        if self.player1 is None or self.player2 is None:
             return True
         return False
 
     def change_turn(self):
-        username1 = self.get_username_player1()
-        username2 = self.get_username_player2()
+        if self.turn == self.player1:
+            self.turn = self.player2
+        elif self.turn == self.player2:
+            self.turn = self.player1
 
-        if self.turn == username1:
-            self.turn = username2
-        elif self.turn == username2:
-            self.turn = username1
+    def get_player_by_username(self, username):
+        if self.player1.get_username() == username:
+            return self.player1
+        return self.player2
 
-    def is_user_exist(self, username):
-        if (
-            self.get_username_player1() == username
-            or self.get_username_player2() == username
-        ):
-            return True
-        return False
-
-    def get_username_player1(self):
-        return self.player1.get("username")
-
-    def get_username_player2(self):
-        return self.player2.get("username")
-
-    def get_sea_player1(self):
-        return self.player1.get("sea")
-
-    def get_sea_player2(self):
-        return self.player2.get("sea")
+    def get_opposite_player_by_username(self, username):
+        if self.player1.get_username() == username:
+            return self.player2
+        return self.player1
 
 
 class TwoPlayer:
@@ -73,33 +67,67 @@ class TwoPlayer:
         },
     }
 
-    def __init__(self, user):
-        username = user.username
-        rooms = cache.get_or_set("rooms", list())
-        print(rooms)
-        room = self.get_game_room(rooms, username)
+    def __init__(self, username):
+        self.game_room = self.get_game_room(username)
 
-        if room is None:
-            room = self.create_game_room(rooms, username)
+    def get_game_room(self, username):
+        # Chack exist room
+        exist_room = [cache.get(key) for key in cache.keys(f"*{username}*")]
+        if exist_room:
+            return exist_room[0]
 
-        self.game_room = room
+        # Check empty room
+        empty_room = cache.get("empty_room")
+        if empty_room is None:
+            new_room = GameRoom(Player(username, TwoPlayer.config))
+            cache.set("empty_room", new_room)
+            return new_room
 
-    def get_game_room(self, rooms, username):
-        for room in rooms:
-            if room.is_user_exist(username):
-                return room
+        if empty_room.player1.get_username() == username:
+            return empty_room
 
-    def create_game_room(self, rooms, username):
-        sea = Sea(TwoPlayer.config)
-        if len(rooms) != 0:
-            last_room = rooms[-1]
-            if last_room.has_capacity():
-                last_room.set_another_player(username, sea)
-                rooms.pop()
-                rooms.append(last_room)
-                cache.set("rooms", rooms)
-                return
+        empty_room.set_another_player(Player(username, TwoPlayer.config))
+        cache.set(
+            f"{empty_room.player1.get_username()}_{empty_room.player2.get_username()}",
+            empty_room,
+        )
+        cache.delete("empty_room")
+        print("rooms ", cache.keys("*_*"))
+        return empty_room
 
-        new_room = GameRoom(username, sea)
-        rooms.append(new_room)
-        cache.set("rooms", rooms)
+    def deactive_room(self, username):
+        exist_room = cache.keys(f"*{username}*")
+        if exist_room:
+            cache.delete(exist_room[0])
+            print("rooms ", cache.keys("*_*"))
+            return
+
+        empty_room = cache.get("empty_room")
+        if empty_room is not None and empty_room.player.username == username:
+            cache.delete("empty_room")
+            return
+
+    def is_game_ready(self):
+        return self.game_room.has_capacity()
+
+    def get_table_game(self, username):
+        player = self.game_room.get_player_by_username(username)
+        return player.sea.coordinates
+
+    def get_report_game(self, username):
+        player = self.game_room.get_player_by_username(username)
+        report_ships = player.sea.get_report_count_ships()
+        return {
+            "4_ships": report_ships[4],
+            "3_ships": report_ships[3],
+            "2_ships": report_ships[2],
+            "1_ships": report_ships[1],
+        }
+
+    def get_opposite_username(self, username):
+        opposite_player = self.game_room.get_opposite_player_by_username(username)
+        return opposite_player.get_username()
+
+    def get_attack_count(self, username):
+        player = self.game_room.get_player_by_username(username)
+        return player.sea.attack_count
