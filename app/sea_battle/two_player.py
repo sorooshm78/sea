@@ -131,3 +131,24 @@ class TwoPlayer:
     def get_attack_count(self, username):
         player = self.game_room.get_player_by_username(username)
         return player.sea.attack_count
+
+    def get_changes(self, username, x, y, attack_type):
+        opposite_player = self.game_room.get_opposite_player_by_username(username)
+
+        points = opposite_player.sea.get_changes_by_type_attack(
+            Point(x, y), attack_type
+        )
+        if points is None:
+            return
+
+        change_points = []
+        for point in points:
+            change_points.append(
+                {
+                    "x": point.x,
+                    "y": point.y,
+                    "value": opposite_player.sea.coordinates[point.x, point.y],
+                }
+            )
+
+        return change_points

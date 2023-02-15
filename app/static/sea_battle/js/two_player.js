@@ -15,6 +15,20 @@ function showAttackCount(attack_count) {
     $('#radar_count').text(attack_count['radar']);
 }
 
+function showOppositeCells(cells) {
+    for (index in cells) {
+        cell = cells[index];
+        $(`#${cell.x}${cell.y}`).removeClass('empty').addClass(cell.class);
+    }
+}
+
+function showMyCells(cells) {
+    for (index in cells) {
+        cell = cells[index];
+        $(`#my_${cell.x}${cell.y}`).removeClass('empty').removeClass('ship').addClass(cell.class);
+    }
+}
+
 function receiveData(data) {
     if (data['user_info']) {
         showUserInfo(data.user_info);
@@ -24,6 +38,12 @@ function receiveData(data) {
     }
     if (data['attack_count']) {
         showAttackCount(data.attack_count);
+    }
+    if (data['opposite_cells']) {
+        showOppositeCells(data.opposite_cells);
+    }
+    if (data['my_cells']) {
+        showMyCells(data.my_cells);
     }
 }
 
