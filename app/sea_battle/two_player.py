@@ -48,6 +48,11 @@ class GameRoom:
             return self.player2
         return self.player1
 
+    def is_player_turn(self, player):
+        if self.turn == player:
+            return True
+        return False
+
 
 class TwoPlayer:
     config = {
@@ -65,23 +70,19 @@ class TwoPlayer:
         self.game_room = self.get_game_room(username)
 
     def get_game_room(self, username):
-        print("active room")
         # Chack exist room
         exist_room = [cache.get(key) for key in cache.keys(f"*{username}*")]
         if exist_room:
-            print("return exist room", exist_room[0])
             return exist_room[0]
 
         # Check empty room
         empty_room = cache.get("empty_room")
         if empty_room is None:
-            print("create new room and insert empty room")
             new_room = GameRoom(Player(username, TwoPlayer.config))
             cache.set("empty_room", new_room)
             return new_room
 
         if empty_room.player1.username == username:
-            print("return exist empty room")
             return empty_room
 
         empty_room.set_another_player(Player(username, TwoPlayer.config))
@@ -90,16 +91,12 @@ class TwoPlayer:
             empty_room,
         )
         cache.delete("empty_room")
-        print("create another user in room")
-        print("rooms ", cache.keys("*_*"))
         return empty_room
 
     def deactive_room(self, username):
-        print("deactive room")
         exist_room = cache.keys(f"*{username}*")
         if exist_room:
             cache.delete(exist_room[0])
-            print("rooms ", cache.keys("*_*"))
             return
 
         empty_room = cache.get("empty_room")
@@ -152,3 +149,10 @@ class TwoPlayer:
             )
 
         return change_points
+
+    def is_player_turn(self, username):
+        player = self.game_room.get_player_by_username(username)
+        return self.game_room.is_player_turn(player)
+
+    def change_turn(self):
+        self.game_room.change_turn()

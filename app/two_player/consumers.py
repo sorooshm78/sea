@@ -52,6 +52,10 @@ class GameConsumer(WebsocketConsumer):
         )
 
     def receive(self, text_data=None):
+        if not self.game.is_player_turn(self.my_username):
+            print(f"not your turn {self.my_username}")
+            return
+
         text_data_json = json.loads(text_data)
         select = text_data_json["select"]
 
@@ -69,6 +73,8 @@ class GameConsumer(WebsocketConsumer):
             self.search(cells)
         else:
             self.attack(cells, opposite_username)
+
+        self.game.change_turn()
 
     def search(self, cells):
         for cell in cells:
