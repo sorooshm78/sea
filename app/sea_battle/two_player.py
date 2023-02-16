@@ -13,12 +13,6 @@ class Player:
         self.username = username
         self.sea = Sea(config)
 
-    def get_username(self):
-        return self.username
-
-    def get_sea(self):
-        return self.sea
-
     def __str__(self):
         return self.username
 
@@ -45,12 +39,12 @@ class GameRoom:
             self.turn = self.player1
 
     def get_player_by_username(self, username):
-        if self.player1.get_username() == username:
+        if self.player1.username == username:
             return self.player1
         return self.player2
 
     def get_opposite_player_by_username(self, username):
-        if self.player1.get_username() == username:
+        if self.player1.username == username:
             return self.player2
         return self.player1
 
@@ -71,31 +65,37 @@ class TwoPlayer:
         self.game_room = self.get_game_room(username)
 
     def get_game_room(self, username):
+        print("active room")
         # Chack exist room
         exist_room = [cache.get(key) for key in cache.keys(f"*{username}*")]
         if exist_room:
+            print("return exist room", exist_room[0])
             return exist_room[0]
 
         # Check empty room
         empty_room = cache.get("empty_room")
         if empty_room is None:
+            print("create new room and insert empty room")
             new_room = GameRoom(Player(username, TwoPlayer.config))
             cache.set("empty_room", new_room)
             return new_room
 
-        if empty_room.player1.get_username() == username:
+        if empty_room.player1.username == username:
+            print("return exist empty room")
             return empty_room
 
         empty_room.set_another_player(Player(username, TwoPlayer.config))
         cache.set(
-            f"{empty_room.player1.get_username()}_{empty_room.player2.get_username()}",
+            f"{empty_room.player1.username}_{empty_room.player2.username}",
             empty_room,
         )
         cache.delete("empty_room")
+        print("create another user in room")
         print("rooms ", cache.keys("*_*"))
         return empty_room
 
     def deactive_room(self, username):
+        print("deactive room")
         exist_room = cache.keys(f"*{username}*")
         if exist_room:
             cache.delete(exist_room[0])
@@ -103,7 +103,7 @@ class TwoPlayer:
             return
 
         empty_room = cache.get("empty_room")
-        if empty_room is not None and empty_room.player.username == username:
+        if empty_room is not None and empty_room.player1.username == username:
             cache.delete("empty_room")
             return
 
@@ -126,7 +126,7 @@ class TwoPlayer:
 
     def get_opposite_username(self, username):
         opposite_player = self.game_room.get_opposite_player_by_username(username)
-        return opposite_player.get_username()
+        return opposite_player.username
 
     def get_attack_count(self, username):
         player = self.game_room.get_player_by_username(username)

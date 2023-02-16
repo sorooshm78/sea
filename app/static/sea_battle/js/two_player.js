@@ -18,14 +18,22 @@ function showAttackCount(attack_count) {
 function showOppositeCells(cells) {
     for (index in cells) {
         cell = cells[index];
-        $(`#${cell.x}${cell.y}`).removeClass('empty').addClass(cell.class);
+        $(`#${cell.x}${cell.y}`).removeClass('empty')
+            .removeClass('radar-select')
+            .removeClass('radar-target')
+            .removeClass('ship')
+            .addClass(cell.class);
     }
 }
 
 function showMyCells(cells) {
     for (index in cells) {
         cell = cells[index];
-        $(`#my_${cell.x}${cell.y}`).removeClass('empty').removeClass('ship').addClass(cell.class);
+        $(`#my_${cell.x}${cell.y}`).removeClass('empty')
+            .removeClass('radar-select')
+            .removeClass('radar-target')
+            .removeClass('ship')
+            .addClass(cell.class);
     }
 }
 
@@ -47,6 +55,18 @@ function receiveData(data) {
     }
 }
 
+function reduceAttackCount(attackType) {
+    var attackCountBadge = $(`#${attackType}_count`);
+    count = attackCountBadge.text();
+    if (count != 0) {
+        count--;
+        attackCountBadge.text(count);
+        if (count == 0) {
+            $(`#${attackType}_btn`).attr('disabled', true);
+        }
+    }
+}
+
 function select(x, y) {
     var attackType = $("input[name='attack']:checked").val();
     gameSocket.send(JSON.stringify({
@@ -56,6 +76,7 @@ function select(x, y) {
             'attack_type': attackType,
         },
     }))
+    reduceAttackCount(attackType);
 }
 
 $(document).ready(function () {
