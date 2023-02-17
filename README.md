@@ -90,3 +90,8 @@ python manage.py runserver
 "sea battle game" app will start on 127.0.0.1:8000 (Local Address).
  
 enjoy it!
+
+## Task lists
+- [x] Add single player
+- [ ] Add play two player together (real time) 
+- [ ] Add play by bot 
