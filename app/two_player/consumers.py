@@ -74,8 +74,6 @@ class GameConsumer(WebsocketConsumer):
         else:
             self.attack(cells, opposite_username)
 
-        self.game.change_turn()
-
     def search(self, cells):
         for cell in cells:
             cell_value = cell.pop("value")
@@ -93,12 +91,18 @@ class GameConsumer(WebsocketConsumer):
         )
 
     def attack(self, cells, opposite_username):
+        bonus = False
+
         for cell in cells:
             cell_value = cell.pop("value")
             if cell_value.is_ship():
                 cell["class"] = "target"
+                bonus = True
             else:
                 cell["class"] = "select"
+
+        if not bonus:
+            self.game.change_turn()
 
         async_to_sync(self.channel_layer.group_send)(
             self.my_username,

@@ -53,8 +53,22 @@ class GameRoom:
             return True
         return False
 
+    def is_player_exist(self, username):
+
+        if self.player1.username == username:
+            return True
+
+        if self.player2 is not None:
+            if self.player2.username == username:
+                return True
+
+        return False
+
 
 class TwoPlayer:
+    _rooms = {}
+    _empty_room = None
+
     config = {
         "row": 10,
         "col": 10,
@@ -67,42 +81,43 @@ class TwoPlayer:
     }
 
     def __init__(self, username):
-        self.game_room = self.get_game_room(username)
+        self.game_room = TwoPlayer.get_game_room(username)
 
-    def get_game_room(self, username):
-        # Chack exist room
-        exist_room = [cache.get(key) for key in cache.keys(f"*{username}*")]
-        if exist_room:
-            return exist_room[0]
+    @classmethod
+    def get_game_room(cls, username):
+        rooms = cls._rooms
+        empty_room = cls._empty_room
 
-        # Check empty room
-        empty_room = cache.get("empty_room")
+        for room in rooms.keys():
+            if username in room:
+                return rooms.get(room)
+
         if empty_room is None:
             new_room = GameRoom(Player(username, TwoPlayer.config))
-            cache.set("empty_room", new_room)
+            cls._empty_room = new_room
             return new_room
 
         if empty_room.player1.username == username:
             return empty_room
 
         empty_room.set_another_player(Player(username, TwoPlayer.config))
-        cache.set(
-            f"{empty_room.player1.username}_{empty_room.player2.username}",
-            empty_room,
+        cls._rooms.update(
+            {f"{empty_room.player1.username}_{empty_room.player2.username}": empty_room}
         )
-        cache.delete("empty_room")
+        cls._empty_room = None
         return empty_room
 
-    def deactive_room(self, username):
-        exist_room = cache.keys(f"*{username}*")
-        if exist_room:
-            cache.delete(exist_room[0])
-            return
+    @classmethod
+    def deactive_room(cls, username):
+        if cls._empty_room is not None:
+            if cls._empty_room.player1.username == username:
+                cls._empty_room = None
+                return
 
-        empty_room = cache.get("empty_room")
-        if empty_room is not None and empty_room.player1.username == username:
-            cache.delete("empty_room")
-            return
+        for room in cls._rooms.keys():
+            if username in room:
+                cls._rooms.pop(room)
+                return
 
     def is_game_ready(self):
         return self.game_room.has_capacity()
