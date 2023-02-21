@@ -70,9 +70,9 @@ class GameConsumer(WebsocketConsumer):
             return
 
         if attack_type == "radar":
-            self.search(cells, game)
+            self.search(game, cells)
         else:
-            self.attack(cells, game, opposite_player)
+            self.attack(game, opposite_player, cells)
 
         game.save_data()
 
@@ -93,7 +93,7 @@ class GameConsumer(WebsocketConsumer):
             },
         )
 
-    def attack(self, cells, game, opposite_player):
+    def attack(self, game, opposite_player, cells):
         bonus = False
 
         for cell in cells:
