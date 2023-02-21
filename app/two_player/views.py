@@ -4,14 +4,16 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from sea_battle.two_player import TwoPlayer
+from sea_battle.player import Player
 
 
 @login_required
 def two_player(request):
     username = request.user.username
-    game = TwoPlayer(username)
-    game_table = game.get_table_game(username)
-    config = TwoPlayer.config
+    game = TwoPlayer.get_game(username)
+    game_table = game.get_player_by_username(username).get_table_game()
+
+    config = Player.config
 
     cell_list = []
     for cell in game_table.flatten():

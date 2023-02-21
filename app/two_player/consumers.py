@@ -11,68 +11,72 @@ class GameConsumer(WebsocketConsumer):
         self.accept()
 
         self.my_username = self.scope["user"].username
-
         async_to_sync(self.channel_layer.group_add)(
             self.my_username,
             self.channel_name,
         )
 
-        self.game = TwoPlayer(self.my_username)
+        game = TwoPlayer.get_game(self.my_username)
 
-        if not self.game.is_game_ready():
-            opposite_username = self.game.get_opposite_username(self.my_username)
+        if game.is_game_ready():
+            my_player = game.get_player_by_username(self.my_username)
+            opposite_player = game.get_opposite_player_by_username(self.my_username)
 
-            # Send data to my player
+            # Send user info to my player
             async_to_sync(self.channel_layer.group_send)(
                 self.my_username,
                 {
                     "type": "send_game_data",
-                    "user_info": opposite_username,
-                    "report": self.game.get_report_game(opposite_username),
-                    "attack_count": self.game.get_attack_count(opposite_username),
+                    "user_info": opposite_player.username,
+                    "report": opposite_player.get_report_game(),
+                    "attack_count": opposite_player.get_attack_count(),
                 },
             )
 
-            # Send data to my oppsite player
+            # Send user info to my oppsite player
             async_to_sync(self.channel_layer.group_send)(
-                opposite_username,
+                opposite_player.username,
                 {
                     "type": "send_game_data",
                     "user_info": self.my_username,
-                    "report": self.game.get_report_game(self.my_username),
-                    "attack_count": self.game.get_attack_count(self.my_username),
+                    "report": my_player.get_report_game(),
+                    "attack_count": my_player.get_attack_count(),
                 },
             )
 
     def disconnect(self, close_code):
-        self.game.deactive_room(self.my_username)
+        TwoPlayer.disactive_game(self.my_username)
         async_to_sync(self.channel_layer.group_discard)(
             self.my_username,
             self.channel_name,
         )
 
     def receive(self, text_data=None):
-        if not self.game.is_player_turn(self.my_username):
+        game = TwoPlayer.get_game(self.my_username)
+        my_player = game.get_player_by_username(self.my_username)
+        opposite_player = game.get_opposite_player_by_username(self.my_username)
+
+        if not game.is_player_turn(my_player):
             print(f"not your turn {self.my_username}")
             return
 
         text_data_json = json.loads(text_data)
+
         select = text_data_json["select"]
-
-        opposite_username = self.game.get_opposite_username(self.my_username)
-
+        attack_type = select.get("attack_type")
         x = select.get("x")
         y = select.get("y")
-        attack_type = select.get("attack_type")
 
-        cells = self.game.get_changes(self.my_username, x, y, attack_type)
+        cells = opposite_player.get_changes(x, y, attack_type)
         if cells is None:
             return
 
         if attack_type == "radar":
             self.search(cells)
         else:
-            self.attack(cells, opposite_username)
+            self.attack(cells, game, opposite_player)
+
+        game.save_data()
 
     def search(self, cells):
         for cell in cells:
@@ -90,7 +94,7 @@ class GameConsumer(WebsocketConsumer):
             },
         )
 
-    def attack(self, cells, opposite_username):
+    def attack(self, cells, game, opposite_player):
         bonus = False
 
         for cell in cells:
@@ -102,18 +106,18 @@ class GameConsumer(WebsocketConsumer):
                 cell["class"] = "select"
 
         if not bonus:
-            self.game.change_turn()
+            game.change_turn()
 
         async_to_sync(self.channel_layer.group_send)(
             self.my_username,
             {
                 "type": "send_game_data",
                 "opposite_cells": cells,
-                "report": self.game.get_report_game(opposite_username),
+                "report": opposite_player.get_report_game(),
             },
         )
         async_to_sync(self.channel_layer.group_send)(
-            opposite_username,
+            opposite_player.username,
             {
                 "type": "send_game_data",
                 "my_cells": cells,
