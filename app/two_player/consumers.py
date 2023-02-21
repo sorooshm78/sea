@@ -107,11 +107,16 @@ class GameConsumer(WebsocketConsumer):
         if not bonus:
             game.change_turn()
 
+        winner = None
+        if opposite_player.is_end_game():
+            winner = self.my_username
+
         self.send_data(
             to=self.my_username,
             data={
                 "opposite_cells": cells,
                 "report": opposite_player.get_report_game(),
+                "winner": winner,
             },
         )
 
@@ -119,6 +124,7 @@ class GameConsumer(WebsocketConsumer):
             to=opposite_player.username,
             data={
                 "my_cells": cells,
+                "winner": winner,
             },
         )
 

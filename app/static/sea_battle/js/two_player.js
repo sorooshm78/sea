@@ -37,6 +37,10 @@ function showMyCells(cells) {
     }
 }
 
+function showEndGame(winner) {
+    $("#user_info").text("winner is " + winner);
+}
+
 function receiveData(data) {
     if (data['user_info']) {
         showUserInfo(data.user_info);
@@ -52,6 +56,11 @@ function receiveData(data) {
     }
     if (data['my_cells']) {
         showMyCells(data.my_cells);
+    }
+    if (data['winner']) {
+        if (data.winner) {
+            showEndGame(data.winner)
+        }
     }
 }
 
