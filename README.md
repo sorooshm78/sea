@@ -93,5 +93,5 @@ enjoy it!
 
 ## Task lists
 - [x] Add single player
-- [ ] Add play two player together (real time) 
+- [ ] Add two player (real time) 
 - [ ] Add play by bot 
