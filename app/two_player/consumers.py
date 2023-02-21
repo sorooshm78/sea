@@ -23,10 +23,9 @@ class GameConsumer(WebsocketConsumer):
             opposite_player = game.get_opposite_player_by_username(self.my_username)
 
             # Send user info to my player
-            async_to_sync(self.channel_layer.group_send)(
-                self.my_username,
-                {
-                    "type": "send_game_data",
+            self.send_data(
+                to=self.my_username,
+                data={
                     "user_info": opposite_player.username,
                     "report": opposite_player.get_report_game(),
                     "attack_count": opposite_player.get_attack_count(),
@@ -34,10 +33,9 @@ class GameConsumer(WebsocketConsumer):
             )
 
             # Send user info to my oppsite player
-            async_to_sync(self.channel_layer.group_send)(
-                opposite_player.username,
-                {
-                    "type": "send_game_data",
+            self.send_data(
+                to=opposite_player.username,
+                data={
                     "user_info": self.my_username,
                     "report": my_player.get_report_game(),
                     "attack_count": my_player.get_attack_count(),
@@ -72,13 +70,13 @@ class GameConsumer(WebsocketConsumer):
             return
 
         if attack_type == "radar":
-            self.search(cells)
+            self.search(cells, game)
         else:
             self.attack(cells, game, opposite_player)
 
         game.save_data()
 
-    def search(self, cells):
+    def search(self, game, cells):
         for cell in cells:
             cell_value = cell.pop("value")
             if cell_value.is_ship():
@@ -86,10 +84,11 @@ class GameConsumer(WebsocketConsumer):
             else:
                 cell["class"] = "radar-select"
 
-        async_to_sync(self.channel_layer.group_send)(
-            self.my_username,
-            {
-                "type": "send_game_data",
+        game.change_turn()
+
+        self.send_data(
+            to=self.my_username,
+            data={
                 "opposite_cells": cells,
             },
         )
@@ -108,21 +107,28 @@ class GameConsumer(WebsocketConsumer):
         if not bonus:
             game.change_turn()
 
-        async_to_sync(self.channel_layer.group_send)(
-            self.my_username,
-            {
-                "type": "send_game_data",
+        self.send_data(
+            to=self.my_username,
+            data={
                 "opposite_cells": cells,
                 "report": opposite_player.get_report_game(),
             },
         )
-        async_to_sync(self.channel_layer.group_send)(
-            opposite_player.username,
-            {
-                "type": "send_game_data",
+
+        self.send_data(
+            to=opposite_player.username,
+            data={
                 "my_cells": cells,
             },
         )
 
-    def send_game_data(self, data):
+    def send_data(self, to, data):
+        context = {"type": "send_to_websocket"}
+        context.update(data)
+        async_to_sync(self.channel_layer.group_send)(
+            to,
+            context,
+        )
+
+    def send_to_websocket(self, data):
         self.send(text_data=json.dumps(data))
