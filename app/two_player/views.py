@@ -36,4 +36,4 @@ def two_player(request):
         "table": table,
     }
 
-    return render(request, "sea_battle/two_player.html", context=context)
+    return render(request, "two_player/index.html", context=context)

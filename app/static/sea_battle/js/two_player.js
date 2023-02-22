@@ -37,8 +37,13 @@ function showMyCells(cells) {
     }
 }
 
+function alertMessage(message) {
+    var alert = `<div class="alert alert-warning text-center message" role="alert">${message}</div>`;
+    $('#message').html(alert);
+}
+
 function showEndGame(winner) {
-    $("#user_info").text("winner is " + winner);
+    alertMessage(`${winner} is win`);
 }
 
 function receiveData(data) {

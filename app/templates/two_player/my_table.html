@@ -2,7 +2,7 @@
     {% with x=forloop.counter0 %}
     {% for cell in row %}
         {% with y=forloop.counter0 %}
-            <button class="cell 
+            <button class="mini-cell 
             {% if cell == "select" %}
                 select
             {% elif cell == "target" %}

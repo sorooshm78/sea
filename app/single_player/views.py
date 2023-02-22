@@ -35,7 +35,7 @@ def single_player(request):
         "attack_count": game.get_attack_count(),
     }
 
-    return render(request, "sea_battle/single_player.html", context=context)
+    return render(request, "single_player/index.html", context=context)
 
 
 @login_required
