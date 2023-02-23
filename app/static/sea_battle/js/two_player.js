@@ -47,7 +47,7 @@ function showEndGame(winner) {
 }
 
 function showTurn(who) {
-    var turn_text = `<i class="fa-solid fa-land-mine-on"></i>  your turn`;
+    var turn_text = `<i class="fa-solid fa-biohazard"></i>  your turn`;
     if (who == "my_turn") {
         $("#turn", "#opposite_table").html(turn_text);
         $("#turn", "#my_table").empty();
