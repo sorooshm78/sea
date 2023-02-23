@@ -39,11 +39,11 @@
     <div class="alert alert-primary message">
         {% if last_score %}
             <strong>{{ last_score.user }}</strong>
-            Your Score  <strong>{{ last_score.score }}</strong>
-            & Your Rank <strong>{{ last_score.rank }}</strong> 
-            In Time <strong>{{ last_score.time|to_jalali }}</strong> 
+            your score is <strong>{{ last_score.score }}</strong>
+            and your rank is <strong>{{ last_score.rank }}</strong> 
+            in time <strong>{{ last_score.time|to_jalali }}</strong> 
         {% else %}
-            Not Exist Score Yet
+            Not exist score yet
         {% endif %}
     </div>
 </div>

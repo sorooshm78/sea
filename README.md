@@ -6,19 +6,19 @@
 ## Attack Type
 
 ### 1.Bomb 
-by selecting a cell as a bomb, only that cell is selected
+By selecting a cell as a bomb, only that cell is selected
 ![bomb](https://drive.google.com/uc?export=view&id=18Q0n9eBxcpj-evRqkcPscIEwc9nCaQWd) 
 
 ### 2.Liner
-by selecting a cell as a liner, it moves from the left to the right of the selected row until it hits the ship
+By selecting a cell as a liner, it moves from the left to the right of the selected row until it hits the ship
 ![liner](https://drive.google.com/uc?export=view&id=1CRw08ymSxv3FQNhoksanvXbb9cywMs1d)
 
 ### 3.Explosion
-by selecting a cell  as explosion, the 3x3 area of that cell is selected
+By selecting a cell  as explosion, the 3x3 area of that cell is selected
 ![explosion](https://drive.google.com/uc?export=view&id=1Lv4Rv9ydUIUW87XYICzvSdiyv_aLXT0y)
 
 ### 4.Radar
-by selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
+By selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
 ![radar](https://drive.google.com/uc?export=view&id=1W80QWSzNipvIGb_7hOmNnsFNO2-tH-zt)
 
 ## Score Board
