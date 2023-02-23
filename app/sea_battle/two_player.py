@@ -89,6 +89,9 @@ class TwoPlayer:
         elif self.turn == self.player2.username:
             self.turn = self.player1.username
 
+    def get_turn(self):
+        return self.turn
+
     def is_player_turn(self, player):
         if self.turn == player.username:
             return True

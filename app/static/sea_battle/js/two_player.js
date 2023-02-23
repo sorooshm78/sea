@@ -43,7 +43,19 @@ function alertMessage(message) {
 }
 
 function showEndGame(winner) {
-    alertMessage(`${winner} is win`);
+    alertMessage(`<i class="fa-solid fa-trophy"></i> user ${winner} won <i class="fa-solid fa-trophy"></i>`);
+}
+
+function showTurn(who) {
+    var turn_text = `<i class="fa-solid fa-land-mine-on"></i>  your turn`;
+    if (who == "my_turn") {
+        $("#turn", "#opposite_table").html(turn_text);
+        $("#turn", "#my_table").empty();
+    }
+    if (who == "opposite_turn") {
+        $("#turn", "#my_table").html(turn_text);
+        $("#turn", "#opposite_table").empty();
+    }
 }
 
 function receiveData(data) {
@@ -64,8 +76,11 @@ function receiveData(data) {
     }
     if (data['winner']) {
         if (data.winner) {
-            showEndGame(data.winner)
+            showEndGame(data.winner);
         }
+    }
+    if (data['turn']) {
+        showTurn(data.turn);
     }
 }
 

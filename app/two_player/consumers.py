@@ -29,6 +29,7 @@ class GameConsumer(WebsocketConsumer):
                     "user_info": opposite_player.username,
                     "report": opposite_player.get_report_game(),
                     "attack_count": opposite_player.get_attack_count(),
+                    "turn": self.get_turn(game, self.my_username),
                 },
             )
 
@@ -39,6 +40,7 @@ class GameConsumer(WebsocketConsumer):
                     "user_info": self.my_username,
                     "report": my_player.get_report_game(),
                     "attack_count": my_player.get_attack_count(),
+                    "turn": self.get_turn(game, opposite_player.username),
                 },
             )
 
@@ -70,13 +72,13 @@ class GameConsumer(WebsocketConsumer):
             return
 
         if attack_type == "radar":
-            self.search(game, cells)
+            self.search(game, opposite_player, cells)
         else:
             self.attack(game, opposite_player, cells)
 
         game.save_data()
 
-    def search(self, game, cells):
+    def search(self, game, opposite_player, cells):
         for cell in cells:
             cell_value = cell.pop("value")
             if cell_value.is_ship():
@@ -90,6 +92,13 @@ class GameConsumer(WebsocketConsumer):
             to=self.my_username,
             data={
                 "opposite_cells": cells,
+                "turn": self.get_turn(game, self.my_username),
+            },
+        )
+        self.send_data(
+            to=opposite_player.username,
+            data={
+                "turn": self.get_turn(game, opposite_player.username),
             },
         )
 
@@ -117,6 +126,7 @@ class GameConsumer(WebsocketConsumer):
                 "opposite_cells": cells,
                 "report": opposite_player.get_report_game(),
                 "winner": winner,
+                "turn": self.get_turn(game, self.my_username),
             },
         )
 
@@ -125,6 +135,7 @@ class GameConsumer(WebsocketConsumer):
             data={
                 "my_cells": cells,
                 "winner": winner,
+                "turn": self.get_turn(game, opposite_player.username),
             },
         )
 
@@ -138,3 +149,9 @@ class GameConsumer(WebsocketConsumer):
 
     def send_to_websocket(self, data):
         self.send(text_data=json.dumps(data))
+
+    def get_turn(self, game, username):
+        turn = game.get_turn()
+        if turn == username:
+            return "my_turn"
+        return "opposite_turn"
