@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "sea_battle",
     "account",
     "score",
+    "home",
 ]
 
 MIDDLEWARE = [
@@ -142,7 +143,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Login redirect
-LOGIN_REDIRECT_URL = "index"
+LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "login"
 LOGIN_URL = "login"
 
