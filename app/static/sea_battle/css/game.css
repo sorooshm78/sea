@@ -18,8 +18,16 @@
     background-color: white;
 }
 
+.ship {
+    background-color: #fa0d0d;
+}
+
 .cell {
     padding: 37.5px 40.8px;
+}
+
+.mini-cell {
+    padding: 33px 36px;
 }
 
 .message {

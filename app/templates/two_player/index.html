@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'sea_battle/js/two_player.js' %}"></script>
+{% endblock script %}
+
+{% block content %}
+    <div class="container-fluid mt-4">
+        <div class="row  justify-content-center">
+            <div class="col-sm-4 col-md-auto" id="my_table">           
+                {% include "includes/user_info.html" with user_info=request.user.username|add:" (me)" %}
+                {% include 'two_player/my_table.html' with table=my_table %}
+            </div>
+            <div class="col-sm-8 col-md-auto" id="opposite_table">
+                {% include "includes/user_info.html" with user_info="<span id='user_info'><span class='spinner-grow text-primary'></span></span>" %}
+                {% include 'two_player/opposite_table.html' with table=table %}    
+            </div>
+            <div class="col align-self-start">
+                <div class="row">
+                    <div class="col mt-5">
+                        {% include 'includes/attack_type.html' %}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        {% include 'includes/report.html' %}
+                    </div>
+                </div>
+            </div>            
+        </div> 
+    </div>
+    <div class="container-fluid p-3" id='message'></div> 
+{% endblock content %}

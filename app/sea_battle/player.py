@@ -1,4 +1,3 @@
-from django.core.cache import cache
 from django.conf import settings
 
 from .point import Point
@@ -8,7 +7,7 @@ from .sea import Sea
 CACHE_TTL = settings.CACHE_TTL
 
 
-class SeaBattleGame:
+class Player:
     config = {
         "row": 10,
         "col": 10,
@@ -20,17 +19,12 @@ class SeaBattleGame:
         },
     }
 
-    def __init__(self, user_id):
-        self.user_id = user_id
-        if cache.get(user_id) is not None:
-            self.sea = cache.get(user_id)
-
-        else:
-            self.start_new_game()
+    def __init__(self, username):
+        self.username = username
+        self.sea = Sea(Player.config)
 
     def start_new_game(self):
-        self.sea = Sea(SeaBattleGame.config)
-        self.save_game_data()
+        self.sea = Sea(Player.config)
 
     def get_table_game(self):
         return self.sea.coordinates
@@ -39,8 +33,6 @@ class SeaBattleGame:
         points = self.sea.get_changes_by_type_attack(Point(x, y), type_attack)
         if points is None:
             return
-
-        self.save_game_data()
 
         change_points = []
         for point in points:
@@ -53,9 +45,6 @@ class SeaBattleGame:
             )
 
         return change_points
-
-    def save_game_data(self):
-        cache.set(self.user_id, self.sea, timeout=CACHE_TTL)
 
     def is_end_game(self):
         for cell in self.sea.coordinates.flatten():

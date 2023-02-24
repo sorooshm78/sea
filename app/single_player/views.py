@@ -5,13 +5,12 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from score.models import ScoreBoardModel
-
-from .logic.sea_battle_game import SeaBattleGame
+from sea_battle.single_player import SinglePlayer
 
 
 @login_required
-def index(request):
-    game = SeaBattleGame(request.user.id)
+def single_player(request):
+    game = SinglePlayer(request.user.id)
     game_table = game.get_table_game()
     config = game.config
 
@@ -36,7 +35,7 @@ def index(request):
         "attack_count": game.get_attack_count(),
     }
 
-    return render(request, "sea_battle/index.html", context=context)
+    return render(request, "single_player/index.html", context=context)
 
 
 @login_required
@@ -45,7 +44,7 @@ def attack(request):
     y = int(request.GET.get("y"))
     type_attack = request.GET.get("type")
 
-    game = SeaBattleGame(request.user.id)
+    game = SinglePlayer(request.user.id)
 
     # Wrap cell data for front
     cells = game.get_changes(x, y, type_attack)
@@ -86,7 +85,7 @@ def search(request):
     x = int(request.GET.get("x"))
     y = int(request.GET.get("y"))
 
-    game = SeaBattleGame(request.user.id)
+    game = SinglePlayer(request.user.id)
 
     # Wrap cell data for front
     cells = game.get_changes(x, y, "radar")
@@ -109,6 +108,6 @@ def search(request):
 
 @login_required
 def new_game(request):
-    game = SeaBattleGame(request.user.id)
+    game = SinglePlayer(request.user.id)
     game.start_new_game()
-    return redirect("index")
+    return redirect("single_player")
