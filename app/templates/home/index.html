@@ -1,1 +1,18 @@
-salam
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-4 align-self-center text-center bg-light m-5 p-5 rounded">
+                <div class="alert alert-success h4">
+                    <strong><i class="fa-solid fa-anchor"></i> Sea Battle Game </strong>
+                </div>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="button" class="btn btn-lg btn-outline-primary btn-block">Single player</button>
+                    <button type="button" class="btn btn-lg btn-outline-primary btn-block">Two player</button>
+                </div> 
+            </div>
+        </div>
+    </div> 
+{% endblock content %}
