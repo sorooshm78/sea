@@ -1,3 +1,11 @@
+function disableAllOppositeTableCells() {
+    $("button", "#opposite_table").prop('disabled', true);
+}
+
+function enableEmptyOppositeTableCells() {
+    $('.empty, .radar-target, .radar-select', "#opposite_table").prop('disabled', false);
+}
+
 function showUserInfo(user_info) {
     $("#user_info").text(user_info);
 }
@@ -49,10 +57,12 @@ function showEndGame(winner) {
 function showTurn(who) {
     var turn_text = `<i class="fa-regular fa-circle-dot"></i>  your turn`;
     if (who == "my_turn") {
+        enableEmptyOppositeTableCells();
         $("#turn", "#opposite_table").html(turn_text);
         $("#turn", "#my_table").empty();
     }
     if (who == "opposite_turn") {
+        disableAllOppositeTableCells();
         $("#turn", "#my_table").html(turn_text);
         $("#turn", "#opposite_table").empty();
     }
@@ -74,13 +84,14 @@ function receiveData(data) {
     if (data['my_cells']) {
         showMyCells(data.my_cells);
     }
-    if (data['winner']) {
-        if (data.winner) {
-            showEndGame(data.winner);
-        }
-    }
     if (data['turn']) {
         showTurn(data.turn);
+    }
+    if (data['winner']) {
+        if (data.winner) {
+            disableAllOppositeTableCells();
+            showEndGame(data.winner);
+        }
     }
 }
 
