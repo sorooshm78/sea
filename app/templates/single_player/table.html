@@ -2,18 +2,7 @@
     {% with x=forloop.counter0 %}
     {% for cell in row %}
         {% with y=forloop.counter0 %}
-        <button class="cell 
-        {% if cell == "select" %}
-            select
-        {% elif cell == "target" %}
-            target
-        {% else %}
-            empty
-        {% endif %}"
-
-        id="{{x}}{{y}}"
-
-        onclick="select({{ x }}, {{ y }})"></button>
+            <button class="cell {{ cell }}" id="{{x}}{{y}}"onclick="select({{ x }}, {{ y }})"></button>
         {% endwith %}
     {% endfor %}
     <br>
