@@ -3,6 +3,7 @@ from django.urls import reverse
 
 from .forms import RegisterModelForm
 
+
 # Create your views here.
 class UserRegistrationView(CreateView):
     form_class = RegisterModelForm

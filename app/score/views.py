@@ -15,7 +15,10 @@ class ScoreBoardListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         query = super().get_queryset()
         query = query.order_by("-score").annotate(
-            rank=Window(expression=Rank(), order_by=F("score").desc(),)
+            rank=Window(
+                expression=Rank(),
+                order_by=F("score").desc(),
+            )
         )
         return query
 

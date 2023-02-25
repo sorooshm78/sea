@@ -147,7 +147,10 @@ class Sea:
         return changed_cell
 
     def get_changes_by_liner_attack(self, point):
-        liner_area = Point(slice(point.x, point.x + 1), slice(0, self.col),)
+        liner_area = Point(
+            slice(point.x, point.x + 1),
+            slice(0, self.col),
+        )
         points = self.get_list_of_point(liner_area)
         changed_cell = []
 
