@@ -1,12 +1,12 @@
 # sea
-**Sea Battle** game by django
+**Sea Battle** game by Django
 
 ## Types of game
-### Single player
+### * Single player
 ![play_game](https://drive.google.com/uc?export=view&id=1uyG-A2oiW5G8rZmQt8lfG2c9_PHnAY6r)
 ![single_play](https://drive.google.com/uc?export=view&id=1w_VTkvi92gDerYzPmM-Lz5aNvkWB7Rob)
 
-### Two player 
+### * Two player 
 ![two_player](https://drive.google.com/uc?export=view&id=1KN-bJSU4tqksoyajV5dTLd_nc0y-QH8F)
 
 ## Attack Type
