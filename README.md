@@ -1,25 +1,30 @@
 # sea
 **Sea Battle** game by django
 
+## Types of game
+### Single player
 ![play_game](https://drive.google.com/uc?export=view&id=1uyG-A2oiW5G8rZmQt8lfG2c9_PHnAY6r)
+![single_play](https://drive.google.com/uc?export=view&id=1w_VTkvi92gDerYzPmM-Lz5aNvkWB7Rob)
+
+### Two player 
+![two_player](https://drive.google.com/uc?export=view&id=1KN-bJSU4tqksoyajV5dTLd_nc0y-QH8F)
 
 ## Attack Type
-
 ### 1.Bomb 
 By selecting a cell as a bomb, only that cell is selected
-![bomb](https://drive.google.com/uc?export=view&id=18Q0n9eBxcpj-evRqkcPscIEwc9nCaQWd) 
+![bomb](https://drive.google.com/uc?export=view&id=180vu2pcCMYkqSE8wMMgIETiGOpByacyd) 
 
 ### 2.Liner
 By selecting a cell as a liner, it moves from the left to the right of the selected row until it hits the ship
-![liner](https://drive.google.com/uc?export=view&id=1CRw08ymSxv3FQNhoksanvXbb9cywMs1d)
+![liner](https://drive.google.com/uc?export=view&id=18hNsYYF7ErHF4pUGRtBfw_hLDGeHhKpe)
 
 ### 3.Explosion
 By selecting a cell  as explosion, the 3x3 area of that cell is selected
-![explosion](https://drive.google.com/uc?export=view&id=1Lv4Rv9ydUIUW87XYICzvSdiyv_aLXT0y)
+![explosion](https://drive.google.com/uc?export=view&id=19i6lAcvBni1IQ0O2--E88D5X2BUNi-v6)
 
 ### 4.Radar
 By selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
-![radar](https://drive.google.com/uc?export=view&id=1W80QWSzNipvIGb_7hOmNnsFNO2-tH-zt)
+![radar](https://drive.google.com/uc?export=view&id=1WD_zTunrv-0hAcUQQLKtqCkNnbN9D1Qs)
 
 ## Score Board
 ![score_board](https://drive.google.com/uc?export=view&id=19nwceFB9uGtASCkhQrdPWHRpGypwz8WJ)
@@ -63,10 +68,7 @@ Install Redis on Linux
 sudo apt-get update
 sudo apt-get install redis
 ```
-Run the Redis server from a new terminal window.
-```
-redis-server
-```
+
 and you change redis configurations in core/settings.py to:
 ```
 # Cache setting
@@ -93,5 +95,5 @@ enjoy it!
 
 ## Task lists
 - [x] Add single player
-- [ ] Add two player (real time) 
+- [x] Add two player (real time) 
 - [ ] Add play by bot 
