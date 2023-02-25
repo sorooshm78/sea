@@ -1,16 +1,16 @@
-.select {
+.empty-selected {
     background-color: #0154cf;
 }
 
-.radar-select {
+.radar-empty {
     background-color: #99b0d4;
 }
 
-.target {
+.ship-selected {
     background-color: #ff0000;
 }
 
-.radar-target {
+.radar-ship {
     background-color: #f16161;
 }
 

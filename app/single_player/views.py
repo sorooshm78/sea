@@ -18,12 +18,12 @@ def single_player(request):
     for cell in game_table.flatten():
         if cell.is_ship():
             if cell.is_selected:
-                cell_list.append("target")
+                cell_list.append("ship-selected")
             else:
                 cell_list.append("empty")
         else:
             if cell.is_selected:
-                cell_list.append("select")
+                cell_list.append("empty-selected")
             else:
                 cell_list.append("empty")
 
@@ -54,10 +54,10 @@ def attack(request):
         cell_value = cell.pop("value")
         if cell_value.is_ship():
             if cell_value.is_selected:
-                cell["class"] = "target"
+                cell["class"] = "ship-selected"
         else:
             if cell_value.is_selected:
-                cell["class"] = "select"
+                cell["class"] = "empty-selected"
 
     # End Game
     is_end_game = "false"
@@ -94,9 +94,9 @@ def search(request):
     for cell in cells:
         cell_value = cell.pop("value")
         if cell_value.is_ship():
-            cell["class"] = "radar-target"
+            cell["class"] = "radar-ship"
         else:
-            cell["class"] = "radar-select"
+            cell["class"] = "radar-empty"
 
     # Data to send to client
     data = {

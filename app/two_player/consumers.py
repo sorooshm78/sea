@@ -82,9 +82,9 @@ class GameConsumer(WebsocketConsumer):
         for cell in cells:
             cell_value = cell.pop("value")
             if cell_value.is_ship():
-                cell["class"] = "radar-target"
+                cell["class"] = "radar-ship"
             else:
-                cell["class"] = "radar-select"
+                cell["class"] = "radar-empty"
 
         game.change_turn()
 
@@ -108,10 +108,10 @@ class GameConsumer(WebsocketConsumer):
         for cell in cells:
             cell_value = cell.pop("value")
             if cell_value.is_ship():
-                cell["class"] = "target"
+                cell["class"] = "ship-selected"
                 bonus = True
             else:
-                cell["class"] = "select"
+                cell["class"] = "empty-selected"
 
         if not bonus:
             game.change_turn()

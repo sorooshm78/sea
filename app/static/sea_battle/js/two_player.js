@@ -3,7 +3,7 @@ function disableAllOppositeTableCells() {
 }
 
 function enableEmptyOppositeTableCells() {
-    $('.empty, .radar-target, .radar-select', "#opposite_table").prop('disabled', false);
+    $('.empty, .radar-ship, .radar-empty', "#opposite_table").prop('disabled', false);
 }
 
 function showUserInfo(user_info) {
@@ -27,8 +27,8 @@ function showOppositeCells(cells) {
     for (index in cells) {
         cell = cells[index];
         $(`#${cell.x}${cell.y}`).removeClass('empty')
-            .removeClass('radar-select')
-            .removeClass('radar-target')
+            .removeClass('radar-empty')
+            .removeClass('radar-ship')
             .removeClass('ship')
             .addClass(cell.class);
     }
@@ -38,8 +38,8 @@ function showMyCells(cells) {
     for (index in cells) {
         cell = cells[index];
         $(`#my_${cell.x}${cell.y}`).removeClass('empty')
-            .removeClass('radar-select')
-            .removeClass('radar-target')
+            .removeClass('radar-empty')
+            .removeClass('radar-ship')
             .removeClass('ship')
             .addClass(cell.class);
     }

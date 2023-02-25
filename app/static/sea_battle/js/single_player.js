@@ -1,9 +1,5 @@
-function disableAllButtons() {
-    $('.cell').prop('disabled', true);
-}
-
 function disableSelectButtons() {
-    $('.select,.target').prop('disabled', true);
+    $('.empty-selected,.ship-selected').prop('disabled', true);
 }
 
 function alertMessage(message) {
@@ -63,8 +59,8 @@ function select(x, y) {
                 for (index in data.cells) {
                     cell = data.cells[index];
                     $(`#${cell.x}${cell.y}`).removeClass('empty')
-                        .removeClass('radar-select')
-                        .removeClass('radar-target')
+                        .removeClass('radar-empty')
+                        .removeClass('radar-ship')
                         .addClass(cell.class);
                 }
                 disableSelectButtons();
