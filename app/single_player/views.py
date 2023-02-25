@@ -1,41 +1,53 @@
 import numpy as np
 
-from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.base import RedirectView, TemplateView
 
 from score.models import ScoreBoardModel
 from sea_battle.single_player import SinglePlayer
 
 
-@login_required
-def single_player(request):
-    game = SinglePlayer(request.user.id)
-    game_table = game.get_table_game()
-    config = game.config
+class SinglePlayerView(LoginRequiredMixin, TemplateView):
+    template_name = "single_player/index.html"
 
-    cell_list = []
-    for cell in game_table.flatten():
-        if cell.is_ship():
-            if cell.is_selected:
-                cell_list.append("ship-selected")
+    def get_context_data(self, *arg, **kwargs):
+        context = super().get_context_data(*arg, **kwargs)
+
+        game = SinglePlayer(self.request.user.id)
+        game_table = game.get_table_game()
+        config = game.config
+
+        cell_list = []
+        for cell in game_table.flatten():
+            if cell.is_ship():
+                if cell.is_selected:
+                    cell_list.append("ship-selected")
+                else:
+                    cell_list.append("empty")
             else:
-                cell_list.append("empty")
-        else:
-            if cell.is_selected:
-                cell_list.append("empty-selected")
-            else:
-                cell_list.append("empty")
+                if cell.is_selected:
+                    cell_list.append("empty-selected")
+                else:
+                    cell_list.append("empty")
 
-    view_table = np.array(cell_list).reshape((config["row"], config["col"]))
+        view_table = np.array(cell_list).reshape((config["row"], config["col"]))
 
-    context = {
-        "table": view_table,
-        "report": game.get_report_game(),
-        "attack_count": game.get_attack_count(),
-    }
+        context["table"] = view_table
+        context["report"] = game.get_report_game()
+        context["attack_count"] = game.get_attack_count()
 
-    return render(request, "single_player/index.html", context=context)
+        return context
+
+
+class NewGameView(LoginRequiredMixin, RedirectView):
+    pattern_name = "single_player"
+
+    def get(self, request, *args, **kwargs):
+        game = SinglePlayer(request.user.id)
+        game.start_new_game()
+        return super().get(request, *args, **kwargs)
 
 
 @login_required
@@ -104,10 +116,3 @@ def search(request):
     }
 
     return JsonResponse(data)
-
-
-@login_required
-def new_game(request):
-    game = SinglePlayer(request.user.id)
-    game.start_new_game()
-    return redirect("single_player")

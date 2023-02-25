@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-    path("", views.two_player, name="two_player"),
+    path("", views.TwoPlayerView.as_view(), name="two_player"),
 ]
