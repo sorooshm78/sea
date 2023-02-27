@@ -2,8 +2,72 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from django.core.cache import cache
+from django.urls import reverse
 
 from sea_battle.two_player import TwoPlayer
+
+
+class SearchUserConsumer(WebsocketConsumer):
+    def connect(self):
+        self.accept()
+
+        self.my_username = self.scope["user"].username
+        self.group_name = f"serach_{self.my_username}"
+
+        async_to_sync(self.channel_layer.group_add)(
+            self.group_name,
+            self.channel_name,
+        )
+
+        if cache.get(self.my_username) is not None:
+            # Redirect to game
+            return
+
+        alone_user = cache.get("alone_user")
+
+        if alone_user is None:
+            cache.set("alone_user", self.my_username)
+            return
+
+        if alone_user == self.my_username:
+            return
+
+        cache.set(self.my_username, alone_user)
+        cache.set(alone_user, self.my_username)
+        game = TwoPlayer(self.my_username, alone_user)
+        cache.set(TwoPlayer.get_game_room_key(self.my_username, alone_user), game)
+        cache.delete("alone_user")
+
+        game_url = reverse("two_player")
+        # Send to client to redirect game page
+        async_to_sync(self.channel_layer.group_send)(
+            f"serach_{self.my_username}",
+            {
+                "type": "send_to_websocket",
+                "url": game_url,
+            },
+        )
+        async_to_sync(self.channel_layer.group_send)(
+            f"serach_{alone_user}",
+            {
+                "type": "send_to_websocket",
+                "url": game_url,
+            },
+        )
+
+    def disconnect(self, close_code):
+        alone_user = cache.get("alone_user")
+        if alone_user is not None and alone_user == self.my_username:
+            cache.delete("alone_user")
+
+        async_to_sync(self.channel_layer.group_discard)(
+            self.group_name,
+            self.channel_name,
+        )
+
+    def send_to_websocket(self, data):
+        self.send(text_data=json.dumps(data))
 
 
 class GameConsumer(WebsocketConsumer):

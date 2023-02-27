@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'sea_battle/js/search_user.js' %}"></script>
+{% endblock script %}
+
+{% block content %}
+    <div class="container bg-info">
+        {{ request.user.username }} vs -----
+    </div>
+{% endblock content %}

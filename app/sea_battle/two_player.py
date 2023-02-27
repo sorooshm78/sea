@@ -8,62 +8,37 @@ CACHE_TTL = settings.CACHE_TTL
 
 
 class TwoPlayer:
-    def __init__(self, room_id, username):
-        self.player1 = Player(username)
-        self.player2 = None
-        self.turn = self.player1.username
+    def __init__(self, username1, username2):
+        self.player1 = Player(username1)
+        self.player2 = Player(username2)
 
-        self.room_id = room_id
+        self.turn = self.player1.username
 
     def set_another_player(self, username):
         self.player2 = Player(username)
 
     @classmethod
+    def get_game_room_key(cls, username1, username2):
+        if username1 < username2:
+            return f"{username1}_{username2}"
+        return f"{username2}_{username1}"
+
+    @classmethod
     def get_game(cls, username):
-        # Chack exist rooms
-        user_room_id = cache.get(username)
-        if user_room_id is not None:
-            room = cache.get(user_room_id)
+        oppoite_username = cache.get(username)
+        room = cache.get(TwoPlayer.get_game_room_key(username, oppoite_username))
+        if room is not None:
             return room
-
-        # Not empty room
-        room = cache.get("empty_room")
-        if room is None:
-            room_id = cache.get_or_set("room_id", 1)
-            new_room = TwoPlayer(room_id, username)
-            cache.incr("room_id")
-            cache.set("empty_room", new_room)
-            return new_room
-
-        if room.player1.username == username:
-            return room
-
-        # Exist empty room and set player2
-        room.set_another_player(username)
-
-        cache.set(room.room_id, room)
-        cache.set(room.player1.username, room.room_id)
-        cache.set(room.player2.username, room.room_id)
-
-        cache.delete("room")
-        return room
 
     @classmethod
     def disactive_game(cls, username):
-        # Exist room
-        room_id = cache.keys(username)
-        if room_id is not None:
-            cache.delete(room_id)
-            return
-
-        # Empty room
-        room = cache.get("empty_room")
-        if room is not None:
-            cache.delete("empty_room")
-            return
+        pass
 
     def save_data(self):
-        cache.set(self.room_id, self)
+        cache.set(
+            TwoPlayer.get_game_room_key(self.player1.username, self.player2.username),
+            self,
+        )
 
     def has_capacity(self):
         if self.player1 is None or self.player2 is None:
@@ -82,6 +57,12 @@ class TwoPlayer:
         if self.player1.username == username:
             return self.player2
         return self.player1
+
+    def get_my_and_opposite_player_by_username(self, username):
+        # Return (my_player, opposite_player)
+        if self.player1.username == username:
+            return (self.player1, self.player2)
+        return (self.player2, self.player1)
 
     def change_turn(self):
         if self.turn == self.player1.username:

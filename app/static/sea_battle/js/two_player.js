@@ -120,7 +120,7 @@ function select(x, y) {
 }
 
 $(document).ready(function () {
-    gameSocket = new WebSocket("ws://" + window.location.host + "/ws/");
+    gameSocket = new WebSocket("ws://" + window.location.host + "/ws/game");
 
     gameSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);

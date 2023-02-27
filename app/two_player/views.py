@@ -9,6 +9,40 @@ from sea_battle.two_player import TwoPlayer
 from sea_battle.player import Player
 
 
+def get_view_game_table_with_ship(game_table, row, col):
+    cell_list = []
+    for cell in game_table.flatten():
+        if cell.is_ship():
+            if cell.is_selected:
+                cell_list.append("ship-selected")
+            else:
+                cell_list.append("ship")
+        else:
+            if cell.is_selected:
+                cell_list.append("empty-selected")
+            else:
+                cell_list.append("empty")
+
+    return np.array(cell_list).reshape((row, col))
+
+
+def get_view_game_table_hide_ship(game_table, row, col):
+    cell_list = []
+    for cell in game_table.flatten():
+        if cell.is_ship():
+            if cell.is_selected:
+                cell_list.append("ship-selected")
+            else:
+                cell_list.append("empty")
+        else:
+            if cell.is_selected:
+                cell_list.append("empty-selected")
+            else:
+                cell_list.append("empty")
+
+    return np.array(cell_list).reshape((row, col))
+
+
 class TwoPlayerView(LoginRequiredMixin, TemplateView):
     template_name = "two_player/index.html"
 
@@ -17,27 +51,23 @@ class TwoPlayerView(LoginRequiredMixin, TemplateView):
 
         username = self.request.user.username
         game = TwoPlayer.get_game(username)
-        game_table = game.get_player_by_username(username).get_table_game()
+        my_player, opposite_player = game.get_my_and_opposite_player_by_username(
+            username
+        )
 
         config = Player.config
 
-        cell_list = []
-        for cell in game_table.flatten():
-            if cell.is_ship():
-                if cell.is_selected:
-                    cell_list.append("ship-selected")
-                else:
-                    cell_list.append("ship")
-            else:
-                if cell.is_selected:
-                    cell_list.append("empty-selected")
-                else:
-                    cell_list.append("empty")
-
-        my_table = np.array(cell_list).reshape((config["row"], config["col"]))
-        table = np.full((config["row"], config["col"]), "empty")
-
-        context["my_table"] = my_table
-        context["table"] = table
+        context["my_table"] = get_view_game_table_with_ship(
+            my_player.get_table_game(), config["row"], config["col"]
+        )
+        context["opposite_table"] = get_view_game_table_hide_ship(
+            opposite_player.get_table_game(), config["row"], config["col"]
+        )
+        context["report"] = opposite_player.get_report_game()
+        context["attack_count"] = opposite_player.get_attack_count()
 
         return context
+
+
+class SearchUserView(LoginRequiredMixin, TemplateView):
+    template_name = "two_player/search_user.html"
