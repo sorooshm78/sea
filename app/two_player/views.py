@@ -63,8 +63,7 @@ class TwoPlayerView(LoginRequiredMixin, TemplateView):
         context["opposite_table"] = get_view_game_table_hide_ship(
             opposite_player.get_table_game(), config["row"], config["col"]
         )
-        context["report"] = opposite_player.get_report_game()
-        context["attack_count"] = opposite_player.get_attack_count()
+        context["opposite_username"] = opposite_player.username
 
         return context
 

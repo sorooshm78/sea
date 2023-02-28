@@ -13,10 +13,10 @@ class SearchUserConsumer(WebsocketConsumer):
         self.accept()
 
         self.my_username = self.scope["user"].username
-        self.group_name = f"serach_{self.my_username}"
+        self.my_group_name = f"serach_{self.my_username}"
 
         async_to_sync(self.channel_layer.group_add)(
-            self.group_name,
+            self.my_group_name,
             self.channel_name,
         )
 
@@ -42,7 +42,7 @@ class SearchUserConsumer(WebsocketConsumer):
         game_url = reverse("two_player")
         # Send to client to redirect game page
         async_to_sync(self.channel_layer.group_send)(
-            f"serach_{self.my_username}",
+            self.my_group_name,
             {
                 "type": "send_to_websocket",
                 "url": game_url,
@@ -62,7 +62,7 @@ class SearchUserConsumer(WebsocketConsumer):
             cache.delete("alone_user")
 
         async_to_sync(self.channel_layer.group_discard)(
-            self.group_name,
+            self.my_group_name,
             self.channel_name,
         )
 
@@ -72,41 +72,31 @@ class SearchUserConsumer(WebsocketConsumer):
 
 class GameConsumer(WebsocketConsumer):
     def connect(self):
+        self.my_username = self.scope["user"].username
+        game = TwoPlayer.get_game(self.my_username)
+        my_player, opposite_player = game.get_my_and_opposite_player_by_username(
+            self.my_username
+        )
+
+        if my_player is None or opposite_player is None:
+            return
+
         self.accept()
 
-        self.my_username = self.scope["user"].username
         async_to_sync(self.channel_layer.group_add)(
             self.my_username,
             self.channel_name,
         )
 
-        game = TwoPlayer.get_game(self.my_username)
-
-        if game.is_game_ready():
-            my_player = game.get_player_by_username(self.my_username)
-            opposite_player = game.get_opposite_player_by_username(self.my_username)
-
-            # Send user info to my player
-            self.send_data(
-                to=self.my_username,
-                data={
-                    "user_info": opposite_player.username,
-                    "report": opposite_player.get_report_game(),
-                    "attack_count": opposite_player.get_attack_count(),
-                    "turn": self.get_turn(game, self.my_username),
-                },
-            )
-
-            # Send user info to my oppsite player
-            self.send_data(
-                to=opposite_player.username,
-                data={
-                    "user_info": self.my_username,
-                    "report": my_player.get_report_game(),
-                    "attack_count": my_player.get_attack_count(),
-                    "turn": self.get_turn(game, opposite_player.username),
-                },
-            )
+        # Send user info to my player
+        self.send_data(
+            to=self.my_username,
+            data={
+                "report": opposite_player.get_report_game(),
+                "attack_count": opposite_player.get_attack_count(),
+                "turn": self.get_turn(game, self.my_username),
+            },
+        )
 
     def disconnect(self, close_code):
         TwoPlayer.disactive_game(self.my_username)
@@ -117,8 +107,13 @@ class GameConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None):
         game = TwoPlayer.get_game(self.my_username)
-        my_player = game.get_player_by_username(self.my_username)
-        opposite_player = game.get_opposite_player_by_username(self.my_username)
+        my_player, opposite_player = game.get_my_and_opposite_player_by_username(
+            self.my_username
+        )
+
+        print(f"in {self.my_username} cousumer")
+        print(f"my player sea {my_player.sea}")
+        print(f"oppo player sea {opposite_player.sea}")
 
         if not game.is_player_turn(my_player):
             print(f"not your turn {self.my_username}")
@@ -140,6 +135,9 @@ class GameConsumer(WebsocketConsumer):
         else:
             self.attack(game, opposite_player, cells)
 
+        print(
+            f"in {self.my_username} cousumer and count attack is {opposite_player.get_attack_count()}"
+        )
         game.save_data()
 
     def search(self, game, opposite_player, cells):

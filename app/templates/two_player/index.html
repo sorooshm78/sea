@@ -13,7 +13,7 @@
                 {% include 'two_player/my_table.html' with table=my_table %}
             </div>
             <div class="col-sm-8 col-md-auto" id="opposite_table">
-                {% include "includes/user_info.html" with user_info="<span id='user_info'><span class='spinner-grow text-primary'></span></span>" %}
+                {% include "includes/user_info.html" with user_info=opposite_username %}
                 {% include 'two_player/opposite_table.html' with table=opposite_table %}    
             </div>
             <div class="col align-self-start">
