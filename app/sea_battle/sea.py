@@ -14,7 +14,7 @@ class Sea:
         self.row = config["row"]
         self.col = config["col"]
         self.list_length_ships = config["list_length_ships"]
-        self.attack_count = config["attack_count"]
+        self.attack_count = dict(config["attack_count"])
         self.make_coordinates()
         self.make_ships()
 

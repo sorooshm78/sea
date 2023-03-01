@@ -14,9 +14,6 @@ class TwoPlayer:
 
         self.turn = self.player1.username
 
-    def set_another_player(self, username):
-        self.player2 = Player(username)
-
     @classmethod
     def get_game_room_key(cls, username1, username2):
         if username1 < username2:

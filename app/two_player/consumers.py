@@ -88,7 +88,6 @@ class GameConsumer(WebsocketConsumer):
             self.channel_name,
         )
 
-        # Send user info to my player
         self.send_data(
             to=self.my_username,
             data={
@@ -111,10 +110,6 @@ class GameConsumer(WebsocketConsumer):
             self.my_username
         )
 
-        print(f"in {self.my_username} cousumer")
-        print(f"my player sea {my_player.sea}")
-        print(f"oppo player sea {opposite_player.sea}")
-
         if not game.is_player_turn(my_player):
             print(f"not your turn {self.my_username}")
             return
@@ -135,9 +130,6 @@ class GameConsumer(WebsocketConsumer):
         else:
             self.attack(game, opposite_player, cells)
 
-        print(
-            f"in {self.my_username} cousumer and count attack is {opposite_player.get_attack_count()}"
-        )
         game.save_data()
 
     def search(self, game, opposite_player, cells):
