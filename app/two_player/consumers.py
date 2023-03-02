@@ -85,8 +85,6 @@ class GameConsumer(WebsocketConsumer):
         self.send_data(
             to=self.my_username,
             data={
-                "report": opposite_player.get_report_game(),
-                "attack_count": opposite_player.get_attack_count(),
                 "turn": self.get_turn(game, self.my_username),
             },
         )

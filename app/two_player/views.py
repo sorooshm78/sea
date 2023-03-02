@@ -70,6 +70,8 @@ class TwoPlayerView(LoginRequiredMixin, TemplateView):
             opposite_player.get_table_game(), config["row"], config["col"]
         )
         context["opposite_username"] = opposite_player.username
+        context["report"] = opposite_player.get_report_game()
+        context["attack_count"] = opposite_player.get_attack_count()
 
         return context
 

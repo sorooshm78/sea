@@ -15,18 +15,17 @@
               </div>
             </label>
           
-            <input type="radio" class="btn-check" name="attack" value="liner" id="liner_btn" autocomplete="off">
+            <input type="radio" class="btn-check" name="attack" value="liner" id="liner_btn" autocomplete="off" {% if attack_count.liner == 0 %}disabled="disabled"{% endif %}>
             <label class="btn btn-outline-primary" for="liner_btn">
               <div class="d-flex justify-content-between align-items-start">
                 <div>
-                  {% comment %} <i class="fa-solid fa-xmarks-lines"></i> Liner {% endcomment %}
                   <i class="fa-solid fa-grip-lines"></i> Liner
                 </div>
                 <span class="badge bg-dark rounded-pill" id='liner_count'>{{ attack_count.liner }}</span>
               </div>
             </label>
           
-            <input type="radio" class="btn-check" name="attack" value="explosion" id="explosion_btn" autocomplete="off">
+            <input type="radio" class="btn-check" name="attack" value="explosion" id="explosion_btn" autocomplete="off" {% if attack_count.explosion == 0 %}disabled="disabled"{% endif %}>
             <label class="btn btn-outline-primary" for="explosion_btn">
               <div class="d-flex justify-content-between align-items-start">
                 <div>
@@ -36,7 +35,7 @@
               </div>
             </label>
             
-            <input type="radio" class="btn-check" name="attack" value="radar" id="radar_btn" autocomplete="off">
+            <input type="radio" class="btn-check" name="attack" value="radar" id="radar_btn" autocomplete="off" {% if attack_count.radar == 0 %}disabled="disabled"{% endif %}>
             <label class="btn btn-outline-primary" for="radar_btn">
               <div class="d-flex justify-content-between align-items-start">
                 <div>

@@ -23,22 +23,6 @@ function reduceAttackCount(attackType) {
     }
 }
 
-function disableAttackTypeRadioButton() {
-    var typeAttacks = [
-        'radar',
-        'explosion',
-        'liner',
-    ];
-    for (x in typeAttacks) {
-        var attackType = typeAttacks[x];
-        var attackCountBadge = $(`#${attackType}_count`);
-        count = attackCountBadge.text();
-        if (count == 0) {
-            $(`#${attackType}_btn`).attr('disabled', true);
-        }
-    }
-}
-
 function select(x, y) {
     var attackType = $("input[name='attack']:checked").val();
 
@@ -85,5 +69,4 @@ function select(x, y) {
 
 $(document).ready(function () {
     disableSelectButtons();
-    disableAttackTypeRadioButton();
 });
