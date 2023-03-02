@@ -20,10 +20,6 @@ class SearchUserConsumer(WebsocketConsumer):
             self.channel_name,
         )
 
-        if cache.get(self.my_username) is not None:
-            # Redirect to game
-            return
-
         alone_user = cache.get("alone_user")
 
         if alone_user is None:
@@ -39,20 +35,20 @@ class SearchUserConsumer(WebsocketConsumer):
         cache.set(TwoPlayer.get_game_room_key(self.my_username, alone_user), game)
         cache.delete("alone_user")
 
-        game_url = reverse("two_player")
         # Send to client to redirect game page
+        game_url = reverse("two_player")
         async_to_sync(self.channel_layer.group_send)(
             self.my_group_name,
             {
                 "type": "send_to_websocket",
-                "url": game_url,
+                "redirect": game_url,
             },
         )
         async_to_sync(self.channel_layer.group_send)(
             f"serach_{alone_user}",
             {
                 "type": "send_to_websocket",
-                "url": game_url,
+                "redirect": game_url,
             },
         )
 
@@ -73,19 +69,17 @@ class SearchUserConsumer(WebsocketConsumer):
 class GameConsumer(WebsocketConsumer):
     def connect(self):
         self.my_username = self.scope["user"].username
-        game = TwoPlayer.get_game(self.my_username)
-        my_player, opposite_player = game.get_my_and_opposite_player_by_username(
-            self.my_username
-        )
-
-        if my_player is None or opposite_player is None:
-            return
 
         self.accept()
 
         async_to_sync(self.channel_layer.group_add)(
             self.my_username,
             self.channel_name,
+        )
+
+        game = TwoPlayer.get_game(self.my_username)
+        my_player, opposite_player = game.get_my_and_opposite_player_by_username(
+            self.my_username
         )
 
         self.send_data(
@@ -98,6 +92,7 @@ class GameConsumer(WebsocketConsumer):
         )
 
     def disconnect(self, close_code):
+        print("dis call it")
         TwoPlayer.disactive_game(self.my_username)
         async_to_sync(self.channel_layer.group_discard)(
             self.my_username,

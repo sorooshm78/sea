@@ -23,6 +23,8 @@ class TwoPlayer:
     @classmethod
     def get_game(cls, username):
         oppoite_username = cache.get(username)
+        if oppoite_username is None or username is None:
+            return
         room = cache.get(TwoPlayer.get_game_room_key(username, oppoite_username))
         if room is not None:
             return room

@@ -3,6 +3,6 @@ $(document).ready(function () {
 
     gameSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
-        window.location.replace(data.url);
+        window.location.replace(data.redirect);
     };
 });
