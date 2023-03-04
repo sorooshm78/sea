@@ -1,5 +1,9 @@
-{% url 'single_player' as home_url %}
-{% url 'score_board' as score_board_url %}
+{% url 'home' as home_url %}
+
+{% url 'score_board' as single_player_score_url %}
+{% url 'single_player' as single_player_url %}
+
+{% url 'two_player' as two_player_url %}
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -10,15 +14,23 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
+        
+        {% if request.path == single_player_url %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'new_game' %}">New Game</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == score_board_url %}active{% endif %}" href="{{ score_board_url }}" id="score_board">Score Board</a>
+            </li>
+        {% endif %}
+        
+        {% if request.path == two_player_url %}
           <li class="nav-item">
-            <a class="nav-link {% if request.path == home_url %}active{% endif %}" href="{{ home_url }}">Home</a>
+            <a class="nav-link" href="{% url 'exit_game' %}">Exit Game</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'new_game' %}">New Game</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.path == score_board_url %}active{% endif %}" href="{{ score_board_url }}" id="score_board">Score Board</a>
-          </li>
+        {% endif %}
+        
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Account

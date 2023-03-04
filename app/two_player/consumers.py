@@ -78,9 +78,6 @@ class GameConsumer(WebsocketConsumer):
         )
 
         game = TwoPlayer.get_game(self.my_username)
-        my_player, opposite_player = game.get_my_and_opposite_player_by_username(
-            self.my_username
-        )
 
         self.send_data(
             to=self.my_username,
@@ -90,7 +87,6 @@ class GameConsumer(WebsocketConsumer):
         )
 
     def disconnect(self, close_code):
-        print("dis call it")
         TwoPlayer.disactive_game(self.my_username)
         async_to_sync(self.channel_layer.group_discard)(
             self.my_username,

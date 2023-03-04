@@ -85,3 +85,12 @@ class SearchUserView(LoginRequiredMixin, TemplateView):
         if game is not None:
             return redirect("two_player")
         return super().dispatch(request, *args, **kwargs)
+
+
+class ExitGameView(LoginRequiredMixin, RedirectView):
+    pattern_name = "home"
+
+    def get(self, request, *args, **kwargs):
+        game = TwoPlayer.get_game(request.user.username)
+        game.exit(request.user.username)
+        return super().get(request, *args, **kwargs)

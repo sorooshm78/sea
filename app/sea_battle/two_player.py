@@ -33,6 +33,15 @@ class TwoPlayer:
     def disactive_game(cls, username):
         pass
 
+    def exit(self, username):
+        oppoite_username = cache.get(username)
+        if oppoite_username is None or username is None:
+            return
+
+        cache.delete(username)
+        cache.delete(oppoite_username)
+        cache.delete(TwoPlayer.get_game_room_key(username, oppoite_username))
+
     def save_data(self):
         cache.set(
             TwoPlayer.get_game_room_key(self.player1.username, self.player2.username),
