@@ -100,7 +100,6 @@ class GameConsumer(WebsocketConsumer):
         )
 
         if not game.is_player_turn(my_player):
-            print(f"not your turn {self.my_username}")
             return
 
         text_data_json = json.loads(text_data)

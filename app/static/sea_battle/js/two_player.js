@@ -93,6 +93,10 @@ function receiveData(data) {
             showEndGame(data.winner);
         }
     }
+    if (data["message"]) {
+        disableAllOppositeTableCells();
+        alertMessage(data.message);
+    }
 }
 
 function reduceAttackCount(attackType) {

@@ -6,6 +6,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import RedirectView, TemplateView
 from django.shortcuts import redirect
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
 from sea_battle.two_player import TwoPlayer
 from sea_battle.player import Player
 
@@ -91,6 +94,23 @@ class ExitGameView(LoginRequiredMixin, RedirectView):
     pattern_name = "home"
 
     def get(self, request, *args, **kwargs):
-        game = TwoPlayer.get_game(request.user.username)
-        game.exit(request.user.username)
+        my_username = request.user.username
+        game = TwoPlayer.get_game(my_username)
+        if game is not None:
+            game.exit(my_username)
+            opposite_player = game.get_opposite_player_by_username(my_username)
+
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                opposite_player.username,
+                {
+                    "type": "send_to_websocket",
+                    "message": f"user {my_username} leave game please start new game",
+                },
+            )
+
         return super().get(request, *args, **kwargs)
+
+
+class NewGameView(ExitGameView):
+    pattern_name = "search_user"

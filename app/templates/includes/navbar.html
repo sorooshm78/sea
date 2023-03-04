@@ -17,7 +17,7 @@
         
         {% if request.path == single_player_url %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'new_game' %}">New Game</a>
+              <a class="nav-link" href="{% url 'new_game_single_player' %}">New Game</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.path == score_board_url %}active{% endif %}" href="{{ score_board_url }}" id="score_board">Score Board</a>
@@ -25,9 +25,12 @@
         {% endif %}
         
         {% if request.path == two_player_url %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'exit_game' %}">Exit Game</a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'new_game_two_player' %}">New Game</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'exit_game' %}">Exit Game</a>
+            </li>
         {% endif %}
         
 
