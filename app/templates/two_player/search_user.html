@@ -6,7 +6,31 @@
 {% endblock script %}
 
 {% block content %}
-    <div class="container bg-info">
-        {{ request.user.username }} vs -----
+    <div class="container bg-info mt-5 text-center rounded">
+        <div class="row align-items-center justify-content-evenly">
+            <div class="col col-5 d-flex justify-content-center mt-5 mb-5 mr-2">
+                <div class="card" style="width: 18rem;">
+                    <img src="{% static 'images/user_avatar.png' %}" class="card-img-top" alt="user-avatar">
+                    <div class="card-body">
+                        <div class="alert alert-primary h3" role="alert">
+                            {{ request.user.username }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-auto">
+                <h1>vs</h1>
+            </div>
+            <div class="col col-5 d-flex justify-content-center mt-5 mb-5">
+                <div class="card" style="width: 18rem;">
+                    <img src="{% static 'images/user_avatar.png' %}" class="card-img-top" alt="user-avatar">
+                    <div class="card-body">
+                        <div class="alert alert-primary h3" role="alert">
+                            <span id="user_info"><div class="spinner-grow text-warning"></div> ??? <div class="spinner-grow text-warning"></div></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock content %}

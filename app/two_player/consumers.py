@@ -42,6 +42,7 @@ class SearchUserConsumer(WebsocketConsumer):
             {
                 "type": "send_to_websocket",
                 "redirect": game_url,
+                "user_info": alone_user,
             },
         )
         async_to_sync(self.channel_layer.group_send)(
@@ -49,6 +50,7 @@ class SearchUserConsumer(WebsocketConsumer):
             {
                 "type": "send_to_websocket",
                 "redirect": game_url,
+                "user_info": self.my_username,
             },
         )
 
