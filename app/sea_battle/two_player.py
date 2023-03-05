@@ -16,12 +16,15 @@ class TwoPlayer:
 
     @classmethod
     def get_game_room_key(cls, username1, username2):
+        delimeter = "_"
         if username1 < username2:
-            return f"{username1}_{username2}"
-        return f"{username2}_{username1}"
+            return f"{username1}{delimeter}{username2}"
+        return f"{username2}{delimeter}{username1}"
+        # FIXME Check that delimeter character is not acceptible in username
 
     @classmethod
     def get_game(cls, username):
+        # FIXME Rename oppo* to opponent
         oppoite_username = cache.get(username)
         if oppoite_username is None or username is None:
             return
@@ -31,6 +34,7 @@ class TwoPlayer:
 
     @classmethod
     def disactive_game(cls, username):
+        # FIXME Remove this
         pass
 
     def exit(self, username):
@@ -49,11 +53,13 @@ class TwoPlayer:
         )
 
     def has_capacity(self):
+        # FIXME Remove
         if self.player1 is None or self.player2 is None:
             return True
         return False
 
     def is_game_ready(self):
+        # FIXME Remove
         return not self.has_capacity()
 
     def get_player_by_username(self, username):

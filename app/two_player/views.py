@@ -13,6 +13,9 @@ from sea_battle.two_player import TwoPlayer
 from sea_battle.player import Player
 
 
+# FIXME Rename to another name, for example "add_css_data"
+# FIXME Factor duplicate code of current file methods
+# FIXME Add utils and factor duplicate code of app's views in it
 def get_view_game_table_with_ship(game_table, row, col):
     cell_list = []
     for cell in game_table.flatten():

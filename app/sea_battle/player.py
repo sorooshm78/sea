@@ -63,6 +63,7 @@ class Player:
         }
 
     def get_score_game(self):
+        # FIXME Calculate based on config
         max_const_score = 120
         return max_const_score - self.sea.move
 

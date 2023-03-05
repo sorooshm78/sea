@@ -20,6 +20,7 @@ class SearchUserConsumer(WebsocketConsumer):
             self.channel_name,
         )
 
+        # FIXME Use special character in this case to avoid conflict with real users
         alone_user = cache.get("alone_user")
 
         if alone_user is None:
@@ -89,7 +90,6 @@ class GameConsumer(WebsocketConsumer):
         )
 
     def disconnect(self, close_code):
-        TwoPlayer.disactive_game(self.my_username)
         async_to_sync(self.channel_layer.group_discard)(
             self.my_username,
             self.channel_name,
@@ -97,6 +97,7 @@ class GameConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None):
         game = TwoPlayer.get_game(self.my_username)
+        # FIXME rename my_player to this_player or current_player
         my_player, opposite_player = game.get_my_and_opposite_player_by_username(
             self.my_username
         )
