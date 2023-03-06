@@ -2,11 +2,14 @@
 **Sea Battle** game by Django
 
 ## Types of game
-### * Single player
+![index](https://drive.google.com/uc?export=view&id=1gmXEUur8ehfgZ1wrXuRy-fWqLkbAdEOW)
+* ### Single player
 ![play_game](https://drive.google.com/uc?export=view&id=1uyG-A2oiW5G8rZmQt8lfG2c9_PHnAY6r)
 ![single_play](https://drive.google.com/uc?export=view&id=1w_VTkvi92gDerYzPmM-Lz5aNvkWB7Rob)
+![score_board](https://drive.google.com/uc?export=view&id=19nwceFB9uGtASCkhQrdPWHRpGypwz8WJ)
 
-### * Two player 
+* ### Two player 
+![search_user](https://drive.google.com/uc?export=view&id=1HlJcI5UbICVS8wQFHgHlVI-qON9eCp7N)
 ![two_player](https://drive.google.com/uc?export=view&id=1KN-bJSU4tqksoyajV5dTLd_nc0y-QH8F)
 
 ## Attack Type
@@ -25,9 +28,6 @@ By selecting a cell  as explosion, the 3x3 area of that cell is selected
 ### 4.Radar
 By selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
 ![radar](https://drive.google.com/uc?export=view&id=1WD_zTunrv-0hAcUQQLKtqCkNnbN9D1Qs)
-
-## Score Board
-![score_board](https://drive.google.com/uc?export=view&id=19nwceFB9uGtASCkhQrdPWHRpGypwz8WJ)
 
 ## Usage
 
