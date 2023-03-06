@@ -152,19 +152,19 @@ CACHE_TTL = 15 * 60  # 15 minutes
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/",  # for manually
-        # "LOCATION": "redis://redis:6379/",  # for docker
+        # "LOCATION": "redis://127.0.0.1:6379/",  # for manually
+        "LOCATION": "redis://redis:6379/",  # for docker
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
 }
-
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            # "hosts": [("127.0.0.1", 6379)], # for manually
+            "hosts": [("redis", 6379)],  # for docker
         },
     },
 }
