@@ -11,43 +11,7 @@ from channels.layers import get_channel_layer
 
 from sea_battle.two_player import TwoPlayer
 from sea_battle.player import Player
-
-
-# FIXME Rename to another name, for example "add_css_data"
-# FIXME Factor duplicate code of current file methods
-# FIXME Add utils and factor duplicate code of app's views in it
-def get_view_game_table_with_ship(game_table, row, col):
-    cell_list = []
-    for cell in game_table.flatten():
-        if cell.is_ship():
-            if cell.is_selected:
-                cell_list.append("ship-selected")
-            else:
-                cell_list.append("ship")
-        else:
-            if cell.is_selected:
-                cell_list.append("empty-selected")
-            else:
-                cell_list.append("empty")
-
-    return np.array(cell_list).reshape((row, col))
-
-
-def get_view_game_table_hide_ship(game_table, row, col):
-    cell_list = []
-    for cell in game_table.flatten():
-        if cell.is_ship():
-            if cell.is_selected:
-                cell_list.append("ship-selected")
-            else:
-                cell_list.append("empty")
-        else:
-            if cell.is_selected:
-                cell_list.append("empty-selected")
-            else:
-                cell_list.append("empty")
-
-    return np.array(cell_list).reshape((row, col))
+from utils import wrap_data
 
 
 class TwoPlayerView(LoginRequiredMixin, TemplateView):
@@ -63,21 +27,31 @@ class TwoPlayerView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, *arg, **kwargs):
         context = super().get_context_data(*arg, **kwargs)
 
-        my_player, opposite_player = self.game.get_my_and_opposite_player_by_username(
+        my_player, opponent_player = self.game.get_my_and_opponent_player_by_username(
             self.username
         )
 
         config = Player.config
 
-        context["my_table"] = get_view_game_table_with_ship(
-            my_player.get_table_game(), config["row"], config["col"]
+        context["my_table"] = wrap_data.get_template_game_table(
+            game_table=my_player.get_table_game(),
+            is_ship_hide=False,
+            row=config["row"],
+            col=config["col"],
         )
-        context["opposite_table"] = get_view_game_table_hide_ship(
-            opposite_player.get_table_game(), config["row"], config["col"]
+        context["opponent_table"] = wrap_data.get_template_game_table(
+            game_table=opponent_player.get_table_game(),
+            is_ship_hide=True,
+            row=config["row"],
+            col=config["col"],
         )
-        context["opposite_username"] = opposite_player.username
-        context["report"] = opposite_player.get_report_game()
-        context["attack_count"] = opposite_player.get_attack_count()
+
+        print("current", context["my_table"])
+        print("opponent", context["opponent_table"])
+
+        context["opponent_username"] = opponent_player.username
+        context["report"] = opponent_player.get_report_game()
+        context["attack_count"] = opponent_player.get_attack_count()
 
         return context
 
@@ -97,18 +71,18 @@ class ExitGameView(LoginRequiredMixin, RedirectView):
     pattern_name = "home:home"
 
     def get(self, request, *args, **kwargs):
-        my_username = request.user.username
-        game = TwoPlayer.get_game(my_username)
+        current_username = request.user.username
+        game = TwoPlayer.get_game(current_username)
         if game is not None:
-            game.exit(my_username)
-            opposite_player = game.get_opposite_player_by_username(my_username)
+            game.exit(current_username)
+            opponent_player = game.get_opponent_player_by_username(current_username)
 
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
-                opposite_player.username,
+                opponent_player.username,
                 {
                     "type": "send_to_websocket",
-                    "message": f"user {my_username} leave game please start new game",
+                    "message": f"user {current_username} leave game please start new game",
                 },
             )
 

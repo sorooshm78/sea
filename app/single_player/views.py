@@ -7,6 +7,7 @@ from django.views.generic.base import RedirectView, TemplateView
 
 from score.models import ScoreBoardModel
 from sea_battle.single_player import SinglePlayer
+from utils import wrap_data
 
 
 class SinglePlayerView(LoginRequiredMixin, TemplateView):
@@ -19,22 +20,12 @@ class SinglePlayerView(LoginRequiredMixin, TemplateView):
         game_table = game.get_table_game()
         config = game.config
 
-        cell_list = []
-        for cell in game_table.flatten():
-            if cell.is_ship():
-                if cell.is_selected:
-                    cell_list.append("ship-selected")
-                else:
-                    cell_list.append("empty")
-            else:
-                if cell.is_selected:
-                    cell_list.append("empty-selected")
-                else:
-                    cell_list.append("empty")
-
-        view_table = np.array(cell_list).reshape((config["row"], config["col"]))
-
-        context["table"] = view_table
+        context["table"] = wrap_data.get_template_game_table(
+            game_table=game_table,
+            is_ship_hide=True,
+            row=config["row"],
+            col=config["col"],
+        )
         context["report"] = game.get_report_game()
         context["attack_count"] = game.get_attack_count()
 
@@ -62,14 +53,8 @@ def attack(request):
     cells = game.get_changes(x, y, type_attack)
     if cells is None:
         return JsonResponse({})
-    for cell in cells:
-        cell_value = cell.pop("value")
-        if cell_value.is_ship():
-            if cell_value.is_selected:
-                cell["class"] = "ship-selected"
-        else:
-            if cell_value.is_selected:
-                cell["class"] = "empty-selected"
+
+    cells = wrap_data.add_css_data_to_cells_when_attack_select(cells)
 
     # End Game
     is_end_game = "false"
@@ -103,14 +88,9 @@ def search(request):
     cells = game.get_changes(x, y, "radar")
     if cells is None:
         return JsonResponse({})
-    for cell in cells:
-        cell_value = cell.pop("value")
-        if cell_value.is_ship():
-            cell["class"] = "radar-ship"
-        else:
-            cell["class"] = "radar-empty"
 
-    # Data to send to client
+    cells = wrap_data.add_css_data_to_cells_when_radar_select(cells)
+
     data = {
         "cells": cells,
     }

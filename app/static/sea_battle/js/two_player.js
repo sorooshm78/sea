@@ -1,9 +1,9 @@
-function disableAllOppositeTableCells() {
-    $("button", "#opposite_table").prop('disabled', true);
+function disableAllOpponentTableCells() {
+    $("button", "#opponent_table").prop('disabled', true);
 }
 
-function enableEmptyOppositeTableCells() {
-    $('.empty, .radar-ship, .radar-empty', "#opposite_table").prop('disabled', false);
+function enableEmptyOpponentTableCells() {
+    $('.empty, .radar-ship, .radar-empty', "#opponent_table").prop('disabled', false);
 }
 
 function showUserInfo(user_info) {
@@ -23,7 +23,7 @@ function showAttackCount(attack_count) {
     $('#radar_count').text(attack_count['radar']);
 }
 
-function showOppositeCells(cells) {
+function showOpponentCells(cells) {
     for (index in cells) {
         cell = cells[index];
         $(`#${cell.x}${cell.y}`).removeClass('empty')
@@ -57,14 +57,14 @@ function showEndGame(winner) {
 function showTurn(who) {
     var turn_text = `<i class="fa-regular fa-circle-dot"></i> turn`;
     if (who == "my_turn") {
-        enableEmptyOppositeTableCells();
-        $("#turn", "#opposite_table").html(turn_text);
+        enableEmptyOpponentTableCells();
+        $("#turn", "#opponent_table").html(turn_text);
         $("#turn", "#my_table").empty();
     }
-    if (who == "opposite_turn") {
-        disableAllOppositeTableCells();
+    if (who == "opponent_turn") {
+        disableAllOpponentTableCells();
         $("#turn", "#my_table").html(turn_text);
-        $("#turn", "#opposite_table").empty();
+        $("#turn", "#opponent_table").empty();
     }
 }
 
@@ -78,8 +78,8 @@ function receiveData(data) {
     if (data['attack_count']) {
         showAttackCount(data.attack_count);
     }
-    if (data['opposite_cells']) {
-        showOppositeCells(data.opposite_cells);
+    if (data['opponent_cells']) {
+        showOpponentCells(data.opponent_cells);
     }
     if (data['my_cells']) {
         showMyCells(data.my_cells);
@@ -89,12 +89,12 @@ function receiveData(data) {
     }
     if (data['winner']) {
         if (data.winner) {
-            disableAllOppositeTableCells();
+            disableAllOpponentTableCells();
             showEndGame(data.winner);
         }
     }
     if (data["message"]) {
-        disableAllOppositeTableCells();
+        disableAllOpponentTableCells();
         alertMessage(data.message);
     }
 }

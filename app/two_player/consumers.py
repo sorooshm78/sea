@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.conf import settings
 
 from sea_battle.two_player import TwoPlayer
+from utils import wrap_data
 
 
 CACHE_TTL = settings.CACHE_TTL
@@ -16,31 +17,32 @@ class SearchUserConsumer(WebsocketConsumer):
     def connect(self):
         self.accept()
 
-        self.my_username = self.scope["user"].username
-        self.my_group_name = f"serach_{self.my_username}"
+        self.current_username = self.scope["user"].username
+        self.my_group_name = f"serach_{self.current_username}"
 
         async_to_sync(self.channel_layer.group_add)(
             self.my_group_name,
             self.channel_name,
         )
 
-        # FIXME Use special character in this case to avoid conflict with real users
-        alone_user = cache.get("alone_user")
+        alone_user = cache.get("#alone_user")
 
         if alone_user is None:
-            cache.set("alone_user", self.my_username)
+            cache.set("#alone_user", self.current_username)
             return
 
-        if alone_user == self.my_username:
+        if alone_user == self.current_username:
             return
 
-        cache.set(self.my_username, alone_user, CACHE_TTL)
-        cache.set(alone_user, self.my_username, CACHE_TTL)
-        game = TwoPlayer(self.my_username, alone_user)
+        cache.set(self.current_username, alone_user, CACHE_TTL)
+        cache.set(alone_user, self.current_username, CACHE_TTL)
+        game = TwoPlayer(self.current_username, alone_user)
         cache.set(
-            TwoPlayer.get_game_room_key(self.my_username, alone_user), game, CACHE_TTL
+            TwoPlayer.get_game_room_key(self.current_username, alone_user),
+            game,
+            CACHE_TTL,
         )
-        cache.delete("alone_user")
+        cache.delete("#alone_user")
 
         # Send to client to redirect game page
         game_url = reverse("two_player:two_player")
@@ -57,14 +59,14 @@ class SearchUserConsumer(WebsocketConsumer):
             {
                 "type": "send_to_websocket",
                 "redirect": game_url,
-                "user_info": self.my_username,
+                "user_info": self.current_username,
             },
         )
 
     def disconnect(self, close_code):
-        alone_user = cache.get("alone_user")
-        if alone_user is not None and alone_user == self.my_username:
-            cache.delete("alone_user")
+        alone_user = cache.get("#alone_user")
+        if alone_user is not None and alone_user == self.current_username:
+            cache.delete("#alone_user")
 
         async_to_sync(self.channel_layer.group_discard)(
             self.my_group_name,
@@ -77,35 +79,34 @@ class SearchUserConsumer(WebsocketConsumer):
 
 class GameConsumer(WebsocketConsumer):
     def connect(self):
-        self.my_username = self.scope["user"].username
+        self.current_username = self.scope["user"].username
 
         self.accept()
 
         async_to_sync(self.channel_layer.group_add)(
-            self.my_username,
+            self.current_username,
             self.channel_name,
         )
 
-        game = TwoPlayer.get_game(self.my_username)
+        game = TwoPlayer.get_game(self.current_username)
 
         self.send_data(
-            to=self.my_username,
+            to=self.current_username,
             data={
-                "turn": self.get_turn(game, self.my_username),
+                "turn": self.get_turn(game, self.current_username),
             },
         )
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
-            self.my_username,
+            self.current_username,
             self.channel_name,
         )
 
     def receive(self, text_data=None):
-        game = TwoPlayer.get_game(self.my_username)
-        # FIXME rename my_player to this_player or current_player
-        my_player, opposite_player = game.get_my_and_opposite_player_by_username(
-            self.my_username
+        game = TwoPlayer.get_game(self.current_username)
+        my_player, opponent_player = game.get_my_and_opponent_player_by_username(
+            self.current_username
         )
 
         if not game.is_player_turn(my_player):
@@ -118,75 +119,69 @@ class GameConsumer(WebsocketConsumer):
         x = select.get("x")
         y = select.get("y")
 
-        cells = opposite_player.get_changes(x, y, attack_type)
+        cells = opponent_player.get_changes(x, y, attack_type)
         if cells is None:
             return
 
         if attack_type == "radar":
-            self.search(game, opposite_player, cells)
+            self.search(game, opponent_player, cells)
         else:
-            self.attack(game, opposite_player, cells)
+            self.attack(game, opponent_player, cells)
 
         game.save_data()
 
-    def search(self, game, opposite_player, cells):
-        for cell in cells:
-            cell_value = cell.pop("value")
-            if cell_value.is_ship():
-                cell["class"] = "radar-ship"
-            else:
-                cell["class"] = "radar-empty"
+    def search(self, game, opponent_player, cells):
+        cells = wrap_data.add_css_data_to_cells_when_radar_select(cells)
 
         game.change_turn()
 
         self.send_data(
-            to=self.my_username,
+            to=self.current_username,
             data={
-                "opposite_cells": cells,
-                "turn": self.get_turn(game, self.my_username),
+                "opponent_cells": cells,
+                "turn": self.get_turn(game, self.current_username),
             },
         )
         self.send_data(
-            to=opposite_player.username,
+            to=opponent_player.username,
             data={
-                "turn": self.get_turn(game, opposite_player.username),
+                "turn": self.get_turn(game, opponent_player.username),
             },
         )
 
-    def attack(self, game, opposite_player, cells):
+    def attack(self, game, opponent_player, cells):
         bonus = False
 
+        cells = wrap_data.add_css_data_to_cells_when_attack_select(cells)
+
         for cell in cells:
-            cell_value = cell.pop("value")
-            if cell_value.is_ship():
-                cell["class"] = "ship-selected"
+            if cell.get("class") == "ship-selected":
                 bonus = True
-            else:
-                cell["class"] = "empty-selected"
+                break
 
         if not bonus:
             game.change_turn()
 
         winner = None
-        if opposite_player.is_end_game():
-            winner = self.my_username
+        if opponent_player.is_end_game():
+            winner = self.current_username
 
         self.send_data(
-            to=self.my_username,
+            to=self.current_username,
             data={
-                "opposite_cells": cells,
-                "report": opposite_player.get_report_game(),
+                "opponent_cells": cells,
+                "report": opponent_player.get_report_game(),
                 "winner": winner,
-                "turn": self.get_turn(game, self.my_username),
+                "turn": self.get_turn(game, self.current_username),
             },
         )
 
         self.send_data(
-            to=opposite_player.username,
+            to=opponent_player.username,
             data={
                 "my_cells": cells,
                 "winner": winner,
-                "turn": self.get_turn(game, opposite_player.username),
+                "turn": self.get_turn(game, opponent_player.username),
             },
         )
 
@@ -205,4 +200,4 @@ class GameConsumer(WebsocketConsumer):
         turn = game.get_turn()
         if turn == username:
             return "my_turn"
-        return "opposite_turn"
+        return "opponent_turn"

@@ -80,15 +80,13 @@ class Sea:
             return ship
         return None
 
-    # FIXME get list of points, list_point -> point_list
-    # TODO Search numpy for better solution
     def get_list_of_point(self, points):
-        list_point = []
+        point_list = []
         for x in range(points.x.start, points.x.stop):
             for y in range(points.y.start, points.y.stop):
-                list_point.append(Point(x, y))
+                point_list.append(Point(x, y))
 
-        return list_point
+        return point_list
 
     def target_ship(self, point):
         cell = self.coordinates[point.x, point.y]

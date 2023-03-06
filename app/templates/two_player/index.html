@@ -12,9 +12,9 @@
                 {% include "includes/user_info.html" with user_info=request.user.username|add:" (me)" %}
                 {% include 'two_player/my_table.html' with table=my_table %}
             </div>
-            <div class="col-sm-8 col-md-auto" id="opposite_table">
-                {% include "includes/user_info.html" with user_info=opposite_username %}
-                {% include 'two_player/opposite_table.html' with table=opposite_table %}    
+            <div class="col-sm-8 col-md-auto" id="opponent_table">
+                {% include "includes/user_info.html" with user_info=opponent_username %}
+                {% include 'two_player/opponent_table.html' with table=opponent_table %}    
             </div>
             <div class="col align-self-start">
                 <div class="row">

@@ -63,8 +63,9 @@ class Player:
         }
 
     def get_score_game(self):
-        # FIXME Calculate based on config
-        max_const_score = 120
+        max_const_score = (Player.config["row"] * Player.config["row"]) + sum(
+            Player.config["list_length_ships"]
+        )
         return max_const_score - self.sea.move
 
     def get_attack_count(self):
