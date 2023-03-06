@@ -37,7 +37,7 @@ class SearchUserConsumer(WebsocketConsumer):
         cache.delete("alone_user")
 
         # Send to client to redirect game page
-        game_url = reverse("two_player")
+        game_url = reverse("two_player:two_player")
         async_to_sync(self.channel_layer.group_send)(
             self.my_group_name,
             {

@@ -143,9 +143,9 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Login redirect
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "login"
-LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "home:home"
+LOGOUT_REDIRECT_URL = "account:login"
+LOGIN_URL = "account:login"
 
 # Cache setting
 CACHE_TTL = 15 * 60  # 15 minutes

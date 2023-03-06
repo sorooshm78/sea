@@ -42,7 +42,7 @@ class SinglePlayerView(LoginRequiredMixin, TemplateView):
 
 
 class NewGameView(LoginRequiredMixin, RedirectView):
-    pattern_name = "single_player"
+    pattern_name = "single_player:single_player"
 
     def get(self, request, *args, **kwargs):
         game = SinglePlayer(request.user.id)

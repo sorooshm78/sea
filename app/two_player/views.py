@@ -57,7 +57,7 @@ class TwoPlayerView(LoginRequiredMixin, TemplateView):
         self.username = self.request.user.username
         self.game = TwoPlayer.get_game(self.username)
         if self.game is None:
-            return redirect("search_user")
+            return redirect("two_player:search_user")
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *arg, **kwargs):
@@ -89,12 +89,12 @@ class SearchUserView(LoginRequiredMixin, TemplateView):
         username = self.request.user.username
         game = TwoPlayer.get_game(username)
         if game is not None:
-            return redirect("two_player")
+            return redirect("two_player:two_player")
         return super().dispatch(request, *args, **kwargs)
 
 
 class ExitGameView(LoginRequiredMixin, RedirectView):
-    pattern_name = "home"
+    pattern_name = "home:home"
 
     def get(self, request, *args, **kwargs):
         my_username = request.user.username
@@ -116,4 +116,4 @@ class ExitGameView(LoginRequiredMixin, RedirectView):
 
 
 class NewGameView(ExitGameView):
-    pattern_name = "search_user"
+    pattern_name = "two_player:search_user"

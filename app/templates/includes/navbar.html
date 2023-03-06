@@ -1,9 +1,8 @@
-{% url 'home' as home_url %}
+{% url 'home:home' as home_url %}
 
-{% url 'score_board' as single_player_score_url %}
-{% url 'single_player' as single_player_url %}
-
-{% url 'two_player' as two_player_url %}
+{% url 'score:score_board' as score_board_url %}
+{% url 'single_player:single_player' as single_player_url %}
+{% url 'two_player:two_player' as two_player_url %}
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -17,7 +16,7 @@
         
         {% if request.path == single_player_url %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'new_game_single_player' %}">New Game</a>
+              <a class="nav-link" href="{% url 'single_player:new_game' %}">New Game</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.path == score_board_url %}active{% endif %}" href="{{ score_board_url }}" id="score_board">Score Board</a>
@@ -26,10 +25,10 @@
         
         {% if request.path == two_player_url %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'new_game_two_player' %}">New Game</a>
+              <a class="nav-link" href="{% url 'two_player:new_game' %}">New Game</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'exit_game' %}">Exit Game</a>
+              <a class="nav-link" href="{% url 'two_player:exit_game' %}">Exit Game</a>
             </li>
         {% endif %}
         
@@ -40,10 +39,10 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               {% if user.is_authenticated %}
-                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a></li>
               {% else %}
-                <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-                <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:login' %}">Login</a></li>
+                <li><a class="dropdown-item" href="{% url 'account:register' %}">Register</a></li>
               {% endif %}
             </ul>
           </li>
