@@ -46,9 +46,6 @@ class TwoPlayerView(LoginRequiredMixin, TemplateView):
             col=config["col"],
         )
 
-        print("current", context["my_table"])
-        print("opponent", context["opponent_table"])
-
         context["opponent_username"] = opponent_player.username
         context["report"] = opponent_player.get_report_game()
         context["attack_count"] = opponent_player.get_attack_count()
