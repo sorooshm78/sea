@@ -55,7 +55,7 @@ function showEndGame(winner) {
 }
 
 function showTurn(who) {
-    var turn_text = `<i class="fa-regular fa-circle-dot"></i>  your turn`;
+    var turn_text = `<i class="fa-regular fa-circle-dot"></i> turn`;
     if (who == "my_turn") {
         enableEmptyOppositeTableCells();
         $("#turn", "#opposite_table").html(turn_text);
