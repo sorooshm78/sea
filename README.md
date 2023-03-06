@@ -10,7 +10,7 @@
 
 * ### Two player 
 ![search_user](https://drive.google.com/uc?export=view&id=1HlJcI5UbICVS8wQFHgHlVI-qON9eCp7N)
-![two_player](https://drive.google.com/uc?export=view&id=1KN-bJSU4tqksoyajV5dTLd_nc0y-QH8F)
+![two_player](https://drive.google.com/uc?export=view&id=17EptH8YcGNwKBeFk_Ut636_TXgWrxvPk)
 
 ## Attack Type
 ### 1.Bomb 
