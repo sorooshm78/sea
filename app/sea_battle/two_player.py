@@ -50,6 +50,7 @@ class TwoPlayer:
         cache.set(
             TwoPlayer.get_game_room_key(self.player1.username, self.player2.username),
             self,
+            CACHE_TTL,
         )
 
     def has_capacity(self):

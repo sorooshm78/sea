@@ -4,8 +4,12 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.cache import cache
 from django.urls import reverse
+from django.conf import settings
 
 from sea_battle.two_player import TwoPlayer
+
+
+CACHE_TTL = settings.CACHE_TTL
 
 
 class SearchUserConsumer(WebsocketConsumer):
@@ -30,10 +34,12 @@ class SearchUserConsumer(WebsocketConsumer):
         if alone_user == self.my_username:
             return
 
-        cache.set(self.my_username, alone_user)
-        cache.set(alone_user, self.my_username)
+        cache.set(self.my_username, alone_user, CACHE_TTL)
+        cache.set(alone_user, self.my_username, CACHE_TTL)
         game = TwoPlayer(self.my_username, alone_user)
-        cache.set(TwoPlayer.get_game_room_key(self.my_username, alone_user), game)
+        cache.set(
+            TwoPlayer.get_game_room_key(self.my_username, alone_user), game, CACHE_TTL
+        )
         cache.delete("alone_user")
 
         # Send to client to redirect game page
