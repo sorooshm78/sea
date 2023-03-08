@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "single_player",
     "two_player",
     "sea_battle",
+    "history",
     "account",
     "score",
     "home",
