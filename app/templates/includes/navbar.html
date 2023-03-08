@@ -1,6 +1,7 @@
 {% url 'home:home' as home_url %}
 
 {% url 'score:score_board' as score_board_url %}
+{% url 'history:game_history' as game_history_url %}
 {% url 'single_player:single_player' as single_player_url %}
 {% url 'two_player:two_player' as two_player_url %}
 
@@ -29,6 +30,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'two_player:exit_game' %}">Exit Game</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.path == game_history_url %}active{% endif %}" href="{{ game_history_url }}">Game History</a>
             </li>
         {% endif %}
         

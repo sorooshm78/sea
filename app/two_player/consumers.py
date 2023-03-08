@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.conf import settings
 
 from sea_battle.two_player import TwoPlayer
+from history.models import GameHistoryModel
 from utils import wrap_data
 
 
@@ -164,6 +165,11 @@ class GameConsumer(WebsocketConsumer):
 
         winner = None
         if opponent_player.is_end_game():
+            GameHistoryModel.objects.create(
+                player1=game.player1.username,
+                player2=game.player2.username,
+                status=f"player {self.current_username} win",
+            )
             winner = self.current_username
 
         self.send_data(

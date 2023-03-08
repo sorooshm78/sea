@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+from history.models import GameHistoryModel
 from sea_battle.two_player import TwoPlayer
 from sea_battle.player import Player
 from utils import wrap_data
@@ -69,6 +70,12 @@ class ExitGameView(LoginRequiredMixin, RedirectView):
         if game is not None:
             game.exit(current_username)
             opponent_player = game.get_opponent_player_by_username(current_username)
+
+            GameHistoryModel.objects.create(
+                player1=game.player1.username,
+                player2=game.player2.username,
+                status=f"player {current_username} leave game",
+            )
 
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(

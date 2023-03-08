@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("account/", include("account.urls")),
     path("score-board/", include("score.urls")),
+    path("game-history/", include("history.urls")),
     path("single-player/", include("single_player.urls")),
     path("two-player/", include("two_player.urls")),
     path("", include("home.urls")),
