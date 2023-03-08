@@ -18,7 +18,7 @@ jobs:
       with:
         python-version: '3.10'
     - name: Setup and configuration
-        working-directory: ./app
+      working-directory: ./app
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
