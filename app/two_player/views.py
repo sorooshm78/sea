@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import RedirectView, TemplateView
 from django.shortcuts import redirect
+from django.urls import reverse
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -82,7 +83,7 @@ class ExitGameView(LoginRequiredMixin, RedirectView):
                 opponent_player.username,
                 {
                     "type": "send_to_websocket",
-                    "message": f"user {current_username} leave game please start new game",
+                    "redirect": reverse("history:game_history"),
                 },
             )
 

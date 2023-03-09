@@ -45,15 +45,6 @@ function showMyCells(cells) {
     }
 }
 
-function alertMessage(message) {
-    var alert = `<div class="alert alert-warning text-center message" role="alert">${message}</div>`;
-    $('#message').html(alert);
-}
-
-function showEndGame(winner) {
-    alertMessage(`<i class="fa-solid fa-trophy"></i> user ${winner} won <i class="fa-solid fa-trophy"></i>`);
-}
-
 function showTurn(who) {
     var turn_text = `<i class="fa-regular fa-circle-dot"></i> turn`;
     if (who == "my_turn") {
@@ -87,15 +78,11 @@ function receiveData(data) {
     if (data['turn']) {
         showTurn(data.turn);
     }
-    if (data['winner']) {
-        if (data.winner) {
+    if (data['redirect']) {
+        if (data.redirect) {
             disableAllOpponentTableCells();
-            showEndGame(data.winner);
+            window.location.replace(data.redirect);
         }
-    }
-    if (data["message"]) {
-        disableAllOpponentTableCells();
-        alertMessage(data.message);
     }
 }
 

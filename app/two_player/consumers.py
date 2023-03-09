@@ -163,21 +163,22 @@ class GameConsumer(WebsocketConsumer):
         if not bonus:
             game.change_turn()
 
-        winner = None
+        redirect = None
         if opponent_player.is_end_game():
             GameHistoryModel.objects.create(
                 player1=game.player1.username,
                 player2=game.player2.username,
                 status=f"player {self.current_username} win",
             )
-            winner = self.current_username
+            redirect = reverse("history:game_history")
+            game.exit(self.current_username)
 
         self.send_data(
             to=self.current_username,
             data={
                 "opponent_cells": cells,
                 "report": opponent_player.get_report_game(),
-                "winner": winner,
+                "redirect": redirect,
                 "turn": self.get_turn(game, self.current_username),
             },
         )
@@ -186,7 +187,7 @@ class GameConsumer(WebsocketConsumer):
             to=opponent_player.username,
             data={
                 "my_cells": cells,
-                "winner": winner,
+                "redirect": redirect,
                 "turn": self.get_turn(game, opponent_player.username),
             },
         )
