@@ -3,12 +3,13 @@
 
 {% block content %}
 <div class="container mt-3 p-5 bg-light text-center rounded">
-    <h2><i class="fa-solid fa-ranking-star"></i> Game History Board</h2>
+    <h2><i class="fa-solid fa-clock-rotate-left"></i> Game History Board</h2>
     
     <table class="table table-striped">
         <thead class="table-dark">
             <tr>
                 <th>Player 1</th>
+                <th></th>
                 <th>Player 2</th>
                 <th>Status</th>
                 <th>Time</th>
@@ -22,12 +23,14 @@
                 {% endif %}
                 >
                     <td>{{ game.player1 }}</td>
+                    <td> - </td>
                     <td>{{ game.player2 }}</td>
                     <td>{{ game.status }}</td>
                     <td>{{ game.time|to_jalali }}</td>
                 </tr>
                 {%empty%}
                     <td>_</td>
+                    <td> - </td>
                     <td>_</td>
                     <td>_</td>
                     <td>_</td>
