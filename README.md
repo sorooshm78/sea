@@ -11,7 +11,7 @@
 * ### Two player 
 ![search_user](https://drive.google.com/uc?export=view&id=1dZrTvnVw6hL307aCqGM8GlJlv-sJcczZ)
 ![two_player](https://drive.google.com/uc?export=view&id=1Xd3ZMm-K-UhZnb7xjE9k-lOAoPy9WKC9)
-![game_history](https://drive.google.com/uc?export=view&id=1gBI7Uv5Cki92_IqxhbRb-2mxDqk9cOvl)
+![game_history](https://drive.google.com/uc?export=view&id=1HrAm1hUK9ViWgXJ7hO5ld-N1JR7fMrzr)
 
 ## Attack Type
 ### 1.Bomb 
