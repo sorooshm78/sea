@@ -2,33 +2,33 @@
 **Sea Battle** game by Django
 
 ## Types of game
-![index](https://drive.google.com/uc?export=view&id=1gmXEUur8ehfgZ1wrXuRy-fWqLkbAdEOW)
+![index](https://drive.google.com/uc?export=view&id=1dZmeaOCCKzyH1KSYPCxTAijjDFEEITwi)
 * ### Single player
 ![play_game](https://drive.google.com/uc?export=view&id=1uyG-A2oiW5G8rZmQt8lfG2c9_PHnAY6r)
-![single_play](https://drive.google.com/uc?export=view&id=1w_VTkvi92gDerYzPmM-Lz5aNvkWB7Rob)
-![score_board](https://drive.google.com/uc?export=view&id=19nwceFB9uGtASCkhQrdPWHRpGypwz8WJ)
+![single_play](https://drive.google.com/uc?export=view&id=1FV9r3YGWVl_6GofPVUaRynqoJm7tj5XN)
+![score_board](https://drive.google.com/uc?export=view&id=1oHvV2LzrrpJIBlPcYPr5uxdqfDDunQnZ)
 
 * ### Two player 
-![search_user](https://drive.google.com/uc?export=view&id=1HlJcI5UbICVS8wQFHgHlVI-qON9eCp7N)
-![two_player](https://drive.google.com/uc?export=view&id=17EptH8YcGNwKBeFk_Ut636_TXgWrxvPk)
-![game_history](https://drive.google.com/uc?export=view&id=1x-U436CB6110UccQ967KOFycCkULj54Q)
+![search_user](https://drive.google.com/uc?export=view&id=1dZrTvnVw6hL307aCqGM8GlJlv-sJcczZ)
+![two_player](https://drive.google.com/uc?export=view&id=1Xd3ZMm-K-UhZnb7xjE9k-lOAoPy9WKC9)
+![game_history](https://drive.google.com/uc?export=view&id=1gBI7Uv5Cki92_IqxhbRb-2mxDqk9cOvl)
 
 ## Attack Type
 ### 1.Bomb 
 By selecting a cell as a bomb, only that cell is selected
-![bomb](https://drive.google.com/uc?export=view&id=180vu2pcCMYkqSE8wMMgIETiGOpByacyd) 
+![bomb](https://drive.google.com/uc?export=view&id=1abAXZopIqNSzsupJtlxgnoyzhdz7D3z0) 
 
 ### 2.Liner
 By selecting a cell as a liner, it moves from the left to the right of the selected row until it hits the ship
-![liner](https://drive.google.com/uc?export=view&id=18hNsYYF7ErHF4pUGRtBfw_hLDGeHhKpe)
+![liner](https://drive.google.com/uc?export=view&id=1CeSlK1aKonB1qA1dSwBgvp-kYhNRF4k7)
 
 ### 3.Explosion
 By selecting a cell  as explosion, the 3x3 area of that cell is selected
-![explosion](https://drive.google.com/uc?export=view&id=19i6lAcvBni1IQ0O2--E88D5X2BUNi-v6)
+![explosion](https://drive.google.com/uc?export=view&id=1T00KFBssBJAJBpRGRe5CsuwPEH1p-TKs)
 
 ### 4.Radar
 By selecting a cell as a radar, a 3x3 area of that cell's contents (empty or ships) will be displayed.
-![radar](https://drive.google.com/uc?export=view&id=1WD_zTunrv-0hAcUQQLKtqCkNnbN9D1Qs)
+![radar](https://drive.google.com/uc?export=view&id=1sCYGDKjSn091LMfErXvXN2waTamFHUqz)
 
 ## Usage
 
