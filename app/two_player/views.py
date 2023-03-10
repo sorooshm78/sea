@@ -75,7 +75,7 @@ class ExitGameView(LoginRequiredMixin, RedirectView):
             GameHistoryModel.objects.create(
                 player1=game.player1.username,
                 player2=game.player2.username,
-                status=f"player {current_username} leave game",
+                left=current_username,
             )
 
             channel_layer = get_channel_layer()

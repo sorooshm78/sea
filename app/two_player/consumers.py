@@ -168,7 +168,7 @@ class GameConsumer(WebsocketConsumer):
             GameHistoryModel.objects.create(
                 player1=game.player1.username,
                 player2=game.player2.username,
-                status=f"player {self.current_username} win",
+                win=self.current_username,
             )
             redirect = reverse("history:game_history")
             game.exit(self.current_username)

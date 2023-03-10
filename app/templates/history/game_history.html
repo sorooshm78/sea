@@ -19,13 +19,17 @@
             {% for game in games %}
                 <tr 
                 {% if forloop.first %}
-                    style="font-weight:bold" class="bg-primary"    
+                    style="font-weight:bold" class="bg-warning"    
                 {% endif %}
                 >
                     <td>{{ game.player1 }}</td>
                     <td> - </td>
                     <td>{{ game.player2 }}</td>
-                    <td>{{ game.status }}</td>
+                    {% if game.win %}
+                        <td>Player <span class="text-success fw-bold">{{ game.win }}</span> won</td>
+                    {% else %}
+                        <td>Player <span class="text-danger fw-bold">{{ game.left }}</span> left game</td>
+                    {% endif %}
                     <td>{{ game.time|to_jalali }}</td>
                 </tr>
                 {%empty%}
