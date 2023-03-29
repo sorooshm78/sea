@@ -9,11 +9,11 @@
     <div class="container-fluid mt-4">
         <div class="row  justify-content-center">
             <div class="col-sm-4 col-md-auto" id="my_table">           
-                {% include "includes/user_info.html" with user_info=request.user.username|add:" (me)" %}
+                {% include "includes/user_info.html" with user_info=request.user.username|add:" (me)" turn_color="success"  %}
                 {% include 'two_player/my_table.html' with table=my_table %}
             </div>
             <div class="col-sm-8 col-md-auto" id="opponent_table">
-                {% include "includes/user_info.html" with user_info=opponent_username %}
+                {% include "includes/user_info.html" with user_info=opponent_username turn_color="danger" %}
                 {% include 'two_player/opponent_table.html' with table=opponent_table %}    
             </div>
             <div class="col align-self-start">
