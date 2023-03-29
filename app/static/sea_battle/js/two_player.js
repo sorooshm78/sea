@@ -49,13 +49,13 @@ function showTurn(who) {
     var turn_text = `<i class="fa-regular fa-circle-dot"></i> turn`;
     if (who == "my_turn") {
         enableEmptyOpponentTableCells();
-        $("#turn", "#opponent_table").html(turn_text);
-        $("#turn", "#my_table").empty();
+        $("#turn", "#my_table").html(turn_text);
+        $("#turn", "#opponent_table").empty();
     }
     if (who == "opponent_turn") {
         disableAllOpponentTableCells();
-        $("#turn", "#my_table").html(turn_text);
-        $("#turn", "#opponent_table").empty();
+        $("#turn", "#opponent_table").html(turn_text);
+        $("#turn", "#my_table").empty();
     }
 }
 
