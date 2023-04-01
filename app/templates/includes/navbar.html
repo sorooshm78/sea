@@ -39,7 +39,7 @@
           <li class="nav-item dropdown">
             {% if user.is_authenticated %}
               <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa-regular fa-circle-user"></i> {{ user.username|title }}
+                <i class="fa-regular fa-circle-user"></i> {{ user.username }}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <li><a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a></li>          
