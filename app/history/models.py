@@ -10,3 +10,6 @@ class GameHistoryModel(models.Model):
 
     def __str__(self):
         return f"{self.player1}-{self.player2}(win:{self.win})(left:{self.left})"
+
+    def game_players(self):
+        return f"{self.player1} - {self.player2}"
